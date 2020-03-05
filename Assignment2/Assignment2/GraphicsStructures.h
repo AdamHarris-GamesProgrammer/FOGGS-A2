@@ -3,6 +3,8 @@
 
 #include <string>
 #include <iostream>
+#include <vector>
+#include<algorithm>
 
 struct Vertex {
 	Vector3 position;
@@ -33,5 +35,14 @@ struct Material
 };
 
 struct Mesh {
+	Mesh() {}
 
+	Mesh(std::vector<Vertex>& inVerticies, std::vector<unsigned int>& inIndices) : verticies(inVerticies), indices(inIndices){}
+
+	std::string meshName;
+
+	std::vector<Vertex>verticies;
+	std::vector<unsigned int>indices;
+
+	Material meshMaterial;
 };

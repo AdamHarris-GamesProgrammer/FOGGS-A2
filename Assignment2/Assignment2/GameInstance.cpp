@@ -28,7 +28,7 @@ void GameInstance::Render()
 
 void GameInstance::Update()
 {
-
+	
 }
 
 void GameInstance::InitOpenGL(int argc, char* argv[])

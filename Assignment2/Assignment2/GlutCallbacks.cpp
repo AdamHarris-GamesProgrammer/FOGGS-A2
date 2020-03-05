@@ -2,7 +2,7 @@
 #include "GameInstance.h"
 
 namespace GLUTCallback {
-	enamespace {
+	namespace {
 		GameInstance* gameInstance = nullptr;
 	}
 
