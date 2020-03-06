@@ -196,6 +196,21 @@ namespace Algorithm {
 		return "";
 	}
 
+	inline std::string firstToken(const std::string& in) {
+		if (!in.empty()) {
+			size_t tokenStart = in.find_first_not_of(" \t");
+			size_t tokenEnd = in.find_first_of(" \t", tokenStart);
+			if (tokenStart != std::string::npos && tokenEnd != std::string::npos) {
+				return in.substr(tokenStart, tokenEnd - tokenStart);
+			}
+			else if(tokenStart != std::string::npos)
+			{
+				return in.substr(tokenStart);
+			}
+		}
+		return "";
+	}
+
 	template<class T>
 	inline const T& GetElement(const std::vector<T>& elements, std::string& index) {
 		int index = std::stoi(index);
