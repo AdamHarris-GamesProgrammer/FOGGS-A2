@@ -156,11 +156,14 @@ namespace Algorithm {
 
 		std::string temp;
 
-		for (int i = 0; i < int(in.size()); i++) {
+		for (int i = 0; i < int(in.size()); i++)
+		{
 			std::string test = in.substr(i, token.size());
 
-			if (test == token) {
-				if (!temp.empty()) {
+			if (test == token)
+			{
+				if (!temp.empty())
+				{
 					out.push_back(temp);
 					temp.clear();
 					i += (int)token.size() - 1;
@@ -170,8 +173,9 @@ namespace Algorithm {
 					out.push_back("");
 				}
 			}
-			else if (i + token.size() >= in.size()) {
-				temp = in.substr(i, token.size());
+			else if (i + token.size() >= in.size())
+			{
+				temp += in.substr(i, token.size());
 				out.push_back(temp);
 				break;
 			}
@@ -185,13 +189,14 @@ namespace Algorithm {
 	inline std::string tail(const std::string& in) {
 		if (!in.empty()) {
 			size_t tokenStart = in.find_first_not_of(" \t");
-			size_t tokenEnd = in.find_first_of(" \t", tokenStart);
-
-			if (tokenStart != std::string::npos && tokenEnd != std::string::npos) {
-				return in.substr(tokenStart, tokenEnd - tokenStart);
+			size_t spaceStart = in.find_first_of(" \t", tokenStart);
+			size_t tailStart = in.find_first_not_of(" \t", spaceStart);
+			size_t tailEnd = in.find_last_not_of(" \t");
+			if (tailStart != std::string::npos && tailEnd != std::string::npos) {
+				return in.substr(tailStart, tailEnd - tokenStart +1);
 			}
-			else if (tokenStart != std::string::npos) {
-				return in.substr(tokenStart);
+			else if (tailStart != std::string::npos) {
+				return in.substr(tailStart);
 			}
 		}
 		return "";
@@ -212,16 +217,14 @@ namespace Algorithm {
 		return "";
 	}
 
-	template<class T>
-	inline const T& GetElement(const std::vector<T>& elements, std::string& index) {
+	template <class T>
+	inline const T& GetElement(const std::vector<T>& elements, std::string& index)
+	{
 		int idx = std::stoi(index);
-		if (idx < 0) {
+		if (idx < 0)
 			idx = int(elements.size()) + idx;
-		}
 		else
-		{
 			idx--;
-		}
 		return elements[idx];
 	}
 }

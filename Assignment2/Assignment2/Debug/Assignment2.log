@@ -1,33 +1,32 @@
 ﻿  GameInstance.cpp
-  GlutCallbacks.cpp
-  Source.cpp
-  Generating Code...
-  LINK : C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Debug\Assignment2.exe not found or not built by the last incremental link; performing full link
-GlutCallbacks.obj : error LNK2005: "struct Vector3 __cdecl Algorithm::operator*(float const &,struct Vector3 const &)" (??DAlgorithm@@YA?AUVector3@@ABMABU1@@Z) already defined in GameInstance.obj
-GlutCallbacks.obj : error LNK2005: "float __cdecl Math::AngleBetweenVectors(struct Vector3,struct Vector3)" (?AngleBetweenVectors@Math@@YAMUVector3@@0@Z) already defined in GameInstance.obj
-GlutCallbacks.obj : error LNK2005: "struct Vector3 __cdecl Math::CrossProduct(struct Vector3,struct Vector3)" (?CrossProduct@Math@@YA?AUVector3@@U2@0@Z) already defined in GameInstance.obj
-GlutCallbacks.obj : error LNK2005: "float __cdecl Math::DotProduct(struct Vector3,struct Vector3)" (?DotProduct@Math@@YAMUVector3@@0@Z) already defined in GameInstance.obj
-GlutCallbacks.obj : error LNK2005: "struct Vector3 __cdecl Algorithm::GenerateTriangleNormal(struct Vector3,struct Vector3,struct Vector3)" (?GenerateTriangleNormal@Algorithm@@YA?AUVector3@@U2@00@Z) already defined in GameInstance.obj
-GlutCallbacks.obj : error LNK2005: "bool __cdecl Algorithm::InTriangle(struct Vector3,struct Vector3,struct Vector3,struct Vector3)" (?InTriangle@Algorithm@@YA_NUVector3@@000@Z) already defined in GameInstance.obj
-GlutCallbacks.obj : error LNK2005: "float __cdecl Math::Magnitude(struct Vector3)" (?Magnitude@Math@@YAMUVector3@@@Z) already defined in GameInstance.obj
-GlutCallbacks.obj : error LNK2005: "struct Vector3 __cdecl Math::ProjectionCalculation(struct Vector3,struct Vector3)" (?ProjectionCalculation@Math@@YA?AUVector3@@U2@0@Z) already defined in GameInstance.obj
-GlutCallbacks.obj : error LNK2005: "bool __cdecl Algorithm::SameSide(struct Vector3,struct Vector3,struct Vector3,struct Vector3)" (?SameSide@Algorithm@@YA_NUVector3@@000@Z) already defined in GameInstance.obj
-OBJLoader.obj : error LNK2005: "struct Vector3 __cdecl Algorithm::operator*(float const &,struct Vector3 const &)" (??DAlgorithm@@YA?AUVector3@@ABMABU1@@Z) already defined in GameInstance.obj
-OBJLoader.obj : error LNK2005: "float __cdecl Math::AngleBetweenVectors(struct Vector3,struct Vector3)" (?AngleBetweenVectors@Math@@YAMUVector3@@0@Z) already defined in GameInstance.obj
-OBJLoader.obj : error LNK2005: "struct Vector3 __cdecl Math::CrossProduct(struct Vector3,struct Vector3)" (?CrossProduct@Math@@YA?AUVector3@@U2@0@Z) already defined in GameInstance.obj
-OBJLoader.obj : error LNK2005: "float __cdecl Math::DotProduct(struct Vector3,struct Vector3)" (?DotProduct@Math@@YAMUVector3@@0@Z) already defined in GameInstance.obj
-OBJLoader.obj : error LNK2005: "struct Vector3 __cdecl Algorithm::GenerateTriangleNormal(struct Vector3,struct Vector3,struct Vector3)" (?GenerateTriangleNormal@Algorithm@@YA?AUVector3@@U2@00@Z) already defined in GameInstance.obj
-OBJLoader.obj : error LNK2005: "bool __cdecl Algorithm::InTriangle(struct Vector3,struct Vector3,struct Vector3,struct Vector3)" (?InTriangle@Algorithm@@YA_NUVector3@@000@Z) already defined in GameInstance.obj
-OBJLoader.obj : error LNK2005: "float __cdecl Math::Magnitude(struct Vector3)" (?Magnitude@Math@@YAMUVector3@@@Z) already defined in GameInstance.obj
-OBJLoader.obj : error LNK2005: "struct Vector3 __cdecl Math::ProjectionCalculation(struct Vector3,struct Vector3)" (?ProjectionCalculation@Math@@YA?AUVector3@@U2@0@Z) already defined in GameInstance.obj
-OBJLoader.obj : error LNK2005: "bool __cdecl Algorithm::SameSide(struct Vector3,struct Vector3,struct Vector3,struct Vector3)" (?SameSide@Algorithm@@YA_NUVector3@@000@Z) already defined in GameInstance.obj
-Source.obj : error LNK2005: "struct Vector3 __cdecl Algorithm::operator*(float const &,struct Vector3 const &)" (??DAlgorithm@@YA?AUVector3@@ABMABU1@@Z) already defined in GameInstance.obj
-Source.obj : error LNK2005: "float __cdecl Math::AngleBetweenVectors(struct Vector3,struct Vector3)" (?AngleBetweenVectors@Math@@YAMUVector3@@0@Z) already defined in GameInstance.obj
-Source.obj : error LNK2005: "struct Vector3 __cdecl Math::CrossProduct(struct Vector3,struct Vector3)" (?CrossProduct@Math@@YA?AUVector3@@U2@0@Z) already defined in GameInstance.obj
-Source.obj : error LNK2005: "float __cdecl Math::DotProduct(struct Vector3,struct Vector3)" (?DotProduct@Math@@YAMUVector3@@0@Z) already defined in GameInstance.obj
-Source.obj : error LNK2005: "struct Vector3 __cdecl Algorithm::GenerateTriangleNormal(struct Vector3,struct Vector3,struct Vector3)" (?GenerateTriangleNormal@Algorithm@@YA?AUVector3@@U2@00@Z) already defined in GameInstance.obj
-Source.obj : error LNK2005: "bool __cdecl Algorithm::InTriangle(struct Vector3,struct Vector3,struct Vector3,struct Vector3)" (?InTriangle@Algorithm@@YA_NUVector3@@000@Z) already defined in GameInstance.obj
-Source.obj : error LNK2005: "float __cdecl Math::Magnitude(struct Vector3)" (?Magnitude@Math@@YAMUVector3@@@Z) already defined in GameInstance.obj
-Source.obj : error LNK2005: "struct Vector3 __cdecl Math::ProjectionCalculation(struct Vector3,struct Vector3)" (?ProjectionCalculation@Math@@YA?AUVector3@@U2@0@Z) already defined in GameInstance.obj
-Source.obj : error LNK2005: "bool __cdecl Algorithm::SameSide(struct Vector3,struct Vector3,struct Vector3,struct Vector3)" (?SameSide@Algorithm@@YA_NUVector3@@000@Z) already defined in GameInstance.obj
-C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Debug\Assignment2.exe : fatal error LNK1169: one or more multiply defined symbols found
+C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\GameInstance.cpp(32,21): warning C4018: '<': signed/unsigned mismatch
+LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/FORCE' specification
+GlutCallbacks.obj : warning LNK4006: "struct Vector3 __cdecl Algorithm::operator*(float const &,struct Vector3 const &)" (??DAlgorithm@@YA?AUVector3@@ABMABU1@@Z) already defined in GameInstance.obj; second definition ignored
+GlutCallbacks.obj : warning LNK4006: "float __cdecl Math::AngleBetweenVectors(struct Vector3,struct Vector3)" (?AngleBetweenVectors@Math@@YAMUVector3@@0@Z) already defined in GameInstance.obj; second definition ignored
+GlutCallbacks.obj : warning LNK4006: "struct Vector3 __cdecl Math::CrossProduct(struct Vector3,struct Vector3)" (?CrossProduct@Math@@YA?AUVector3@@U2@0@Z) already defined in GameInstance.obj; second definition ignored
+GlutCallbacks.obj : warning LNK4006: "float __cdecl Math::DotProduct(struct Vector3,struct Vector3)" (?DotProduct@Math@@YAMUVector3@@0@Z) already defined in GameInstance.obj; second definition ignored
+GlutCallbacks.obj : warning LNK4006: "struct Vector3 __cdecl Algorithm::GenerateTriangleNormal(struct Vector3,struct Vector3,struct Vector3)" (?GenerateTriangleNormal@Algorithm@@YA?AUVector3@@U2@00@Z) already defined in GameInstance.obj; second definition ignored
+GlutCallbacks.obj : warning LNK4006: "bool __cdecl Algorithm::InTriangle(struct Vector3,struct Vector3,struct Vector3,struct Vector3)" (?InTriangle@Algorithm@@YA_NUVector3@@000@Z) already defined in GameInstance.obj; second definition ignored
+GlutCallbacks.obj : warning LNK4006: "float __cdecl Math::Magnitude(struct Vector3)" (?Magnitude@Math@@YAMUVector3@@@Z) already defined in GameInstance.obj; second definition ignored
+GlutCallbacks.obj : warning LNK4006: "struct Vector3 __cdecl Math::ProjectionCalculation(struct Vector3,struct Vector3)" (?ProjectionCalculation@Math@@YA?AUVector3@@U2@0@Z) already defined in GameInstance.obj; second definition ignored
+GlutCallbacks.obj : warning LNK4006: "bool __cdecl Algorithm::SameSide(struct Vector3,struct Vector3,struct Vector3,struct Vector3)" (?SameSide@Algorithm@@YA_NUVector3@@000@Z) already defined in GameInstance.obj; second definition ignored
+OBJLoader.obj : warning LNK4006: "struct Vector3 __cdecl Algorithm::operator*(float const &,struct Vector3 const &)" (??DAlgorithm@@YA?AUVector3@@ABMABU1@@Z) already defined in GameInstance.obj; second definition ignored
+OBJLoader.obj : warning LNK4006: "float __cdecl Math::AngleBetweenVectors(struct Vector3,struct Vector3)" (?AngleBetweenVectors@Math@@YAMUVector3@@0@Z) already defined in GameInstance.obj; second definition ignored
+OBJLoader.obj : warning LNK4006: "struct Vector3 __cdecl Math::CrossProduct(struct Vector3,struct Vector3)" (?CrossProduct@Math@@YA?AUVector3@@U2@0@Z) already defined in GameInstance.obj; second definition ignored
+OBJLoader.obj : warning LNK4006: "float __cdecl Math::DotProduct(struct Vector3,struct Vector3)" (?DotProduct@Math@@YAMUVector3@@0@Z) already defined in GameInstance.obj; second definition ignored
+OBJLoader.obj : warning LNK4006: "struct Vector3 __cdecl Algorithm::GenerateTriangleNormal(struct Vector3,struct Vector3,struct Vector3)" (?GenerateTriangleNormal@Algorithm@@YA?AUVector3@@U2@00@Z) already defined in GameInstance.obj; second definition ignored
+OBJLoader.obj : warning LNK4006: "bool __cdecl Algorithm::InTriangle(struct Vector3,struct Vector3,struct Vector3,struct Vector3)" (?InTriangle@Algorithm@@YA_NUVector3@@000@Z) already defined in GameInstance.obj; second definition ignored
+OBJLoader.obj : warning LNK4006: "float __cdecl Math::Magnitude(struct Vector3)" (?Magnitude@Math@@YAMUVector3@@@Z) already defined in GameInstance.obj; second definition ignored
+OBJLoader.obj : warning LNK4006: "struct Vector3 __cdecl Math::ProjectionCalculation(struct Vector3,struct Vector3)" (?ProjectionCalculation@Math@@YA?AUVector3@@U2@0@Z) already defined in GameInstance.obj; second definition ignored
+OBJLoader.obj : warning LNK4006: "bool __cdecl Algorithm::SameSide(struct Vector3,struct Vector3,struct Vector3,struct Vector3)" (?SameSide@Algorithm@@YA_NUVector3@@000@Z) already defined in GameInstance.obj; second definition ignored
+Source.obj : warning LNK4006: "struct Vector3 __cdecl Algorithm::operator*(float const &,struct Vector3 const &)" (??DAlgorithm@@YA?AUVector3@@ABMABU1@@Z) already defined in GameInstance.obj; second definition ignored
+Source.obj : warning LNK4006: "float __cdecl Math::AngleBetweenVectors(struct Vector3,struct Vector3)" (?AngleBetweenVectors@Math@@YAMUVector3@@0@Z) already defined in GameInstance.obj; second definition ignored
+Source.obj : warning LNK4006: "struct Vector3 __cdecl Math::CrossProduct(struct Vector3,struct Vector3)" (?CrossProduct@Math@@YA?AUVector3@@U2@0@Z) already defined in GameInstance.obj; second definition ignored
+Source.obj : warning LNK4006: "float __cdecl Math::DotProduct(struct Vector3,struct Vector3)" (?DotProduct@Math@@YAMUVector3@@0@Z) already defined in GameInstance.obj; second definition ignored
+Source.obj : warning LNK4006: "struct Vector3 __cdecl Algorithm::GenerateTriangleNormal(struct Vector3,struct Vector3,struct Vector3)" (?GenerateTriangleNormal@Algorithm@@YA?AUVector3@@U2@00@Z) already defined in GameInstance.obj; second definition ignored
+Source.obj : warning LNK4006: "bool __cdecl Algorithm::InTriangle(struct Vector3,struct Vector3,struct Vector3,struct Vector3)" (?InTriangle@Algorithm@@YA_NUVector3@@000@Z) already defined in GameInstance.obj; second definition ignored
+Source.obj : warning LNK4006: "float __cdecl Math::Magnitude(struct Vector3)" (?Magnitude@Math@@YAMUVector3@@@Z) already defined in GameInstance.obj; second definition ignored
+Source.obj : warning LNK4006: "struct Vector3 __cdecl Math::ProjectionCalculation(struct Vector3,struct Vector3)" (?ProjectionCalculation@Math@@YA?AUVector3@@U2@0@Z) already defined in GameInstance.obj; second definition ignored
+Source.obj : warning LNK4006: "bool __cdecl Algorithm::SameSide(struct Vector3,struct Vector3,struct Vector3,struct Vector3)" (?SameSide@Algorithm@@YA_NUVector3@@000@Z) already defined in GameInstance.obj; second definition ignored
+C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Debug\Assignment2.exe : warning LNK4088: image being generated due to /FORCE option; image may not run
+  Assignment2.vcxproj -> C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Debug\Assignment2.exe

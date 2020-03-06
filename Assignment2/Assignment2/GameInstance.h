@@ -20,6 +20,10 @@ public:
 	void InitObjects();
 
 private:
-	//OBJLoader loader;
+	OBJLoader loader;
+
+	Camera* mCamera;
+
+	float rotation = 0.0f;
 };
 

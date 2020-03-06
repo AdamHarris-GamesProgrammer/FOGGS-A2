@@ -40,6 +40,8 @@ bool OBJLoader::LoadFile(std::string path)
 	bool listening = false;
 	std::string meshName;
 
+	Mesh tempMesh;
+
 	std::string currentLine;
 	while (std::getline(file, currentLine)) {
 		if (Algorithm::firstToken(currentLine) == "o" || Algorithm::firstToken(currentLine) == "g" || currentLine[0] == 'g') {
@@ -56,7 +58,7 @@ bool OBJLoader::LoadFile(std::string path)
 			}
 			else {
 				if (!mLoadedIndices.empty() && !mLoadedVerticies.empty()) {
-					Mesh tempMesh = Mesh(mLoadedVerticies, mLoadedIndices);
+					tempMesh = Mesh(mLoadedVerticies, mLoadedIndices);
 					tempMesh.meshName = meshName;
 
 					mLoadedMeshes.push_back(tempMesh);
@@ -95,7 +97,7 @@ bool OBJLoader::LoadFile(std::string path)
 		if (Algorithm::firstToken(currentLine) == "vt") {
 			std::vector<std::string> stex;
 			Vector2 vtex;
-			Algorithm::Split(currentLine, stex, " ");
+			Algorithm::Split(Algorithm::tail(currentLine), stex, " ");
 
 			vtex.x = std::stof(stex[0]);
 			vtex.y = std::stof(stex[1]);
@@ -107,7 +109,7 @@ bool OBJLoader::LoadFile(std::string path)
 		if (Algorithm::firstToken(currentLine) == "vn") {
 			std::vector<std::string> snor;
 			Vector3 vnor;
-			Algorithm::Split(currentLine, snor, " ");
+			Algorithm::Split(Algorithm::tail(currentLine), snor, " ");
 
 			vnor.x = std::stof(snor[0]);
 			vnor.y = std::stof(snor[1]);
@@ -142,7 +144,7 @@ bool OBJLoader::LoadFile(std::string path)
 			meshMaterialNames.push_back(Algorithm::tail(currentLine));
 
 			if (!indices.empty() && !verticies.empty()) {
-				Mesh tempMesh = Mesh(verticies, indices);
+				tempMesh = Mesh(verticies, indices);
 				tempMesh.meshName = meshName;
 				int i = 2;
 				while (1) {
@@ -168,7 +170,7 @@ bool OBJLoader::LoadFile(std::string path)
 		if (Algorithm::firstToken(currentLine) == "mtlib") {
 			std::vector <std::string> temp;
 			Algorithm::Split(path, temp, "/");
-			
+
 			std::string pathToMaterial = "";
 
 			if (temp.size() != 1) {
@@ -181,36 +183,38 @@ bool OBJLoader::LoadFile(std::string path)
 
 			LoadMaterials(pathToMaterial);
 		}
+	}
 
-		//Deals with remaining vertices and indices
-		if (!indices.empty() && !verticies.empty()) {
-			Mesh tempMesh = Mesh(verticies, indices);
-			tempMesh.meshName = meshName;
 
-			mLoadedMeshes.push_back(tempMesh);
-		}
 
-		file.close();
+	//Deals with remaining vertices and indices
+	if (!indices.empty() && !verticies.empty()) {
+		tempMesh = Mesh(verticies, indices);
+		tempMesh.meshName = meshName;
 
-		//Set materials for each mesh
-		for (int i = 0; i < meshMaterialNames.size(); i++) {
-			std::string matname = meshMaterialNames[i];
+		mLoadedMeshes.push_back(tempMesh);
+	}
 
-			for (int j = 0; j < mLoadedMaterial.size(); j++) {
-				if (mLoadedMaterial[j].name == matname) {
-					mLoadedMeshes[i].meshMaterial = mLoadedMaterial[j];
-					break;
-				}
+	file.close();
+
+	//Set materials for each mesh
+	for (int i = 0; i < meshMaterialNames.size(); i++) {
+		std::string matname = meshMaterialNames[i];
+
+		for (int j = 0; j < mLoadedMaterial.size(); j++) {
+			if (mLoadedMaterial[j].name == matname) {
+				mLoadedMeshes[i].meshMaterial = mLoadedMaterial[j];
+				break;
 			}
 		}
+	}
 
-		if (mLoadedMeshes.empty() && mLoadedVerticies.empty() && mLoadedIndices.empty()) {
-			return false;
-		}
-		else
-		{
-			return true;
-		}
+	if (mLoadedMeshes.empty() && mLoadedVerticies.empty() && mLoadedIndices.empty()) {
+		return false;
+	}
+	else
+	{
+		return true;
 	}
 }
 
@@ -218,7 +222,7 @@ void OBJLoader::GenerateVerticiesFromRawOBJ(std::vector<Vertex>& outVerts, const
 {
 	std::vector<std::string> sface, svert;
 	Vertex vVert;
-	Algorithm::Split(inLine, sface, " ");
+	Algorithm::Split(Algorithm::tail(inLine), sface, " ");
 
 	bool noNormal = false;
 
@@ -363,8 +367,11 @@ void OBJLoader::VertexTriangulation(std::vector<unsigned int>& outIndices, const
 				}
 
 				Vector3 tempVec;
-				for (int j = 0; int(tVerts.size()); j++) {
-					if (tVerts[j].position != pCur.position && tVerts[j].position != pPrev.position && tVerts[j].position != pNext.position) {
+				for (int j = 0; j < int(tVerts.size()); j++) {
+					if (tVerts[j].position != pCur.position 
+						&& tVerts[j].position != pPrev.position
+						&& tVerts[j].position != pNext.position)
+					{
 						tempVec = tVerts[j].position;
 						break;
 					}
@@ -537,7 +544,7 @@ bool OBJLoader::LoadMaterials(std::string path)
 		if (Algorithm::firstToken(currentLine) == "illum") {
 			tempMaterial.illum = std::stof(Algorithm::tail(currentLine));
 		}
-		
+
 		if (Algorithm::firstToken(currentLine) == "map_Ka") {
 			tempMaterial.map_Ka = std::stof(Algorithm::tail(currentLine));
 		}

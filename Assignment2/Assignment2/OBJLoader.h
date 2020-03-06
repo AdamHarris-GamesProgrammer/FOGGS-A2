@@ -3,8 +3,11 @@
 #include "MathStructures.h"
 #include "GraphicsStructures.h"
 
+#include <iostream>
 #include <string>
 #include <fstream>
+#include <math.h>
+#include <vector>
 
 class OBJLoader
 {

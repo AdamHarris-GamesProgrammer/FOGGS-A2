@@ -13,6 +13,14 @@ struct Vertex {
 
 struct Material
 {
+	Material() {
+		name;
+		Ns = 0.0f;
+		Ni = 0.0f;
+		d = 0.0f;
+		illum = 0.0f;
+	}
+
 	std::string name;
 
 	Vector3 Ka; //Ambient Colour
@@ -44,4 +52,10 @@ struct Mesh {
 	std::vector<unsigned int>indices;
 
 	Material meshMaterial;
+};
+
+struct Camera {
+	Vector3 eye;
+	Vector3 center;
+	Vector3 up;
 };
