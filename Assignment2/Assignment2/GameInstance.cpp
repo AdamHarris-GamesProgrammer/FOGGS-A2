@@ -28,7 +28,7 @@ void GameInstance::Render()
 
 void GameInstance::Update()
 {
-	
+
 }
 
 void GameInstance::InitOpenGL(int argc, char* argv[])
@@ -45,5 +45,7 @@ void GameInstance::InitOpenGL(int argc, char* argv[])
 
 void GameInstance::InitObjects()
 {
-
+	//OBJLoader loader;
+	//loader.LoadFile("Assets/Cube.obj");
+	//std::cout << loader.mLoadedMeshes[0].meshName << std::endl;
 }

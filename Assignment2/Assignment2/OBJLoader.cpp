@@ -224,16 +224,354 @@ void OBJLoader::GenerateVerticiesFromRawOBJ(std::vector<Vertex>& outVerts, const
 
 	//for every vertex do this
 	for (int i = 0; i < int(sface.size()); i++) {
+		int vType;
 
+		Algorithm::Split(sface[i], svert, "/");
+
+		//Checks for just position (v1)
+		if (svert.size() == 1) {
+			vType = 1;
+		}
+
+		//Checks for position and texture (v1/vt1)
+		if (svert.size() == 2) {
+			vType = 2;
+		}
+
+		//Checks for position, texture and normal (v1,vt1,vn1) or if just position and normal
+		if (svert.size() == 3) {
+			if (svert[1] != "") {
+				//position texture and normal
+				vType = 4;
+			}
+			else
+			{
+				//position and normal
+				vType = 3;
+			}
+		}
+
+		switch (vType)
+		{
+		case 1: //Just position
+			vVert.position = Algorithm::GetElement(inPositions, svert[0]);
+			vVert.textureCoordinate = Vector2();
+			noNormal = true;
+			outVerts.push_back(vVert);
+			break;
+		case 2: //Position and texture
+			vVert.position = Algorithm::GetElement(inPositions, svert[0]);
+			vVert.textureCoordinate = Algorithm::GetElement(inTexCoords, svert[1]);
+			noNormal = true;
+			outVerts.push_back(vVert);
+			break;
+		case 3: //Position and normals
+			vVert.position = Algorithm::GetElement(inPositions, svert[0]);
+			vVert.textureCoordinate = Vector2();
+			vVert.normal = Algorithm::GetElement(inNormals, svert[2]);
+			outVerts.push_back(vVert);
+		case 4: //Position, texture and normals
+			vVert.position = Algorithm::GetElement(inPositions, svert[0]);
+			vVert.textureCoordinate = Algorithm::GetElement(inTexCoords, svert[1]);
+			vVert.normal = Algorithm::GetElement(inNormals, svert[2]);
+			outVerts.push_back(vVert);
+			break;
+		default:
+			break;
+		}
+
+
+		//Generates a normal if no normal is found
+		if (noNormal) {
+			Vector3 A = outVerts[0].position - outVerts[1].position;
+			Vector3 B = outVerts[2].position - outVerts[1].position;
+
+			Vector3 normal = Math::CrossProduct(A, B);
+
+			for (int i = 0; i < int(outVerts.size()); i++) {
+				outVerts[i].normal = normal;
+			}
+		}
 	}
 }
 
 void OBJLoader::VertexTriangulation(std::vector<unsigned int>& outIndices, const std::vector<Vertex>& inVerts)
 {
+	if (inVerts.size() < 3) {
+		return;
+	}
 
+	if (inVerts.size() == 3) {
+		outIndices.push_back(0);
+		outIndices.push_back(1);
+		outIndices.push_back(2);
+		return;
+	}
+
+	std::vector<Vertex> tVerts = inVerts;
+
+	while (true)
+	{
+		for (int i = 0; i < int(tVerts.size()); i++) {
+			Vertex pPrev;
+			if (i == 0) {
+				pPrev = tVerts[tVerts.size() - 1];
+			}
+			else
+			{
+				pPrev = tVerts[i - 1];
+			}
+
+			Vertex pCur = tVerts[i];
+
+			Vertex pNext;
+			if (i == tVerts.size() - 1) {
+				pNext = tVerts[0];
+			}
+			else
+			{
+				pNext = tVerts[i + 1];
+			}
+
+			if (tVerts.size() == 3) {
+				for (int j = 0; j < int(tVerts.size()); j++) {
+					if (inVerts[j].position == pCur.position) {
+						outIndices.push_back(j);
+					}
+					if (inVerts[j].position == pPrev.position) {
+						outIndices.push_back(j);
+					}
+					if (inVerts[j].position == pPrev.position) {
+						outIndices.push_back(j);
+					}
+				}
+				tVerts.clear();
+				break;
+			}
+
+			if (tVerts.size() == 4) {
+				for (int j = 0; j < int(tVerts.size()); j++) {
+					if (inVerts[j].position == pCur.position) {
+						outIndices.push_back(j);
+					}
+					if (inVerts[j].position == pPrev.position) {
+						outIndices.push_back(j);
+					}
+					if (inVerts[j].position == pPrev.position) {
+						outIndices.push_back(j);
+					}
+				}
+
+				Vector3 tempVec;
+				for (int j = 0; int(tVerts.size()); j++) {
+					if (tVerts[j].position != pCur.position && tVerts[j].position != pPrev.position && tVerts[j].position != pNext.position) {
+						tempVec = tVerts[j].position;
+						break;
+					}
+				}
+
+				for (int j = 0; j < int(inVerts.size()); j++) {
+					if (inVerts[j].position == pPrev.position) {
+						outIndices.push_back(j);
+					}
+					if (inVerts[j].position == pNext.position) {
+						outIndices.push_back(j);
+					}
+					if (inVerts[j].position == tempVec) {
+						outIndices.push_back(j);
+					}
+				}
+
+				tVerts.clear();
+				break;
+			}
+
+			//If vertex is not in interior vertex
+			float angle = Math::AngleBetweenVectors(pPrev.position - pCur.position, pNext.position - pCur.position);
+			if (angle <= 0 && angle >= 180) {
+				continue;
+			}
+
+			bool inTriangle = false;
+			for (int j = 0; int(tVerts.size()); j++) {
+				if (Algorithm::InTriangle(inVerts[j].position, pPrev.position, pCur.position, pNext.position)
+					&& inVerts[j].position != pPrev.position
+					&& inVerts[j].position != pCur.position
+					&& inVerts[j].position != pNext.position) {
+					inTriangle = true;
+					break;
+				}
+			}
+
+			if (inTriangle) {
+				continue;
+			}
+
+			//Create a triangle from pCur, pPrev and pNext
+			for (int j = 0; j < int(inVerts.size()); j++) {
+				if (inVerts[j].position == pCur.position) {
+					outIndices.push_back(j);
+				}
+				if (inVerts[j].position == pPrev.position) {
+					outIndices.push_back(j);
+				}
+				if (inVerts[j].position == pNext.position) {
+					outIndices.push_back(j);
+				}
+			}
+
+			//delete pCur 
+			for (int j = 0; j < int(tVerts.size()); j++) {
+				if (tVerts[j].position == pCur.position) {
+					tVerts.erase(tVerts.begin() + j);
+					break;
+				}
+			}
+
+			//reset i to the start
+			i = -1;
+		}
+
+		//if no triangle were created
+		if (outIndices.size() == 0) {
+			break;
+		}
+
+		//if no more vertices
+		if (tVerts.size() == 0) {
+			break;
+		}
+	}
 }
 
 bool OBJLoader::LoadMaterials(std::string path)
 {
+	if (path.substr(path.size() - 4, path.size()) != ".mtl") {
+		std::cout << "Wrong file format" << std::endl;
+		return false;
+	}
 
+	std::ifstream file(path);
+
+	if (!file.is_open()) {
+		return false;
+	}
+
+	Material tempMaterial;
+
+	bool listening = false;
+
+	std::string currentLine;
+
+	while (std::getline(file, currentLine)) {
+		//Finds the material name
+		if (Algorithm::firstToken(currentLine) == "newmtl") {
+			if (!listening) {
+				listening = true;
+
+				if (currentLine.size() > 7) {
+					tempMaterial.name = Algorithm::tail(currentLine);
+				}
+				else
+				{
+					tempMaterial.name = "none";
+				}
+			}
+		}
+
+		//Ambient Colour
+		if (Algorithm::firstToken(currentLine) == "Ka") {
+			std::vector<std::string> temp;
+			Algorithm::Split(Algorithm::tail(currentLine), temp, " ");
+
+			if (temp.size() != 3) {
+				continue;
+			}
+
+			tempMaterial.Ka.x = std::stof(temp[0]);
+			tempMaterial.Ka.y = std::stof(temp[1]);
+			tempMaterial.Ka.z = std::stof(temp[2]);
+		}
+
+		//Diffuse Colour
+		if (Algorithm::firstToken(currentLine) == "Kd") {
+			std::vector<std::string> temp;
+			Algorithm::Split(Algorithm::tail(currentLine), temp, " ");
+
+			if (temp.size() != 3) {
+				continue;
+			}
+
+			tempMaterial.Kd.x = std::stof(temp[0]);
+			tempMaterial.Kd.y = std::stof(temp[1]);
+			tempMaterial.Kd.z = std::stof(temp[2]);
+		}
+
+		//Specular colour
+		if (Algorithm::firstToken(currentLine) == "Ks") {
+			std::vector<std::string> temp;
+			Algorithm::Split(Algorithm::tail(currentLine), temp, " ");
+
+			if (temp.size() != 3) {
+				continue;
+			}
+
+			tempMaterial.Ks.x = std::stof(temp[0]);
+			tempMaterial.Ks.y = std::stof(temp[1]);
+			tempMaterial.Ks.z = std::stof(temp[2]);
+		}
+
+		//Specular exponent
+		if (Algorithm::firstToken(currentLine) == "Ns") {
+			tempMaterial.Ns = std::stof(Algorithm::tail(currentLine));
+		}
+
+		if (Algorithm::firstToken(currentLine) == "Ni") {
+			tempMaterial.Ni = std::stof(Algorithm::tail(currentLine));
+		}
+
+		if (Algorithm::firstToken(currentLine) == "d") {
+			tempMaterial.d = std::stof(Algorithm::tail(currentLine));
+		}
+
+		if (Algorithm::firstToken(currentLine) == "illum") {
+			tempMaterial.illum = std::stof(Algorithm::tail(currentLine));
+		}
+		
+		if (Algorithm::firstToken(currentLine) == "map_Ka") {
+			tempMaterial.map_Ka = std::stof(Algorithm::tail(currentLine));
+		}
+
+		if (Algorithm::firstToken(currentLine) == "map_Kd") {
+			tempMaterial.map_Kd = std::stof(Algorithm::tail(currentLine));
+		}
+
+		if (Algorithm::firstToken(currentLine) == "map_Ks") {
+			tempMaterial.map_Ks = std::stof(Algorithm::tail(currentLine));
+		}
+
+		if (Algorithm::firstToken(currentLine) == "map_Ns") {
+			tempMaterial.map_Ns = std::stof(Algorithm::tail(currentLine));
+		}
+
+		if (Algorithm::firstToken(currentLine) == "map_D") {
+			tempMaterial.map_d = std::stof(Algorithm::tail(currentLine));
+		}
+
+		//Bump Map
+		if (Algorithm::firstToken(currentLine) == "map_Bump" || Algorithm::firstToken(currentLine) == "map_bump" || Algorithm::firstToken(currentLine) == "bump") {
+			tempMaterial.map_bump = Algorithm::tail(currentLine);
+		}
+
+	}
+
+	mLoadedMaterial.push_back(tempMaterial);
+
+	if (mLoadedMaterial.empty()) {
+		return false;
+	}
+	else
+	{
+		return true;
+	}
 }

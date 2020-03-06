@@ -126,6 +126,7 @@
   <ItemGroup>
     <ClCompile Include="GameInstance.cpp" />
     <ClCompile Include="GlutCallbacks.cpp" />
+    <ClCompile Include="OBJLoader.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -134,6 +135,7 @@
     <ClInclude Include="GlutCallbacks.h" />
     <ClInclude Include="GraphicsStructures.h" />
     <ClInclude Include="MathStructures.h" />
+    <ClInclude Include="OBJLoader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

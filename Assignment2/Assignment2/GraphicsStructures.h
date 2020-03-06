@@ -4,7 +4,6 @@
 #include <string>
 #include <iostream>
 #include <vector>
-#include<algorithm>
 
 struct Vertex {
 	Vector3 position;

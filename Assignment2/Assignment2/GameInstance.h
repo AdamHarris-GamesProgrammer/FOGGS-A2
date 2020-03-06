@@ -5,6 +5,8 @@
 #include "gl/GLU.h"
 #include "GL\freeglut.h"
 
+#include "OBJLoader.h"
+
 class GameInstance
 {
 public:
@@ -18,6 +20,6 @@ public:
 	void InitObjects();
 
 private:
-
+	//OBJLoader loader;
 };
 

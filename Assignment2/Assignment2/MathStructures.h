@@ -1,6 +1,7 @@
 #pragma once
-#include<vector>
+#include <vector>
 #include <string>
+
 struct Vector2 {
 	float x, y;
 
@@ -44,10 +45,10 @@ struct Vector3 {
 	}
 
 	bool operator==(const Vector3& other) const {
-		return (this->x == other.x && this->y == other.y && this->z = other.z);
+		return (this->x == other.x && this->y == other.y && this->z == other.z);
 	}
 
-	bool operator!=(const Vector3& other) {
+	bool operator!=(const Vector3& other) const {
 		return !(this->x == other.x && this->y == other.y && this->z == other.z);
 	}
 
@@ -213,14 +214,14 @@ namespace Algorithm {
 
 	template<class T>
 	inline const T& GetElement(const std::vector<T>& elements, std::string& index) {
-		int index = std::stoi(index);
-		if (index < 0) {
-			index = int(elements.size()) + index;
+		int idx = std::stoi(index);
+		if (idx < 0) {
+			idx = int(elements.size()) + idx;
 		}
 		else
 		{
-			index--;
+			idx--;
 		}
-		return elements[index];
+		return elements[idx];
 	}
 }
