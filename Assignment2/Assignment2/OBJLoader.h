@@ -27,5 +27,9 @@ private:
 	void VertexTriangulation(std::vector<unsigned int>& outIndices, const std::vector<Vertex>& inVerts);
 
 	bool LoadMaterials(std::string path);
+
+	void LoadVertices(std::vector<Vector3>& inPositions, std::string& currentLine);
+	void LoadVertexTextures(std::vector<Vector2>& inTexCoords, std::string& currentLine);
+	void LoadVertexNormals(std::vector<Vector3>& inNormals, std::string& currentLine);
 };
 

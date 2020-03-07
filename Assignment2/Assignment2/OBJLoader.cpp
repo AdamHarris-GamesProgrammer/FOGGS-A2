@@ -82,40 +82,17 @@ bool OBJLoader::LoadFile(std::string path)
 
 		//Generate a vertex position
 		if (Algorithm::firstToken(currentLine) == "v") {
-			std::vector<std::string> spos;
-			Vector3 vpos;
-			Algorithm::Split(Algorithm::tail(currentLine), spos, " ");
-
-			vpos.x = std::stof(spos[0]);
-			vpos.y = std::stof(spos[1]);
-			vpos.z = std::stof(spos[2]);
-
-			positions.push_back(vpos);
+			LoadVertices(positions, currentLine);
 		}
 
 		//Generate a vertex texture coordinate
 		if (Algorithm::firstToken(currentLine) == "vt") {
-			std::vector<std::string> stex;
-			Vector2 vtex;
-			Algorithm::Split(Algorithm::tail(currentLine), stex, " ");
-
-			vtex.x = std::stof(stex[0]);
-			vtex.y = std::stof(stex[1]);
-
-			texCoords.push_back(vtex);
+			LoadVertexTextures(texCoords, currentLine);
 		}
 
 		//Generates vertex normal coordinates
 		if (Algorithm::firstToken(currentLine) == "vn") {
-			std::vector<std::string> snor;
-			Vector3 vnor;
-			Algorithm::Split(Algorithm::tail(currentLine), snor, " ");
-
-			vnor.x = std::stof(snor[0]);
-			vnor.y = std::stof(snor[1]);
-			vnor.z = std::stof(snor[2]);
-
-			normals.push_back(vnor);
+			LoadVertexNormals(normals, currentLine);
 		}
 
 		//Generates a face from verticies and indices
@@ -134,8 +111,12 @@ bool OBJLoader::LoadFile(std::string path)
 
 			//Add Indices
 			for (int i = 0; i < int(inIndices.size()); i++) {
-				unsigned int indicesNum = (unsigned int)((mLoadedVerticies.size()) - vVerts.size()) + inIndices[i];
-				mLoadedIndices.push_back(indicesNum);
+				unsigned int indnum = (unsigned int)((verticies.size()) - vVerts.size() + inIndices[i]);
+				indices.push_back(indnum);
+
+
+				indnum = (unsigned int)((mLoadedVerticies.size()) - vVerts.size()) + inIndices[i];
+				mLoadedIndices.push_back(indnum);
 			}
 		}
 
@@ -167,7 +148,7 @@ bool OBJLoader::LoadFile(std::string path)
 		}
 
 		//Load Materials
-		if (Algorithm::firstToken(currentLine) == "mtlib") {
+		if (Algorithm::firstToken(currentLine) == "mtllib") {
 			std::vector <std::string> temp;
 			Algorithm::Split(path, temp, "/");
 
@@ -258,28 +239,37 @@ void OBJLoader::GenerateVerticiesFromRawOBJ(std::vector<Vertex>& outVerts, const
 		switch (vType)
 		{
 		case 1: //Just position
+		{
 			vVert.position = Algorithm::GetElement(inPositions, svert[0]);
 			vVert.textureCoordinate = Vector2();
 			noNormal = true;
 			outVerts.push_back(vVert);
 			break;
+		}
 		case 2: //Position and texture
+		{
 			vVert.position = Algorithm::GetElement(inPositions, svert[0]);
 			vVert.textureCoordinate = Algorithm::GetElement(inTexCoords, svert[1]);
 			noNormal = true;
 			outVerts.push_back(vVert);
 			break;
+		}
 		case 3: //Position and normals
+		{
 			vVert.position = Algorithm::GetElement(inPositions, svert[0]);
 			vVert.textureCoordinate = Vector2();
 			vVert.normal = Algorithm::GetElement(inNormals, svert[2]);
 			outVerts.push_back(vVert);
+			break;
+		}
 		case 4: //Position, texture and normals
+		{
 			vVert.position = Algorithm::GetElement(inPositions, svert[0]);
 			vVert.textureCoordinate = Algorithm::GetElement(inTexCoords, svert[1]);
 			vVert.normal = Algorithm::GetElement(inNormals, svert[2]);
 			outVerts.push_back(vVert);
 			break;
+		}
 		default:
 			break;
 		}
@@ -354,7 +344,7 @@ void OBJLoader::VertexTriangulation(std::vector<unsigned int>& outIndices, const
 			}
 
 			if (tVerts.size() == 4) {
-				for (int j = 0; j < int(tVerts.size()); j++) {
+				for (int j = 0; j < int(inVerts.size()); j++) {
 					if (inVerts[j].position == pCur.position) {
 						outIndices.push_back(j);
 					}
@@ -394,13 +384,13 @@ void OBJLoader::VertexTriangulation(std::vector<unsigned int>& outIndices, const
 			}
 
 			//If vertex is not in interior vertex
-			float angle = Math::AngleBetweenVectors(pPrev.position - pCur.position, pNext.position - pCur.position);
+			float angle = Math::AngleBetweenVectors(pPrev.position - pCur.position, pNext.position - pCur.position) * (180 / 3.1459265359);
 			if (angle <= 0 && angle >= 180) {
 				continue;
 			}
 
 			bool inTriangle = false;
-			for (int j = 0; int(tVerts.size()); j++) {
+			for (int j = 0; int(inVerts.size()); j++) {
 				if (Algorithm::InTriangle(inVerts[j].position, pPrev.position, pCur.position, pNext.position)
 					&& inVerts[j].position != pPrev.position
 					&& inVerts[j].position != pCur.position
@@ -581,4 +571,42 @@ bool OBJLoader::LoadMaterials(std::string path)
 	{
 		return true;
 	}
+}
+
+void OBJLoader::LoadVertices(std::vector<Vector3>& inPositions, std::string& currentLine)
+{
+	std::vector<std::string> spos;
+	Vector3 vpos;
+	Algorithm::Split(Algorithm::tail(currentLine), spos, " ");
+
+	vpos.x = std::stof(spos[0]);
+	vpos.y = std::stof(spos[1]);
+	vpos.z = std::stof(spos[2]);
+
+	inPositions.push_back(vpos);
+}
+
+void OBJLoader::LoadVertexTextures(std::vector<Vector2>& inTexCoords, std::string& currentLine)
+{
+	std::vector<std::string> stex;
+	Vector2 vtex;
+	Algorithm::Split(Algorithm::tail(currentLine), stex, " ");
+
+	vtex.x = std::stof(stex[0]);
+	vtex.y = std::stof(stex[1]);
+
+	inTexCoords.push_back(vtex);
+}
+
+void OBJLoader::LoadVertexNormals(std::vector<Vector3>& inNormals, std::string& currentLine)
+{
+	std::vector<std::string> snor;
+	Vector3 vnor;
+	Algorithm::Split(Algorithm::tail(currentLine), snor, " ");
+
+	vnor.x = std::stof(snor[0]);
+	vnor.y = std::stof(snor[1]);
+	vnor.z = std::stof(snor[2]);
+
+	inNormals.push_back(vnor);
 }
