@@ -23,7 +23,7 @@ public:
 	std::vector<Material> mLoadedMaterial;
 
 private:
-	void GenerateVerticiesFromRawOBJ(std::vector<Vertex>& outVerts, const std::vector<Vector3>& inPositions, const std::vector<Vector2>& inTexCoords, const std::vector<Vector3>& inNormals, std::string& inLine);
+	void GenerateVerticiesFromRawOBJ(std::vector<Vertex>& outVerts, const std::vector<Vector3>& inPositions, const std::vector<Vector2>& inTexCoords, const std::vector<Vector3>& inNormals, std::string inLine);
 	void VertexTriangulation(std::vector<unsigned int>& outIndices, const std::vector<Vertex>& inVerts);
 
 	bool LoadMaterials(std::string path);

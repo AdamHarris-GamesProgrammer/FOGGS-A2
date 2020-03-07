@@ -97,26 +97,31 @@ bool OBJLoader::LoadFile(std::string path)
 
 		//Generates a face from verticies and indices
 		if (Algorithm::firstToken(currentLine) == "f") {
+			// Generate the vertices
 			std::vector<Vertex> vVerts;
 			GenerateVerticiesFromRawOBJ(vVerts, positions, texCoords, normals, currentLine);
 
-			for (int i = 0; i < int(vVerts.size()); i++) {
+			// Add Vertices
+			for (int i = 0; i < int(vVerts.size()); i++)
+			{
 				verticies.push_back(vVerts[i]);
 
 				mLoadedVerticies.push_back(vVerts[i]);
 			}
 
-			std::vector<unsigned int> inIndices;
-			VertexTriangulation(inIndices, vVerts);
+			std::vector<unsigned int> iIndices;
 
-			//Add Indices
-			for (int i = 0; i < int(inIndices.size()); i++) {
-				unsigned int indnum = (unsigned int)((verticies.size()) - vVerts.size() + inIndices[i]);
+			VertexTriangulation(iIndices, vVerts);
+
+			// Add Indices
+			for (int i = 0; i < int(iIndices.size()); i++)
+			{
+				unsigned int indnum = (unsigned int)((verticies.size()) - vVerts.size()) + iIndices[i];
 				indices.push_back(indnum);
 
-
-				indnum = (unsigned int)((mLoadedVerticies.size()) - vVerts.size()) + inIndices[i];
+				indnum = (unsigned int)((mLoadedVerticies.size()) - vVerts.size()) + iIndices[i];
 				mLoadedIndices.push_back(indnum);
+
 			}
 		}
 
@@ -199,7 +204,7 @@ bool OBJLoader::LoadFile(std::string path)
 	}
 }
 
-void OBJLoader::GenerateVerticiesFromRawOBJ(std::vector<Vertex>& outVerts, const std::vector<Vector3>& inPositions, const std::vector<Vector2>& inTexCoords, const std::vector<Vector3>& inNormals, std::string& inLine)
+void OBJLoader::GenerateVerticiesFromRawOBJ(std::vector<Vertex>& outVerts, const std::vector<Vector3>& inPositions, const std::vector<Vector2>& inTexCoords, const std::vector<Vector3>& inNormals, std::string inLine)
 {
 	std::vector<std::string> sface, svert;
 	Vertex vVert;
