@@ -59,3 +59,15 @@ struct Camera {
 	Vector3 center;
 	Vector3 up;
 };
+
+struct Light {
+	Vector3 ambient;
+	Vector3 diffuse;
+	Vector3 specular;
+
+	Light() {
+		ambient = Vector3(1.0f,0.0f,0.0f);
+		diffuse = Vector3(0.0f,1.0f,0.0f);
+		specular = Vector3(0.0f,0.0f,1.0f);
+	}
+};

@@ -63,9 +63,11 @@ bool OBJLoader::LoadFile(std::string path)
 
 					mLoadedMeshes.push_back(tempMesh);
 
-					mLoadedVerticies.clear();
-					mLoadedIndices.clear();
+					verticies.clear();
+					indices.clear();
 					meshName.clear();
+
+					meshName = Algorithm::tail(currentLine);
 				}
 				else
 				{
@@ -296,24 +298,34 @@ void OBJLoader::GenerateVerticiesFromRawOBJ(std::vector<Vertex>& outVerts, const
 
 void OBJLoader::VertexTriangulation(std::vector<unsigned int>& outIndices, const std::vector<Vertex>& inVerts)
 {
-	if (inVerts.size() < 3) {
+	// If there are 2 or less verts,
+	// no triangle can be created,
+	// so exit
+	if (inVerts.size() < 3)
+	{
 		return;
 	}
-
-	if (inVerts.size() == 3) {
+	// If it is a triangle no need to calculate it
+	if (inVerts.size() == 3)
+	{
 		outIndices.push_back(0);
 		outIndices.push_back(1);
 		outIndices.push_back(2);
 		return;
 	}
 
+	// Create a list of vertices
 	std::vector<Vertex> tVerts = inVerts;
 
 	while (true)
 	{
-		for (int i = 0; i < int(tVerts.size()); i++) {
+		// For every vertex
+		for (int i = 0; i < int(tVerts.size()); i++)
+		{
+			// pPrev = the previous vertex in the list
 			Vertex pPrev;
-			if (i == 0) {
+			if (i == 0)
+			{
 				pPrev = tVerts[tVerts.size() - 1];
 			}
 			else
@@ -321,10 +333,13 @@ void OBJLoader::VertexTriangulation(std::vector<unsigned int>& outIndices, const
 				pPrev = tVerts[i - 1];
 			}
 
+			// pCur = the current vertex;
 			Vertex pCur = tVerts[i];
 
+			// pNext = the next vertex in the list
 			Vertex pNext;
-			if (i == tVerts.size() - 1) {
+			if (i == tVerts.size() - 1)
+			{
 				pNext = tVerts[0];
 			}
 			else
@@ -332,38 +347,41 @@ void OBJLoader::VertexTriangulation(std::vector<unsigned int>& outIndices, const
 				pNext = tVerts[i + 1];
 			}
 
-			if (tVerts.size() == 3) {
-				for (int j = 0; j < int(tVerts.size()); j++) {
-					if (inVerts[j].position == pCur.position) {
+			// Check to see if there are only 3 verts left
+			// if so this is the last triangle
+			if (tVerts.size() == 3)
+			{
+				// Create a triangle from pCur, pPrev, pNext
+				for (int j = 0; j < int(tVerts.size()); j++)
+				{
+					if (inVerts[j].position == pCur.position)
 						outIndices.push_back(j);
-					}
-					if (inVerts[j].position == pPrev.position) {
+					if (inVerts[j].position == pPrev.position)
 						outIndices.push_back(j);
-					}
-					if (inVerts[j].position == pPrev.position) {
+					if (inVerts[j].position == pNext.position)
 						outIndices.push_back(j);
-					}
 				}
+
 				tVerts.clear();
 				break;
 			}
-
-			if (tVerts.size() == 4) {
-				for (int j = 0; j < int(inVerts.size()); j++) {
-					if (inVerts[j].position == pCur.position) {
+			if (tVerts.size() == 4)
+			{
+				// Create a triangle from pCur, pPrev, pNext
+				for (int j = 0; j < int(inVerts.size()); j++)
+				{
+					if (inVerts[j].position == pCur.position)
 						outIndices.push_back(j);
-					}
-					if (inVerts[j].position == pPrev.position) {
+					if (inVerts[j].position == pPrev.position)
 						outIndices.push_back(j);
-					}
-					if (inVerts[j].position == pPrev.position) {
+					if (inVerts[j].position == pNext.position)
 						outIndices.push_back(j);
-					}
 				}
 
 				Vector3 tempVec;
-				for (int j = 0; j < int(tVerts.size()); j++) {
-					if (tVerts[j].position != pCur.position 
+				for (int j = 0; j < int(tVerts.size()); j++)
+				{
+					if (tVerts[j].position != pCur.position
 						&& tVerts[j].position != pPrev.position
 						&& tVerts[j].position != pNext.position)
 					{
@@ -372,77 +390,75 @@ void OBJLoader::VertexTriangulation(std::vector<unsigned int>& outIndices, const
 					}
 				}
 
-				for (int j = 0; j < int(inVerts.size()); j++) {
-					if (inVerts[j].position == pPrev.position) {
+				// Create a triangle from pCur, pPrev, pNext
+				for (int j = 0; j < int(inVerts.size()); j++)
+				{
+					if (inVerts[j].position == pPrev.position)
 						outIndices.push_back(j);
-					}
-					if (inVerts[j].position == pNext.position) {
+					if (inVerts[j].position == pNext.position)
 						outIndices.push_back(j);
-					}
-					if (inVerts[j].position == tempVec) {
+					if (inVerts[j].position == tempVec)
 						outIndices.push_back(j);
-					}
 				}
 
 				tVerts.clear();
 				break;
 			}
 
-			//If vertex is not in interior vertex
-			float angle = Math::AngleBetweenVectors(pPrev.position - pCur.position, pNext.position - pCur.position) * (180 / 3.1459265359);
-			if (angle <= 0 && angle >= 180) {
+			// If Vertex is not an interior vertex
+			float angle = Math::AngleBetweenVectors(pPrev.position - pCur.position, pNext.position - pCur.position) * (180 / 3.14159265359);
+			if (angle <= 0 && angle >= 180)
 				continue;
-			}
 
-			bool inTriangle = false;
-			for (int j = 0; int(inVerts.size()); j++) {
+			// If any vertices are within this triangle
+			bool inTri = false;
+			for (int j = 0; j < int(inVerts.size()); j++)
+			{
 				if (Algorithm::InTriangle(inVerts[j].position, pPrev.position, pCur.position, pNext.position)
 					&& inVerts[j].position != pPrev.position
 					&& inVerts[j].position != pCur.position
-					&& inVerts[j].position != pNext.position) {
-					inTriangle = true;
+					&& inVerts[j].position != pNext.position)
+				{
+					inTri = true;
 					break;
 				}
 			}
-
-			if (inTriangle) {
+			if (inTri)
 				continue;
+
+			// Create a triangle from pCur, pPrev, pNext
+			for (int j = 0; j < int(inVerts.size()); j++)
+			{
+				if (inVerts[j].position == pCur.position)
+					outIndices.push_back(j);
+				if (inVerts[j].position == pPrev.position)
+					outIndices.push_back(j);
+				if (inVerts[j].position == pNext.position)
+					outIndices.push_back(j);
 			}
 
-			//Create a triangle from pCur, pPrev and pNext
-			for (int j = 0; j < int(inVerts.size()); j++) {
-				if (inVerts[j].position == pCur.position) {
-					outIndices.push_back(j);
-				}
-				if (inVerts[j].position == pPrev.position) {
-					outIndices.push_back(j);
-				}
-				if (inVerts[j].position == pNext.position) {
-					outIndices.push_back(j);
-				}
-			}
-
-			//delete pCur 
-			for (int j = 0; j < int(tVerts.size()); j++) {
-				if (tVerts[j].position == pCur.position) {
+			// Delete pCur from the list
+			for (int j = 0; j < int(tVerts.size()); j++)
+			{
+				if (tVerts[j].position == pCur.position)
+				{
 					tVerts.erase(tVerts.begin() + j);
 					break;
 				}
 			}
 
-			//reset i to the start
+			// reset i to the start
+			// -1 since loop will add 1 to it
 			i = -1;
 		}
 
-		//if no triangle were created
-		if (outIndices.size() == 0) {
+		// if no triangles were created
+		if (outIndices.size() == 0)
 			break;
-		}
 
-		//if no more vertices
-		if (tVerts.size() == 0) {
+		// if no more vertices
+		if (tVerts.size() == 0)
 			break;
-		}
 	}
 }
 
@@ -470,6 +486,20 @@ bool OBJLoader::LoadMaterials(std::string path)
 		if (Algorithm::firstToken(currentLine) == "newmtl") {
 			if (!listening) {
 				listening = true;
+
+				if (currentLine.size() > 7) {
+					tempMaterial.name = Algorithm::tail(currentLine);
+				}
+				else
+				{
+					tempMaterial.name = "none";
+				}
+			}
+			else
+			{
+				mLoadedMaterial.push_back(tempMaterial);
+
+				tempMaterial = Material();
 
 				if (currentLine.size() > 7) {
 					tempMaterial.name = Algorithm::tail(currentLine);
@@ -564,7 +594,6 @@ bool OBJLoader::LoadMaterials(std::string path)
 		if (Algorithm::firstToken(currentLine) == "map_Bump" || Algorithm::firstToken(currentLine) == "map_bump" || Algorithm::firstToken(currentLine) == "bump") {
 			tempMaterial.map_bump = Algorithm::tail(currentLine);
 		}
-
 	}
 
 	mLoadedMaterial.push_back(tempMaterial);
@@ -576,6 +605,9 @@ bool OBJLoader::LoadMaterials(std::string path)
 	{
 		return true;
 	}
+
+
+
 }
 
 void OBJLoader::LoadVertices(std::vector<Vector3>& inPositions, std::string& currentLine)

@@ -1,32 +1,32 @@
 ﻿  GameInstance.cpp
-C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\GameInstance.cpp(32,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\GameInstance.cpp(33,21): warning C4018: '<': signed/unsigned mismatch
   GlutCallbacks.cpp
   OBJLoader.cpp
-C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\OBJLoader.cpp(163,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\OBJLoader.cpp(187,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\OBJLoader.cpp(190,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\OBJLoader.cpp(392,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\OBJLoader.cpp(544,35): warning C4244: 'argument': conversion from 'float' to 'const _Elem', possible loss of data
+C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\OBJLoader.cpp(165,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\OBJLoader.cpp(189,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\OBJLoader.cpp(192,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\OBJLoader.cpp(409,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\OBJLoader.cpp(574,35): warning C4244: 'argument': conversion from 'float' to 'const _Elem', possible loss of data
           with
           [
               _Elem=char
           ]
-C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\OBJLoader.cpp(548,35): warning C4244: 'argument': conversion from 'float' to 'const _Elem', possible loss of data
+C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\OBJLoader.cpp(578,35): warning C4244: 'argument': conversion from 'float' to 'const _Elem', possible loss of data
           with
           [
               _Elem=char
           ]
-C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\OBJLoader.cpp(552,35): warning C4244: 'argument': conversion from 'float' to 'const _Elem', possible loss of data
+C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\OBJLoader.cpp(582,35): warning C4244: 'argument': conversion from 'float' to 'const _Elem', possible loss of data
           with
           [
               _Elem=char
           ]
-C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\OBJLoader.cpp(556,35): warning C4244: 'argument': conversion from 'float' to 'const _Elem', possible loss of data
+C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\OBJLoader.cpp(586,35): warning C4244: 'argument': conversion from 'float' to 'const _Elem', possible loss of data
           with
           [
               _Elem=char
           ]
-C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\OBJLoader.cpp(560,34): warning C4244: 'argument': conversion from 'float' to 'const _Elem', possible loss of data
+C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\OBJLoader.cpp(590,34): warning C4244: 'argument': conversion from 'float' to 'const _Elem', possible loss of data
           with
           [
               _Elem=char

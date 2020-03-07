@@ -23,6 +23,7 @@ private:
 	OBJLoader loader;
 
 	Camera* mCamera;
+	Light* mLight;
 
 	float rotation = 0.0f;
 };
