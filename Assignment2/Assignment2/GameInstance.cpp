@@ -74,7 +74,7 @@ void GameInstance::Update()
 
 	rotation += 0.1f;
 
-	glTranslatef(0.0f, 0.0f, -5.0f);
+	glTranslatef(0.0f, 0.0f, -35.0f);
 
 	glutPostRedisplay();
 }
@@ -117,7 +117,7 @@ void GameInstance::InitObjects()
 	mLight = new Light();
 
 
-	bool cubeLoad = loader.LoadFile("box_stack.obj");
+	bool cubeLoad = loader.LoadFile("Assets/SciFi_Fighter.obj");
 
 	for (auto& object : loader.mLoadedMeshes) {
 		std::cout << object.meshName << " is loaded " << std::endl;

@@ -35,7 +35,7 @@ bool OBJLoader::LoadFile(std::string path)
 	std::vector<Vertex> verticies;
 	std::vector<unsigned int> indices;
 
-	std::vector < std::string> meshMaterialNames;
+	std::vector <std::string> meshMaterialNames;
 
 	bool listening = false;
 	std::string meshName;
@@ -83,97 +83,35 @@ bool OBJLoader::LoadFile(std::string path)
 		}
 
 		//Generate a vertex position
-		if (Algorithm::firstToken(currentLine) == "v") {
+		else if (Algorithm::firstToken(currentLine) == "v") {
 			LoadVertices(positions, currentLine);
 		}
 
 		//Generate a vertex texture coordinate
-		if (Algorithm::firstToken(currentLine) == "vt") {
+		else if (Algorithm::firstToken(currentLine) == "vt") {
 			LoadVertexTextures(texCoords, currentLine);
 		}
 
 		//Generates vertex normal coordinates
-		if (Algorithm::firstToken(currentLine) == "vn") {
+		else if (Algorithm::firstToken(currentLine) == "vn") {
 			LoadVertexNormals(normals, currentLine);
 		}
 
 		//Generates a face from verticies and indices
-		if (Algorithm::firstToken(currentLine) == "f") {
-			// Generate the vertices
-			std::vector<Vertex> vVerts;
-			GenerateVerticiesFromRawOBJ(vVerts, positions, texCoords, normals, currentLine);
-
-			// Add Vertices
-			for (int i = 0; i < int(vVerts.size()); i++)
-			{
-				verticies.push_back(vVerts[i]);
-
-				mLoadedVerticies.push_back(vVerts[i]);
-			}
-
-			std::vector<unsigned int> iIndices;
-
-			VertexTriangulation(iIndices, vVerts);
-
-			// Add Indices
-			for (int i = 0; i < int(iIndices.size()); i++)
-			{
-				unsigned int indnum = (unsigned int)((verticies.size()) - vVerts.size()) + iIndices[i];
-				indices.push_back(indnum);
-
-				indnum = (unsigned int)((mLoadedVerticies.size()) - vVerts.size()) + iIndices[i];
-				mLoadedIndices.push_back(indnum);
-
-			}
+		else if (Algorithm::firstToken(currentLine) == "f") {
+			LoadFaces(verticies, indices,positions, texCoords, normals, currentLine);
 		}
 
 		//Gets the material name (if applicable)
-		if (Algorithm::firstToken(currentLine) == "usemtl") {
-			meshMaterialNames.push_back(Algorithm::tail(currentLine));
-
-			if (!indices.empty() && !verticies.empty()) {
-				tempMesh = Mesh(verticies, indices);
-				tempMesh.meshName = meshName;
-				int i = 2;
-				while (1) {
-					tempMesh.meshName = meshName + "_" + std::to_string(i);
-
-					for (auto& m : mLoadedMeshes) {
-						if (m.meshName == tempMesh.meshName) {
-							continue;
-						}
-					}
-					break;
-				}
-
-				mLoadedMeshes.push_back(tempMesh);
-
-				//Cleanup 
-				verticies.clear();
-				indices.clear();
-			}
+		else if (Algorithm::firstToken(currentLine) == "usemtl") {
+			GetMaterialName(tempMesh, meshName, meshMaterialNames, verticies, indices, currentLine);
 		}
 
 		//Load Materials
-		if (Algorithm::firstToken(currentLine) == "mtllib") {
-			std::vector <std::string> temp;
-			Algorithm::Split(path, temp, "/");
-
-			std::string pathToMaterial = "";
-
-			if (temp.size() != 1) {
-				for (int i = 0; i < temp.size() - 1; i++) {
-					pathToMaterial += temp[i] + "/";
-				}
-			}
-
-			pathToMaterial += Algorithm::tail(currentLine);
-
-			LoadMaterials(pathToMaterial);
+		else if (Algorithm::firstToken(currentLine) == "mtllib") {
+			LoadMaterials(GetMaterialFilePath(path,currentLine));
 		}
 	}
-
-
 
 	//Deals with remaining vertices and indices
 	if (!indices.empty() && !verticies.empty()) {
@@ -203,6 +141,74 @@ bool OBJLoader::LoadFile(std::string path)
 	else
 	{
 		return true;
+	}
+}
+
+void OBJLoader::LoadVertices(std::vector<Vector3>& inPositions, std::string& currentLine)
+{
+	std::vector<std::string> spos;
+	Vector3 vpos;
+	Algorithm::Split(Algorithm::tail(currentLine), spos, " ");
+
+	vpos.x = std::stof(spos[0]);
+	vpos.y = std::stof(spos[1]);
+	vpos.z = std::stof(spos[2]);
+
+	inPositions.push_back(vpos);
+}
+
+void OBJLoader::LoadVertexTextures(std::vector<Vector2>& inTexCoords, std::string& currentLine)
+{
+	std::vector<std::string> stex;
+	Vector2 vtex;
+	Algorithm::Split(Algorithm::tail(currentLine), stex, " ");
+
+	vtex.x = std::stof(stex[0]);
+	vtex.y = std::stof(stex[1]);
+
+	inTexCoords.push_back(vtex);
+}
+
+void OBJLoader::LoadVertexNormals(std::vector<Vector3>& inNormals, std::string& currentLine)
+{
+	std::vector<std::string> snor;
+	Vector3 vnor;
+	Algorithm::Split(Algorithm::tail(currentLine), snor, " ");
+
+	vnor.x = std::stof(snor[0]);
+	vnor.y = std::stof(snor[1]);
+	vnor.z = std::stof(snor[2]);
+
+	inNormals.push_back(vnor);
+}
+
+void OBJLoader::LoadFaces(std::vector<Vertex>& inVertices, std::vector<unsigned int>& inIndices, std::vector<Vector3>& inPositions, std::vector<Vector2>& inTexCoords, std::vector<Vector3>& inNormals, std::string& inCurrentLine)
+{
+	// Generate the vertices
+	std::vector<Vertex> vVerts;
+	GenerateVerticiesFromRawOBJ(vVerts, inPositions, inTexCoords, inNormals, inCurrentLine);
+
+	// Add Vertices
+	for (int i = 0; i < int(vVerts.size()); i++)
+	{
+		inVertices.push_back(vVerts[i]);
+
+		mLoadedVerticies.push_back(vVerts[i]);
+	}
+
+	std::vector<unsigned int> iIndices;
+
+	VertexTriangulation(iIndices, vVerts);
+
+	// Add Indices
+	for (int i = 0; i < int(iIndices.size()); i++)
+	{
+		unsigned int indnum = (unsigned int)((inVertices.size()) - vVerts.size()) + iIndices[i];
+		inIndices.push_back(indnum);
+
+		indnum = (unsigned int)((mLoadedVerticies.size()) - vVerts.size()) + iIndices[i];
+		mLoadedIndices.push_back(indnum);
+
 	}
 }
 
@@ -462,6 +468,49 @@ void OBJLoader::VertexTriangulation(std::vector<unsigned int>& outIndices, const
 	}
 }
 
+void OBJLoader::GetMaterialName(Mesh& inTempMesh, std::string& inMeshName, std::vector<std::string>& inMeshMaterialNames, std::vector<Vertex>& inVertices, std::vector<unsigned int>& inIndices, std::string& inCurrentLine)
+{
+	inMeshMaterialNames.push_back(Algorithm::tail(inCurrentLine));
+
+	if (!inIndices.empty() && !inVertices.empty()) {
+		inTempMesh = Mesh(inVertices, inIndices);
+		inTempMesh.meshName = inMeshName;
+		int i = 2;
+		while (1) {
+			inTempMesh.meshName = inMeshName + "_" + std::to_string(i);
+
+			for (auto& m : mLoadedMeshes) {
+				if (m.meshName == inTempMesh.meshName) {
+					continue;
+				}
+			}
+			break;
+		}
+
+		mLoadedMeshes.push_back(inTempMesh);
+
+		//Cleanup 
+		inVertices.clear();
+		inIndices.clear();
+	}
+}
+
+std::string OBJLoader::GetMaterialFilePath(std::string& inPath, std::string& inCurrentLine)
+{
+	std::vector <std::string> temp;
+	Algorithm::Split(inPath, temp, "/");
+
+	std::string pathToMaterial = "";
+
+	if (temp.size() != 1) {
+		for (int i = 0; i < temp.size() - 1; i++) {
+			pathToMaterial += temp[i] + "/";
+		}
+	}
+
+	return pathToMaterial += Algorithm::tail(inCurrentLine);
+}
+
 bool OBJLoader::LoadMaterials(std::string path)
 {
 	if (path.substr(path.size() - 4, path.size()) != ".mtl") {
@@ -512,86 +561,61 @@ bool OBJLoader::LoadMaterials(std::string path)
 		}
 
 		//Ambient Colour
-		if (Algorithm::firstToken(currentLine) == "Ka") {
-			std::vector<std::string> temp;
-			Algorithm::Split(Algorithm::tail(currentLine), temp, " ");
-
-			if (temp.size() != 3) {
-				continue;
-			}
-
-			tempMaterial.Ka.x = std::stof(temp[0]);
-			tempMaterial.Ka.y = std::stof(temp[1]);
-			tempMaterial.Ka.z = std::stof(temp[2]);
+		else if (Algorithm::firstToken(currentLine) == "Ka") {
+			LoadColourAmbient(tempMaterial, currentLine);
 		}
 
 		//Diffuse Colour
-		if (Algorithm::firstToken(currentLine) == "Kd") {
-			std::vector<std::string> temp;
-			Algorithm::Split(Algorithm::tail(currentLine), temp, " ");
-
-			if (temp.size() != 3) {
-				continue;
-			}
-
-			tempMaterial.Kd.x = std::stof(temp[0]);
-			tempMaterial.Kd.y = std::stof(temp[1]);
-			tempMaterial.Kd.z = std::stof(temp[2]);
+		else if (Algorithm::firstToken(currentLine) == "Kd") {
+			LoadColourDiffuse(tempMaterial, currentLine);
 		}
 
 		//Specular colour
-		if (Algorithm::firstToken(currentLine) == "Ks") {
-			std::vector<std::string> temp;
-			Algorithm::Split(Algorithm::tail(currentLine), temp, " ");
-
-			if (temp.size() != 3) {
-				continue;
-			}
-
-			tempMaterial.Ks.x = std::stof(temp[0]);
-			tempMaterial.Ks.y = std::stof(temp[1]);
-			tempMaterial.Ks.z = std::stof(temp[2]);
+		else if (Algorithm::firstToken(currentLine) == "Ks") {
+			LoadColourSpecular(tempMaterial, currentLine);
 		}
 
 		//Specular exponent
-		if (Algorithm::firstToken(currentLine) == "Ns") {
+		else if (Algorithm::firstToken(currentLine) == "Ns") {
 			tempMaterial.Ns = std::stof(Algorithm::tail(currentLine));
 		}
-
-		if (Algorithm::firstToken(currentLine) == "Ni") {
+		//Anisotropic filtering value
+		else if (Algorithm::firstToken(currentLine) == "Ni") {
 			tempMaterial.Ni = std::stof(Algorithm::tail(currentLine));
 		}
-
-		if (Algorithm::firstToken(currentLine) == "d") {
+		//Dissolved value (Transparency)
+		else if (Algorithm::firstToken(currentLine) == "d") {
 			tempMaterial.d = std::stof(Algorithm::tail(currentLine));
 		}
-
-		if (Algorithm::firstToken(currentLine) == "illum") {
+		//Illumination Value
+		else if (Algorithm::firstToken(currentLine) == "illum") {
 			tempMaterial.illum = std::stof(Algorithm::tail(currentLine));
 		}
-
-		if (Algorithm::firstToken(currentLine) == "map_Ka") {
-			tempMaterial.map_Ka = std::stof(Algorithm::tail(currentLine));
+		//Ambient Map
+		else if (Algorithm::firstToken(currentLine) == "map_Ka") {
+			tempMaterial.map_Ka = Algorithm::tail(currentLine);
+		}
+		//Diffuse Map
+		else if (Algorithm::firstToken(currentLine) == "map_Kd") {
+			tempMaterial.map_Kd = Algorithm::tail(currentLine);
+		}
+		//Specular Map
+		else if (Algorithm::firstToken(currentLine) == "map_Ks") {
+			tempMaterial.map_Ks = Algorithm::tail(currentLine);
 		}
 
-		if (Algorithm::firstToken(currentLine) == "map_Kd") {
-			tempMaterial.map_Kd = std::stof(Algorithm::tail(currentLine));
+		//Specular Exponent Map
+		else if (Algorithm::firstToken(currentLine) == "map_Ns") {
+			tempMaterial.map_Ns = Algorithm::tail(currentLine);
 		}
 
-		if (Algorithm::firstToken(currentLine) == "map_Ks") {
-			tempMaterial.map_Ks = std::stof(Algorithm::tail(currentLine));
-		}
-
-		if (Algorithm::firstToken(currentLine) == "map_Ns") {
-			tempMaterial.map_Ns = std::stof(Algorithm::tail(currentLine));
-		}
-
-		if (Algorithm::firstToken(currentLine) == "map_D") {
-			tempMaterial.map_d = std::stof(Algorithm::tail(currentLine));
+		//Diffuse Map
+		else if (Algorithm::firstToken(currentLine) == "map_D") {
+			tempMaterial.map_d = Algorithm::tail(currentLine);
 		}
 
 		//Bump Map
-		if (Algorithm::firstToken(currentLine) == "map_Bump" || Algorithm::firstToken(currentLine) == "map_bump" || Algorithm::firstToken(currentLine) == "bump") {
+		else if (Algorithm::firstToken(currentLine) == "map_Bump" || Algorithm::firstToken(currentLine) == "map_bump" || Algorithm::firstToken(currentLine) == "bump") {
 			tempMaterial.map_bump = Algorithm::tail(currentLine);
 		}
 	}
@@ -605,45 +629,46 @@ bool OBJLoader::LoadMaterials(std::string path)
 	{
 		return true;
 	}
-
-
-
 }
 
-void OBJLoader::LoadVertices(std::vector<Vector3>& inPositions, std::string& currentLine)
+void OBJLoader::LoadColourAmbient(Material& inMaterial, std::string& inCurrentLine)
 {
-	std::vector<std::string> spos;
-	Vector3 vpos;
-	Algorithm::Split(Algorithm::tail(currentLine), spos, " ");
+	std::vector<std::string> temp;
+	Algorithm::Split(Algorithm::tail(inCurrentLine), temp, " ");
 
-	vpos.x = std::stof(spos[0]);
-	vpos.y = std::stof(spos[1]);
-	vpos.z = std::stof(spos[2]);
+	if (temp.size() != 3) {
+		return;
+	}
 
-	inPositions.push_back(vpos);
+	inMaterial.Ka.x = std::stof(temp[0]);
+	inMaterial.Ka.y = std::stof(temp[1]);
+	inMaterial.Ka.z = std::stof(temp[2]);
 }
 
-void OBJLoader::LoadVertexTextures(std::vector<Vector2>& inTexCoords, std::string& currentLine)
+void OBJLoader::LoadColourDiffuse(Material& inMaterial, std::string& inCurrentLine)
 {
-	std::vector<std::string> stex;
-	Vector2 vtex;
-	Algorithm::Split(Algorithm::tail(currentLine), stex, " ");
+	std::vector<std::string> temp;
+	Algorithm::Split(Algorithm::tail(inCurrentLine), temp, " ");
 
-	vtex.x = std::stof(stex[0]);
-	vtex.y = std::stof(stex[1]);
+	if (temp.size() != 3) {
+		return;
+	}
 
-	inTexCoords.push_back(vtex);
+	inMaterial.Kd.x = std::stof(temp[0]);
+	inMaterial.Kd.y = std::stof(temp[1]);
+	inMaterial.Kd.z = std::stof(temp[2]);
 }
 
-void OBJLoader::LoadVertexNormals(std::vector<Vector3>& inNormals, std::string& currentLine)
+void OBJLoader::LoadColourSpecular(Material& inMaterial, std::string& inCurrentLine)
 {
-	std::vector<std::string> snor;
-	Vector3 vnor;
-	Algorithm::Split(Algorithm::tail(currentLine), snor, " ");
+	std::vector<std::string> temp;
+	Algorithm::Split(Algorithm::tail(inCurrentLine), temp, " ");
 
-	vnor.x = std::stof(snor[0]);
-	vnor.y = std::stof(snor[1]);
-	vnor.z = std::stof(snor[2]);
+	if (temp.size() != 3) {
+		return;
+	}
 
-	inNormals.push_back(vnor);
+	inMaterial.Ks.x = std::stof(temp[0]);
+	inMaterial.Ks.y = std::stof(temp[1]);
+	inMaterial.Ks.z = std::stof(temp[2]);
 }

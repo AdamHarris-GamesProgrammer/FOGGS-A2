@@ -31,5 +31,13 @@ private:
 	void LoadVertices(std::vector<Vector3>& inPositions, std::string& currentLine);
 	void LoadVertexTextures(std::vector<Vector2>& inTexCoords, std::string& currentLine);
 	void LoadVertexNormals(std::vector<Vector3>& inNormals, std::string& currentLine);
+	void LoadFaces(std::vector<Vertex>& inVertices,std::vector<unsigned int>& inIndices, std::vector<Vector3>& inPositions, std::vector<Vector2>& inTexCoords, std::vector<Vector3>& inNormals, std::string& inCurrentLine);
+
+	void GetMaterialName(Mesh& inTempMesh,std::string& inMeshName, std::vector<std::string>& inMeshMaterialNames, std::vector<Vertex>& inVertices, std::vector<unsigned int>& inIndices, std::string& inCurrentLine);
+	std::string GetMaterialFilePath(std::string& inPath,std::string& inCurrentLine);
+
+	void LoadColourAmbient(Material& inMaterial, std::string& inCurrentLine);
+	void LoadColourDiffuse(Material& inMaterial, std::string& inCurrentLine);
+	void LoadColourSpecular(Material& inMaterial, std::string& inCurrentLine);
 };
 

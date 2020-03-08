@@ -1,38 +1,5 @@
 ﻿  GameInstance.cpp
 C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\GameInstance.cpp(33,21): warning C4018: '<': signed/unsigned mismatch
-  GlutCallbacks.cpp
-  OBJLoader.cpp
-C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\OBJLoader.cpp(165,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\OBJLoader.cpp(189,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\OBJLoader.cpp(192,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\OBJLoader.cpp(409,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\OBJLoader.cpp(574,35): warning C4244: 'argument': conversion from 'float' to 'const _Elem', possible loss of data
-          with
-          [
-              _Elem=char
-          ]
-C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\OBJLoader.cpp(578,35): warning C4244: 'argument': conversion from 'float' to 'const _Elem', possible loss of data
-          with
-          [
-              _Elem=char
-          ]
-C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\OBJLoader.cpp(582,35): warning C4244: 'argument': conversion from 'float' to 'const _Elem', possible loss of data
-          with
-          [
-              _Elem=char
-          ]
-C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\OBJLoader.cpp(586,35): warning C4244: 'argument': conversion from 'float' to 'const _Elem', possible loss of data
-          with
-          [
-              _Elem=char
-          ]
-C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\OBJLoader.cpp(590,34): warning C4244: 'argument': conversion from 'float' to 'const _Elem', possible loss of data
-          with
-          [
-              _Elem=char
-          ]
-  Source.cpp
-  Generating Code...
 LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/FORCE' specification
 GlutCallbacks.obj : warning LNK4006: "struct Vector3 __cdecl Algorithm::operator*(float const &,struct Vector3 const &)" (??DAlgorithm@@YA?AUVector3@@ABMABU1@@Z) already defined in GameInstance.obj; second definition ignored
 GlutCallbacks.obj : warning LNK4006: "float __cdecl Math::AngleBetweenVectors(struct Vector3,struct Vector3)" (?AngleBetweenVectors@Math@@YAMUVector3@@0@Z) already defined in GameInstance.obj; second definition ignored
