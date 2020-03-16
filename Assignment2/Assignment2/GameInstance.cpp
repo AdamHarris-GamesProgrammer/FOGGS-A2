@@ -36,17 +36,7 @@ void GameInstance::Render()
 			glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, &(object.meshMaterial.Ka.x));
 			glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, &(object.meshMaterial.Kd.x));
 			glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, &(object.meshMaterial.Ks.x));
-			glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, object.meshMaterial.illum);
-
-			glMaterialfv(GL_LEFT, GL_AMBIENT, &(object.meshMaterial.Ka.x));
-			glMaterialfv(GL_LEFT, GL_DIFFUSE, &(object.meshMaterial.Kd.x));
-			glMaterialfv(GL_LEFT, GL_SPECULAR, &(object.meshMaterial.Ks.x));
-			glMaterialf(GL_LEFT, GL_SHININESS, object.meshMaterial.illum);
-
-			glMaterialfv(GL_RIGHT, GL_AMBIENT, &(object.meshMaterial.Ka.x));
-			glMaterialfv(GL_RIGHT, GL_DIFFUSE, &(object.meshMaterial.Kd.x));
-			glMaterialfv(GL_RIGHT, GL_SPECULAR, &(object.meshMaterial.Ks.x));
-			glMaterialf(GL_RIGHT, GL_SHININESS, object.meshMaterial.illum);
+			glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, object.meshMaterial.illum); 
 
 			glTexCoord2fv(&object.verticies[object.indices[i]].textureCoordinate.x);
 			glNormal3fv(&object.verticies[object.indices[i]].normal.x);
@@ -72,9 +62,9 @@ void GameInstance::Update()
 	glLightfv(GL_LIGHT0, GL_SPECULAR, &(mLight->specular.x));
 
 
-	rotation += 0.1f;
+	rotation += 1.0f;
 
-	glTranslatef(0.0f, 0.0f, -5.0f); 
+	glTranslatef(0.0f, 0.0f, -35.0f); 
 
 	glutPostRedisplay();
 }
@@ -117,7 +107,7 @@ void GameInstance::InitObjects()
 	mLight = new Light();
 
 
-	bool cubeLoad = loader.LoadFile("Assets/test.obj");
+	bool cubeLoad = loader.LoadFile("Assets/test3.obj");
 
 	for (auto& object : loader.mLoadedMeshes) {
 		std::cout << object.meshName << " is loaded " << std::endl;
