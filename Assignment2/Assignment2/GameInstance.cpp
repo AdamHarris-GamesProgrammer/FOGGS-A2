@@ -2,8 +2,12 @@
 #include "GlutCallbacks.h"
 #include "Constants.h"
 
+#include "stb/stb_image.h"
+
 #include <iostream>
 #include "GraphicsStructures.h"
+
+#include "Texture2D.h"
 
 GameInstance::GameInstance(int argc, char* argv[])
 {
@@ -26,12 +30,17 @@ void GameInstance::Render()
 	glTranslatef(0.0f, -1.0f, -2.0f);
 	glRotatef(rotation, 0.0f, 1.0f, 0.0f);
 
+	glBindTexture(GL_TEXTURE_2D, texture->GetID());
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+
 
 	glBegin(GL_TRIANGLES);
 
 	for (auto& object : loader.mLoadedMeshes) {
 		for (int i = 0; i < object.indices.size(); i++) {
-			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 			glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, &(object.meshMaterial.Ka.x));
 			glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, &(object.meshMaterial.Kd.x));
@@ -41,10 +50,12 @@ void GameInstance::Render()
 			glTexCoord2fv(&object.verticies[object.indices[i]].textureCoordinate.x);
 			glNormal3fv(&object.verticies[object.indices[i]].normal.x);
 			glVertex3fv(&object.verticies[object.indices[i]].position.x);
+
 		}
 	}
 
 	glEnd();
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	glPopMatrix();
 
@@ -64,7 +75,7 @@ void GameInstance::Update()
 
 	rotation += 1.0f;
 
-	glTranslatef(0.0f, 0.0f, -35.0f); 
+	glTranslatef(0.0f, 0.0f, -5.0f); 
 
 	glutPostRedisplay();
 }
@@ -107,7 +118,10 @@ void GameInstance::InitObjects()
 	mLight = new Light();
 
 
-	bool cubeLoad = loader.LoadFile("Assets/test3.obj");
+	bool cubeLoad = loader.LoadFile("Assets/test.obj");
+
+	texture = new Texture2D();
+	texture->Load((char*)"Assets/Penguins.raw",512,512);
 
 	for (auto& object : loader.mLoadedMeshes) {
 		std::cout << object.meshName << " is loaded " << std::endl;

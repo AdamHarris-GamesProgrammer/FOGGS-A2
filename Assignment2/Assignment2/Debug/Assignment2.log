@@ -1,5 +1,5 @@
 ﻿  GameInstance.cpp
-C:\Users\Adam\Documents\GitHub\FOGGS-A2\Assignment2\Assignment2\GameInstance.cpp(33,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Adam\Documents\GitHub\FOGGS-A2\Assignment2\Assignment2\GameInstance.cpp(43,21): warning C4018: '<': signed/unsigned mismatch
 LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/FORCE' specification
 GlutCallbacks.obj : warning LNK4006: "struct Vector3 __cdecl Algorithm::operator*(float const &,struct Vector3 const &)" (??DAlgorithm@@YA?AUVector3@@ABMABU1@@Z) already defined in GameInstance.obj; second definition ignored
 GlutCallbacks.obj : warning LNK4006: "float __cdecl Math::AngleBetweenVectors(struct Vector3,struct Vector3)" (?AngleBetweenVectors@Math@@YAMUVector3@@0@Z) already defined in GameInstance.obj; second definition ignored
@@ -28,5 +28,14 @@ Source.obj : warning LNK4006: "bool __cdecl Algorithm::InTriangle(struct Vector3
 Source.obj : warning LNK4006: "float __cdecl Math::Magnitude(struct Vector3)" (?Magnitude@Math@@YAMUVector3@@@Z) already defined in GameInstance.obj; second definition ignored
 Source.obj : warning LNK4006: "struct Vector3 __cdecl Math::ProjectionCalculation(struct Vector3,struct Vector3)" (?ProjectionCalculation@Math@@YA?AUVector3@@U2@0@Z) already defined in GameInstance.obj; second definition ignored
 Source.obj : warning LNK4006: "bool __cdecl Algorithm::SameSide(struct Vector3,struct Vector3,struct Vector3,struct Vector3)" (?SameSide@Algorithm@@YA_NUVector3@@000@Z) already defined in GameInstance.obj; second definition ignored
+Texture2D.obj : warning LNK4006: "struct Vector3 __cdecl Algorithm::operator*(float const &,struct Vector3 const &)" (??DAlgorithm@@YA?AUVector3@@ABMABU1@@Z) already defined in GameInstance.obj; second definition ignored
+Texture2D.obj : warning LNK4006: "float __cdecl Math::AngleBetweenVectors(struct Vector3,struct Vector3)" (?AngleBetweenVectors@Math@@YAMUVector3@@0@Z) already defined in GameInstance.obj; second definition ignored
+Texture2D.obj : warning LNK4006: "struct Vector3 __cdecl Math::CrossProduct(struct Vector3,struct Vector3)" (?CrossProduct@Math@@YA?AUVector3@@U2@0@Z) already defined in GameInstance.obj; second definition ignored
+Texture2D.obj : warning LNK4006: "float __cdecl Math::DotProduct(struct Vector3,struct Vector3)" (?DotProduct@Math@@YAMUVector3@@0@Z) already defined in GameInstance.obj; second definition ignored
+Texture2D.obj : warning LNK4006: "struct Vector3 __cdecl Algorithm::GenerateTriangleNormal(struct Vector3,struct Vector3,struct Vector3)" (?GenerateTriangleNormal@Algorithm@@YA?AUVector3@@U2@00@Z) already defined in GameInstance.obj; second definition ignored
+Texture2D.obj : warning LNK4006: "bool __cdecl Algorithm::InTriangle(struct Vector3,struct Vector3,struct Vector3,struct Vector3)" (?InTriangle@Algorithm@@YA_NUVector3@@000@Z) already defined in GameInstance.obj; second definition ignored
+Texture2D.obj : warning LNK4006: "float __cdecl Math::Magnitude(struct Vector3)" (?Magnitude@Math@@YAMUVector3@@@Z) already defined in GameInstance.obj; second definition ignored
+Texture2D.obj : warning LNK4006: "struct Vector3 __cdecl Math::ProjectionCalculation(struct Vector3,struct Vector3)" (?ProjectionCalculation@Math@@YA?AUVector3@@U2@0@Z) already defined in GameInstance.obj; second definition ignored
+Texture2D.obj : warning LNK4006: "bool __cdecl Algorithm::SameSide(struct Vector3,struct Vector3,struct Vector3,struct Vector3)" (?SameSide@Algorithm@@YA_NUVector3@@000@Z) already defined in GameInstance.obj; second definition ignored
 C:\Users\Adam\Documents\GitHub\FOGGS-A2\Assignment2\Debug\Assignment2.exe : warning LNK4088: image being generated due to /FORCE option; image may not run
   Assignment2.vcxproj -> C:\Users\Adam\Documents\GitHub\FOGGS-A2\Assignment2\Debug\Assignment2.exe

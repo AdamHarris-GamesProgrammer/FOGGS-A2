@@ -129,6 +129,8 @@
     <ClCompile Include="GlutCallbacks.cpp" />
     <ClCompile Include="OBJLoader.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="stb_image.cpp" />
+    <ClCompile Include="Texture2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h" />
@@ -137,6 +139,8 @@
     <ClInclude Include="GraphicsStructures.h" />
     <ClInclude Include="MathStructures.h" />
     <ClInclude Include="OBJLoader.h" />
+    <ClInclude Include="stb\stb_image.h" />
+    <ClInclude Include="Texture2D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
