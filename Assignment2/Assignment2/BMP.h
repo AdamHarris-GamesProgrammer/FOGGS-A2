@@ -45,6 +45,7 @@ struct BMP {
 	BMPInfoHeader bmp_info_header;
 	BMPColorHeader bmp_color_header;
 	std::vector<uint8_t> data;
+	std::vector<uint8_t> rgbData;
 
 	BMP(const char* fname) {
 		Read(fname);
@@ -198,6 +199,18 @@ struct BMP {
 				if (channels == 4) {
 					data[channels * (y * bmp_info_header.width + x) + 3] = A;
 				}
+			}
+		}
+	}
+
+	void ConvertToRGB() {
+		rgbData.reserve(bmp_info_header.width * bmp_info_header.height * bmp_info_header.bit_count / 8);
+		uint32_t channels = bmp_info_header.bit_count / 8;
+		for (uint32_t y = 0; y < bmp_info_header.height; ++y) {
+			for (uint32_t x = 0; x < bmp_info_header.width; ++x) {
+				rgbData.emplace_back(data[channels * (y * bmp_info_header.width + x) + 2]);
+				rgbData.emplace_back(data[channels * (y * bmp_info_header.width + x) + 1]);
+				rgbData.emplace_back(data[channels * (y * bmp_info_header.width + x) + 0]);
 			}
 		}
 	}

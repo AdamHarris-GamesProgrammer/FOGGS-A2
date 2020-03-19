@@ -53,12 +53,12 @@ bool Texture2D::LoadBMP(const char* path)
 	mWidth = tempTexturedData.bmp_info_header.width;
 	mHeight = tempTexturedData.bmp_info_header.height;
 
-
+	tempTexturedData.ConvertToRGB();
 	std::cout << path << " is loaded\n";
 
 	glGenTextures(1, &mID);
 	glBindTexture(GL_TEXTURE_2D, mID);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, mWidth, mHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, tempTexturedData.data.data());
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, mWidth, mHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, tempTexturedData.rgbData.data());
 
 	return true;
 }

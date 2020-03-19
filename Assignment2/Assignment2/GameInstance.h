@@ -18,15 +18,9 @@ public:
 	void InitObjects();
 
 private:
-	OBJLoader loader;
-
 	GameObject* mSpaceShip;
 
 	Camera* mCamera;
 	Light* mLight;
-
-	class  Texture2D* texture;
-
-	float rotation = 0.0f;
 };
 

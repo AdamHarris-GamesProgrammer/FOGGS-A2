@@ -26,6 +26,8 @@ public:
 
 	virtual void UpdatePosition();
 
+	void LoadDiffuseTexture();
+	
 	Vector3 GetPosition() const { return mPosition; }
 	Vector3 GetVelocity() const { return mVelocity; }
 	Vector3 GetRotation() const { return mRotation; }
@@ -43,7 +45,7 @@ protected:
 	Vector3 mVelocity;
 	Vector3 mRotation;
 
-	std::vector<Mesh*> mObjectMesh;
+	std::vector<Mesh> mObjectMesh;
 
 	Texture2D* mTexture;
 
