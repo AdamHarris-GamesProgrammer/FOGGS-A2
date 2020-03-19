@@ -23,4 +23,18 @@ namespace GLUTCallback {
 
 		glutTimerFunc(preferredRefresh, GLUTCallback::Timer, preferredRefresh);
 	}
+
+	void Keyboard(unsigned char key, int x, int y)
+	{
+		if (gameInstance != nullptr) {
+			gameInstance->Keyboard(key, x, y);
+		}
+	}
+
+	void KeyboardUp(unsigned char key, int x, int y) {
+		if (gameInstance != nullptr) {
+			gameInstance->KeyboardUp(key, x, y);
+		}
+	}
+
 }

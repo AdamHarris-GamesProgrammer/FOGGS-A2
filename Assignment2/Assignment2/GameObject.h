@@ -15,7 +15,6 @@
 class GameObject
 {
 public:
-	GameObject();
 	~GameObject();
 
 	GameObject(std::string meshFilePath);
@@ -26,7 +25,9 @@ public:
 
 	virtual void UpdatePosition();
 
-	void LoadDiffuseTexture();
+	virtual void PollInput(unsigned char key, int x, int y);
+
+	void LoadDiffuseTexture(std::string filePath);
 	
 	Vector3 GetPosition() const { return mPosition; }
 	Vector3 GetVelocity() const { return mVelocity; }

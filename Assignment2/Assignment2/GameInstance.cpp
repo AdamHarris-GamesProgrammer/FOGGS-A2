@@ -49,6 +49,16 @@ void GameInstance::Update()
 	glutPostRedisplay();
 }
 
+void GameInstance::Keyboard(unsigned char key, int x, int y)
+{
+	mSpaceShip->PollInput(key, x, y);
+}
+
+void GameInstance::KeyboardUp(unsigned char key, int x, int y)
+{
+	mSpaceShip->KeyUp(key, x, y);
+}
+
 void GameInstance::InitOpenGL(int argc, char* argv[])
 {
 	GLUTCallback::Init(this);
@@ -57,8 +67,11 @@ void GameInstance::InitOpenGL(int argc, char* argv[])
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(800, 800);
 	glutCreateWindow("FOGGS Assignment 2 - Adam Harris");
-	glutDisplayFunc(GLUTCallback::Display);
+
+	glutKeyboardFunc(GLUTCallback::Keyboard);
+	glutKeyboardUpFunc(GLUTCallback::KeyboardUp);
 	glutTimerFunc(REFRESH_RATE, GLUTCallback::Timer, REFRESH_RATE);
+	glutDisplayFunc(GLUTCallback::Display);
 
 	glMatrixMode(GL_PROJECTION);
 
@@ -86,8 +99,7 @@ void GameInstance::InitObjects()
 
 	mLight = new Light();
 
-	mSpaceShip = new GameObject(std::string("Assets/test3.obj"));
-	mSpaceShip->LoadDiffuseTexture();
+	mSpaceShip = new SpaceShip(std::string("Assets/test3.obj"));
 
 
 }

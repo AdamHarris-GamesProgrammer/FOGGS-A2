@@ -1,10 +1,5 @@
 #include "GameObject.h"
 
-GameObject::GameObject()
-{
-
-}
-
 GameObject::GameObject(std::string meshFilePath)
 {
 	mMeshLoader = new OBJLoader();
@@ -65,10 +60,6 @@ void GameObject::Render()
 void GameObject::Update()
 {
 	UpdatePosition();
-
-	mRotation.x += 0.1f;
-	mRotation.y += 0.2f;
-	mRotation.z += 0.3f;
 }
 
 void GameObject::UpdatePosition()
@@ -76,13 +67,18 @@ void GameObject::UpdatePosition()
 	mPosition.x += mVelocity.x * mFriction;
 	mPosition.y += mVelocity.y * mFriction;
 	mPosition.z += mVelocity.z * mFriction;
+	printf("Velocity: (%f,%f,%f)\n", mVelocity.x, mVelocity.y, mVelocity.z);
 }
 
-void GameObject::LoadDiffuseTexture()
+void GameObject::PollInput(unsigned char key, int x, int y)
+{
+
+}
+
+void GameObject::LoadDiffuseTexture(std::string filePath)
 {
 	mTexture = new Texture2D();
-
-	std::string filePath = std::string("Assets/") + mObjectMesh[1].meshMaterial.map_Kd;
+	//TODO: Add bmp extension check
 	mTexture->LoadBMP(filePath.c_str());
 }
 
