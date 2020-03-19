@@ -3,6 +3,7 @@
 #include "GLIncludes.h"
 
 #include "OBJLoader.h"
+#include "GameObject.h"
 
 class GameInstance
 {
@@ -18,6 +19,8 @@ public:
 
 private:
 	OBJLoader loader;
+
+	GameObject* mSpaceShip;
 
 	Camera* mCamera;
 	Light* mLight;

@@ -1,54 +1,27 @@
-﻿  GameInstance.cpp
-C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\GameInstance.cpp(44,21): warning C4018: '<': signed/unsigned mismatch
+﻿  GameObject.cpp
+C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\GameObject.cpp(40,22): warning C4018: '<': signed/unsigned mismatch
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\xmemory(671,82): error C2440: 'initializing': cannot convert from 'Mesh' to '_Objty'
+          with
+          [
+              _Objty=Mesh *
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\xmemory(671,82): message : No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\vector(683): message : see reference to function template instantiation 'void std::_Default_allocator_traits<_Alloc>::construct<_Ty,Mesh&>(_Alloc &,_Objty *const ,Mesh &)' being compiled
+          with
+          [
+              _Alloc=std::allocator<Mesh *>,
+              _Ty=Mesh *,
+              _Objty=Mesh *
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\vector(688): message : see reference to function template instantiation 'void std::_Default_allocator_traits<_Alloc>::construct<_Ty,Mesh&>(_Alloc &,_Objty *const ,Mesh &)' being compiled
+          with
+          [
+              _Alloc=std::allocator<Mesh *>,
+              _Ty=Mesh *,
+              _Objty=Mesh *
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\vector(701): message : see reference to function template instantiation 'void std::vector<Mesh *,std::allocator<Mesh *>>::_Emplace_back_with_unused_capacity<Mesh&>(Mesh &)' being compiled
+C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Assignment2\GameObject.cpp(16): message : see reference to function template instantiation 'void std::vector<Mesh *,std::allocator<Mesh *>>::emplace_back<Mesh&>(Mesh &)' being compiled
   GlutCallbacks.cpp
   Source.cpp
-  Texture2D.cpp
   Generating Code...
-LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/FORCE' specification
-GameObject.obj : warning LNK4006: "struct Vector3 __cdecl Algorithm::operator*(float const &,struct Vector3 const &)" (??DAlgorithm@@YA?AUVector3@@ABMABU1@@Z) already defined in GameInstance.obj; second definition ignored
-GameObject.obj : warning LNK4006: "float __cdecl Math::AngleBetweenVectors(struct Vector3,struct Vector3)" (?AngleBetweenVectors@Math@@YAMUVector3@@0@Z) already defined in GameInstance.obj; second definition ignored
-GameObject.obj : warning LNK4006: "struct Vector3 __cdecl Math::CrossProduct(struct Vector3,struct Vector3)" (?CrossProduct@Math@@YA?AUVector3@@U2@0@Z) already defined in GameInstance.obj; second definition ignored
-GameObject.obj : warning LNK4006: "float __cdecl Math::DotProduct(struct Vector3,struct Vector3)" (?DotProduct@Math@@YAMUVector3@@0@Z) already defined in GameInstance.obj; second definition ignored
-GameObject.obj : warning LNK4006: "struct Vector3 __cdecl Algorithm::GenerateTriangleNormal(struct Vector3,struct Vector3,struct Vector3)" (?GenerateTriangleNormal@Algorithm@@YA?AUVector3@@U2@00@Z) already defined in GameInstance.obj; second definition ignored
-GameObject.obj : warning LNK4006: "bool __cdecl Algorithm::InTriangle(struct Vector3,struct Vector3,struct Vector3,struct Vector3)" (?InTriangle@Algorithm@@YA_NUVector3@@000@Z) already defined in GameInstance.obj; second definition ignored
-GameObject.obj : warning LNK4006: "float __cdecl Math::Magnitude(struct Vector3)" (?Magnitude@Math@@YAMUVector3@@@Z) already defined in GameInstance.obj; second definition ignored
-GameObject.obj : warning LNK4006: "struct Vector3 __cdecl Math::ProjectionCalculation(struct Vector3,struct Vector3)" (?ProjectionCalculation@Math@@YA?AUVector3@@U2@0@Z) already defined in GameInstance.obj; second definition ignored
-GameObject.obj : warning LNK4006: "bool __cdecl Algorithm::SameSide(struct Vector3,struct Vector3,struct Vector3,struct Vector3)" (?SameSide@Algorithm@@YA_NUVector3@@000@Z) already defined in GameInstance.obj; second definition ignored
-GlutCallbacks.obj : warning LNK4006: "struct Vector3 __cdecl Algorithm::operator*(float const &,struct Vector3 const &)" (??DAlgorithm@@YA?AUVector3@@ABMABU1@@Z) already defined in GameInstance.obj; second definition ignored
-GlutCallbacks.obj : warning LNK4006: "float __cdecl Math::AngleBetweenVectors(struct Vector3,struct Vector3)" (?AngleBetweenVectors@Math@@YAMUVector3@@0@Z) already defined in GameInstance.obj; second definition ignored
-GlutCallbacks.obj : warning LNK4006: "struct Vector3 __cdecl Math::CrossProduct(struct Vector3,struct Vector3)" (?CrossProduct@Math@@YA?AUVector3@@U2@0@Z) already defined in GameInstance.obj; second definition ignored
-GlutCallbacks.obj : warning LNK4006: "float __cdecl Math::DotProduct(struct Vector3,struct Vector3)" (?DotProduct@Math@@YAMUVector3@@0@Z) already defined in GameInstance.obj; second definition ignored
-GlutCallbacks.obj : warning LNK4006: "struct Vector3 __cdecl Algorithm::GenerateTriangleNormal(struct Vector3,struct Vector3,struct Vector3)" (?GenerateTriangleNormal@Algorithm@@YA?AUVector3@@U2@00@Z) already defined in GameInstance.obj; second definition ignored
-GlutCallbacks.obj : warning LNK4006: "bool __cdecl Algorithm::InTriangle(struct Vector3,struct Vector3,struct Vector3,struct Vector3)" (?InTriangle@Algorithm@@YA_NUVector3@@000@Z) already defined in GameInstance.obj; second definition ignored
-GlutCallbacks.obj : warning LNK4006: "float __cdecl Math::Magnitude(struct Vector3)" (?Magnitude@Math@@YAMUVector3@@@Z) already defined in GameInstance.obj; second definition ignored
-GlutCallbacks.obj : warning LNK4006: "struct Vector3 __cdecl Math::ProjectionCalculation(struct Vector3,struct Vector3)" (?ProjectionCalculation@Math@@YA?AUVector3@@U2@0@Z) already defined in GameInstance.obj; second definition ignored
-GlutCallbacks.obj : warning LNK4006: "bool __cdecl Algorithm::SameSide(struct Vector3,struct Vector3,struct Vector3,struct Vector3)" (?SameSide@Algorithm@@YA_NUVector3@@000@Z) already defined in GameInstance.obj; second definition ignored
-OBJLoader.obj : warning LNK4006: "struct Vector3 __cdecl Algorithm::operator*(float const &,struct Vector3 const &)" (??DAlgorithm@@YA?AUVector3@@ABMABU1@@Z) already defined in GameInstance.obj; second definition ignored
-OBJLoader.obj : warning LNK4006: "float __cdecl Math::AngleBetweenVectors(struct Vector3,struct Vector3)" (?AngleBetweenVectors@Math@@YAMUVector3@@0@Z) already defined in GameInstance.obj; second definition ignored
-OBJLoader.obj : warning LNK4006: "struct Vector3 __cdecl Math::CrossProduct(struct Vector3,struct Vector3)" (?CrossProduct@Math@@YA?AUVector3@@U2@0@Z) already defined in GameInstance.obj; second definition ignored
-OBJLoader.obj : warning LNK4006: "float __cdecl Math::DotProduct(struct Vector3,struct Vector3)" (?DotProduct@Math@@YAMUVector3@@0@Z) already defined in GameInstance.obj; second definition ignored
-OBJLoader.obj : warning LNK4006: "struct Vector3 __cdecl Algorithm::GenerateTriangleNormal(struct Vector3,struct Vector3,struct Vector3)" (?GenerateTriangleNormal@Algorithm@@YA?AUVector3@@U2@00@Z) already defined in GameInstance.obj; second definition ignored
-OBJLoader.obj : warning LNK4006: "bool __cdecl Algorithm::InTriangle(struct Vector3,struct Vector3,struct Vector3,struct Vector3)" (?InTriangle@Algorithm@@YA_NUVector3@@000@Z) already defined in GameInstance.obj; second definition ignored
-OBJLoader.obj : warning LNK4006: "float __cdecl Math::Magnitude(struct Vector3)" (?Magnitude@Math@@YAMUVector3@@@Z) already defined in GameInstance.obj; second definition ignored
-OBJLoader.obj : warning LNK4006: "struct Vector3 __cdecl Math::ProjectionCalculation(struct Vector3,struct Vector3)" (?ProjectionCalculation@Math@@YA?AUVector3@@U2@0@Z) already defined in GameInstance.obj; second definition ignored
-OBJLoader.obj : warning LNK4006: "bool __cdecl Algorithm::SameSide(struct Vector3,struct Vector3,struct Vector3,struct Vector3)" (?SameSide@Algorithm@@YA_NUVector3@@000@Z) already defined in GameInstance.obj; second definition ignored
-Source.obj : warning LNK4006: "struct Vector3 __cdecl Algorithm::operator*(float const &,struct Vector3 const &)" (??DAlgorithm@@YA?AUVector3@@ABMABU1@@Z) already defined in GameInstance.obj; second definition ignored
-Source.obj : warning LNK4006: "float __cdecl Math::AngleBetweenVectors(struct Vector3,struct Vector3)" (?AngleBetweenVectors@Math@@YAMUVector3@@0@Z) already defined in GameInstance.obj; second definition ignored
-Source.obj : warning LNK4006: "struct Vector3 __cdecl Math::CrossProduct(struct Vector3,struct Vector3)" (?CrossProduct@Math@@YA?AUVector3@@U2@0@Z) already defined in GameInstance.obj; second definition ignored
-Source.obj : warning LNK4006: "float __cdecl Math::DotProduct(struct Vector3,struct Vector3)" (?DotProduct@Math@@YAMUVector3@@0@Z) already defined in GameInstance.obj; second definition ignored
-Source.obj : warning LNK4006: "struct Vector3 __cdecl Algorithm::GenerateTriangleNormal(struct Vector3,struct Vector3,struct Vector3)" (?GenerateTriangleNormal@Algorithm@@YA?AUVector3@@U2@00@Z) already defined in GameInstance.obj; second definition ignored
-Source.obj : warning LNK4006: "bool __cdecl Algorithm::InTriangle(struct Vector3,struct Vector3,struct Vector3,struct Vector3)" (?InTriangle@Algorithm@@YA_NUVector3@@000@Z) already defined in GameInstance.obj; second definition ignored
-Source.obj : warning LNK4006: "float __cdecl Math::Magnitude(struct Vector3)" (?Magnitude@Math@@YAMUVector3@@@Z) already defined in GameInstance.obj; second definition ignored
-Source.obj : warning LNK4006: "struct Vector3 __cdecl Math::ProjectionCalculation(struct Vector3,struct Vector3)" (?ProjectionCalculation@Math@@YA?AUVector3@@U2@0@Z) already defined in GameInstance.obj; second definition ignored
-Source.obj : warning LNK4006: "bool __cdecl Algorithm::SameSide(struct Vector3,struct Vector3,struct Vector3,struct Vector3)" (?SameSide@Algorithm@@YA_NUVector3@@000@Z) already defined in GameInstance.obj; second definition ignored
-Texture2D.obj : warning LNK4006: "struct Vector3 __cdecl Algorithm::operator*(float const &,struct Vector3 const &)" (??DAlgorithm@@YA?AUVector3@@ABMABU1@@Z) already defined in GameInstance.obj; second definition ignored
-Texture2D.obj : warning LNK4006: "float __cdecl Math::AngleBetweenVectors(struct Vector3,struct Vector3)" (?AngleBetweenVectors@Math@@YAMUVector3@@0@Z) already defined in GameInstance.obj; second definition ignored
-Texture2D.obj : warning LNK4006: "struct Vector3 __cdecl Math::CrossProduct(struct Vector3,struct Vector3)" (?CrossProduct@Math@@YA?AUVector3@@U2@0@Z) already defined in GameInstance.obj; second definition ignored
-Texture2D.obj : warning LNK4006: "float __cdecl Math::DotProduct(struct Vector3,struct Vector3)" (?DotProduct@Math@@YAMUVector3@@0@Z) already defined in GameInstance.obj; second definition ignored
-Texture2D.obj : warning LNK4006: "struct Vector3 __cdecl Algorithm::GenerateTriangleNormal(struct Vector3,struct Vector3,struct Vector3)" (?GenerateTriangleNormal@Algorithm@@YA?AUVector3@@U2@00@Z) already defined in GameInstance.obj; second definition ignored
-Texture2D.obj : warning LNK4006: "bool __cdecl Algorithm::InTriangle(struct Vector3,struct Vector3,struct Vector3,struct Vector3)" (?InTriangle@Algorithm@@YA_NUVector3@@000@Z) already defined in GameInstance.obj; second definition ignored
-Texture2D.obj : warning LNK4006: "float __cdecl Math::Magnitude(struct Vector3)" (?Magnitude@Math@@YAMUVector3@@@Z) already defined in GameInstance.obj; second definition ignored
-Texture2D.obj : warning LNK4006: "struct Vector3 __cdecl Math::ProjectionCalculation(struct Vector3,struct Vector3)" (?ProjectionCalculation@Math@@YA?AUVector3@@U2@0@Z) already defined in GameInstance.obj; second definition ignored
-Texture2D.obj : warning LNK4006: "bool __cdecl Algorithm::SameSide(struct Vector3,struct Vector3,struct Vector3,struct Vector3)" (?SameSide@Algorithm@@YA_NUVector3@@000@Z) already defined in GameInstance.obj; second definition ignored
-C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Debug\Assignment2.exe : warning LNK4088: image being generated due to /FORCE option; image may not run
-  Assignment2.vcxproj -> C:\Users\Adam\GitHub\FOGGS-A2\Assignment2\Debug\Assignment2.exe

@@ -69,10 +69,6 @@ struct Vector3 {
 	}
 };
 
-struct Rotation {
-	float x, y, z;
-	Rotation(float xValue = 0.0f, float yValue = 0.0f, float zValue = 0.0f) : x(xValue), y(yValue), z(zValue) {}
-};
 
 namespace Math {
 	//Vector 3 Cross product
