@@ -1,10 +1,7 @@
 #pragma once
 #include "GraphicsStructures.h"
 
-#include <Windows.h>
-#include "gl/GL.h"
-#include "gl/GLU.h"
-#include "GL\freeglut.h"
+#include "GLIncludes.h"
 
 class Texture2D
 {
@@ -13,6 +10,7 @@ public:
 	~Texture2D();
 
 	bool Load(char* path, int width, int height);
+	bool LoadBMP(const char* path);
 
 	GLuint GetID() const { return mID; }
 

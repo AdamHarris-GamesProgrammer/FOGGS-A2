@@ -1,6 +1,7 @@
 #include "Texture2D.h"
 #include <iostream>
 #include <fstream>
+#include "BMP.h"
 
 Texture2D::Texture2D()
 {
@@ -42,5 +43,22 @@ bool Texture2D::Load(char* path, int width, int height)
 	glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, tempTexturedData);
 
 	delete[] tempTexturedData;
+	return true;
+}
+
+bool Texture2D::LoadBMP(const char* path)
+{
+	BMP tempTexturedData(path);
+
+	mWidth = tempTexturedData.bmp_info_header.width;
+	mHeight = tempTexturedData.bmp_info_header.height;
+
+
+	std::cout << path << " is loaded\n";
+
+	glGenTextures(1, &mID);
+	glBindTexture(GL_TEXTURE_2D, mID);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, mWidth, mHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, tempTexturedData.data.data());
+
 	return true;
 }

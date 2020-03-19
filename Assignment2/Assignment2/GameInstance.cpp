@@ -5,6 +5,8 @@
 
 #include <iostream>
 #include "GraphicsStructures.h"
+#include "BMP.h"
+#include "Timer.h"
 
 #include "Texture2D.h"
 
@@ -31,7 +33,7 @@ void GameInstance::Render()
 
 	glBindTexture(GL_TEXTURE_2D, texture->GetID());
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 
@@ -74,7 +76,7 @@ void GameInstance::Update()
 
 	rotation += 1.0f;
 
-	glTranslatef(0.0f, 0.0f, -5.0f); 
+	glTranslatef(0.0f, 0.0f, -35.0f); 
 
 	glutPostRedisplay();
 }
@@ -117,10 +119,13 @@ void GameInstance::InitObjects()
 	mLight = new Light();
 
 
-	bool cubeLoad = loader.LoadFile("Assets/texturedCube.obj");
+	bool cubeLoad = loader.LoadFile("Assets/test3.obj");
 
 	texture = new Texture2D();
-	texture->Load((char*)"Assets/Penguins.raw",512,512);
+	std::cout << loader.mLoadedMaterial[1].map_Ka << std::endl;
+	std::string filePath = std::string("Assets/") + (loader.mLoadedMaterial[1].map_Kd);
+	std::cout << filePath << std::endl;
+	texture->LoadBMP(filePath.c_str());
 
 	for (auto& object : loader.mLoadedMeshes) {
 		std::cout << object.meshName << " is loaded " << std::endl;
