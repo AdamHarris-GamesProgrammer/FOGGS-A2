@@ -66,8 +66,8 @@ struct Light {
 	Vector3 specular;
 
 	Light() {
-		ambient = Vector3(1.0f,0.0f,0.0f);
-		diffuse = Vector3(0.0f,1.0f,0.0f);
-		specular = Vector3(0.0f,0.0f,1.0f);
+		ambient = Vector3(0.8f,0.8f,0.8f);
+		diffuse = Vector3(0.8f, 0.8f, 0.8f);
+		specular = Vector3(0.8f, 0.8f, 0.8f);
 	}
 };

@@ -2,7 +2,6 @@
 #include "GlutCallbacks.h"
 #include "Constants.h"
 
-#include "stb/stb_image.h"
 
 #include <iostream>
 #include "GraphicsStructures.h"
@@ -118,7 +117,7 @@ void GameInstance::InitObjects()
 	mLight = new Light();
 
 
-	bool cubeLoad = loader.LoadFile("Assets/test.obj");
+	bool cubeLoad = loader.LoadFile("Assets/texturedCube.obj");
 
 	texture = new Texture2D();
 	texture->Load((char*)"Assets/Penguins.raw",512,512);
