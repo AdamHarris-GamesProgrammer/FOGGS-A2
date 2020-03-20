@@ -37,4 +37,11 @@ namespace GLUTCallback {
 		}
 	}
 
+	void ActiveMouseMotion(int x, int y)
+	{
+		if (gameInstance != nullptr) {
+			gameInstance->ActiveMotion(x, y);
+		}
+	}
+
 }

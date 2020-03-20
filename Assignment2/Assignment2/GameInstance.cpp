@@ -59,6 +59,17 @@ void GameInstance::KeyboardUp(unsigned char key, int x, int y)
 	mSpaceShip->KeyUp(key, x, y);
 }
 
+void GameInstance::ActiveMotion(int x, int y)
+{
+	if (x != 0) {
+		mCamera->eye.x += 0.5f;
+	}
+
+	if (y != 0) {
+		mCamera->eye.y += 0.5f;
+	}
+}
+
 void GameInstance::InitOpenGL(int argc, char* argv[])
 {
 	GLUTCallback::Init(this);
@@ -70,6 +81,7 @@ void GameInstance::InitOpenGL(int argc, char* argv[])
 
 	glutKeyboardFunc(GLUTCallback::Keyboard);
 	glutKeyboardUpFunc(GLUTCallback::KeyboardUp);
+	glutMotionFunc(GLUTCallback::ActiveMouseMotion);
 	glutTimerFunc(REFRESH_RATE, GLUTCallback::Timer, REFRESH_RATE);
 	glutDisplayFunc(GLUTCallback::Display);
 

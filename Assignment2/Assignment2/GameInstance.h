@@ -16,6 +16,7 @@ public:
 	void Update();
 	void Keyboard(unsigned char key, int x, int y);
 	void KeyboardUp(unsigned char key, int x, int y);
+	void ActiveMotion(int x, int y);
 
 	void InitOpenGL(int argc, char* argv[]);
 	void InitObjects();
