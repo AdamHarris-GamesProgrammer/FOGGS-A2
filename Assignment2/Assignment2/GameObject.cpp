@@ -67,7 +67,7 @@ void GameObject::UpdatePosition()
 	mPosition.x += mVelocity.x * mFriction;
 	mPosition.y += mVelocity.y * mFriction;
 	mPosition.z += mVelocity.z * mFriction;
-	printf("Velocity: (%f,%f,%f)\n", mVelocity.x, mVelocity.y, mVelocity.z);
+	//printf("Velocity: (%f,%f,%f)\n", mVelocity.x, mVelocity.y, mVelocity.z);
 }
 
 void GameObject::PollInput(unsigned char key, int x, int y)

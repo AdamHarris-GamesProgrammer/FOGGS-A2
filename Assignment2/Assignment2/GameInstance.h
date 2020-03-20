@@ -21,10 +21,15 @@ public:
 	void InitOpenGL(int argc, char* argv[]);
 	void InitObjects();
 
+	float lastX = 400.0f, lastY = 400.0f;
+	float yaw = -90.0f, pitch;
+
 private:
 	SpaceShip* mSpaceShip;
 
 	Camera* mCamera;
 	Light* mLight;
+
+	bool firstMouse = true;
 };
 

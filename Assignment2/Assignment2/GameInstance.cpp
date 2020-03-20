@@ -36,6 +36,8 @@ void GameInstance::Render()
 void GameInstance::Update()
 {
 	glLoadIdentity();
+
+
 	gluLookAt(mCamera->eye.x, mCamera->eye.y, mCamera->eye.z, mCamera->center.x, mCamera->center.y, mCamera->center.z, mCamera->up.x, mCamera->up.y, mCamera->up.z);
 
 	glLightfv(GL_LIGHT0, GL_AMBIENT, &(mLight->ambient.x));
@@ -44,7 +46,10 @@ void GameInstance::Update()
 
 	mSpaceShip->Update();
 
-	glTranslatef(0.0f, 0.0f, -35.0f); 
+
+
+
+	glTranslatef(mCamera->position.x, mCamera->position.y, mCamera->position.z); 
 
 	glutPostRedisplay();
 }
@@ -52,6 +57,8 @@ void GameInstance::Update()
 void GameInstance::Keyboard(unsigned char key, int x, int y)
 {
 	mSpaceShip->PollInput(key, x, y);
+
+
 }
 
 void GameInstance::KeyboardUp(unsigned char key, int x, int y)
@@ -61,13 +68,40 @@ void GameInstance::KeyboardUp(unsigned char key, int x, int y)
 
 void GameInstance::ActiveMotion(int x, int y)
 {
-	if (x != 0) {
-		mCamera->eye.x += 0.5f;
+	if (firstMouse) {
+		lastX = x;
+		lastY = y;
+		firstMouse = false;
 	}
 
-	if (y != 0) {
-		mCamera->eye.y += 0.5f;
-	}
+	float xOffset = x - lastX;
+	float yOffset = lastY - y; //Opposite as coordinate system is from top left
+	lastX = x;
+	lastY = y;
+
+
+	const float sensitivity = 0.5f;
+	yOffset *= sensitivity;
+	xOffset *= sensitivity;
+
+	yaw += xOffset;
+	pitch += yOffset;
+
+	if (pitch > 89.0f) pitch = 89.0f;
+	if (pitch < -89.0f) pitch = -89.0f;
+
+	Vector3 direction;
+	direction.x = cos(Math::DegreeToRadians(yaw)) * cos(Math::DegreeToRadians(pitch));
+	direction.y = sin(Math::DegreeToRadians(pitch));
+	direction.z = sin(Math::DegreeToRadians(yaw)) * cos(Math::DegreeToRadians(pitch));
+
+
+	mCamera->center = Math::Normalise(direction);
+	//std::cout << Math::Normalise(direction).x << std::endl;
+	//std::cout << Math::Normalise(direction).y << std::endl;
+	//std::cout << Math::Normalise(direction).z << std::endl;
+
+	//mCamera->up = Math::Normalise(Math::CrossProduct(mCamera->eye, mCamera->up));
 }
 
 void GameInstance::InitOpenGL(int argc, char* argv[])
@@ -81,7 +115,7 @@ void GameInstance::InitOpenGL(int argc, char* argv[])
 
 	glutKeyboardFunc(GLUTCallback::Keyboard);
 	glutKeyboardUpFunc(GLUTCallback::KeyboardUp);
-	glutMotionFunc(GLUTCallback::ActiveMouseMotion);
+	glutPassiveMotionFunc(GLUTCallback::ActiveMouseMotion);
 	glutTimerFunc(REFRESH_RATE, GLUTCallback::Timer, REFRESH_RATE);
 	glutDisplayFunc(GLUTCallback::Display);
 
@@ -108,6 +142,7 @@ void GameInstance::InitObjects()
 	mCamera = new Camera();
 	mCamera->eye.z = 1.0f;
 	mCamera->up.y = 1.0f;
+	mCamera->position = Vector3(0.0f, 0.0f, -35.0f);
 
 	mLight = new Light();
 

@@ -58,6 +58,8 @@ struct Camera {
 	Vector3 eye;
 	Vector3 center;
 	Vector3 up;
+
+	Vector3 position;
 };
 
 struct Light {

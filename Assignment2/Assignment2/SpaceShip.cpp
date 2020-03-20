@@ -14,21 +14,7 @@ void SpaceShip::Update()
 
 void SpaceShip::PollInput(unsigned char key, int x, int y)
 {
-	if (key == 'a') {
-		mVelocity.x = -1.0f;
-	}
-	else if (key == 'd') {
-		mVelocity.x = 1.0f;
-	}
 
-	if (key == 'w') {
-		mVelocity.y = 1.0f;
-	}
-	else if (key == 's') {
-		mVelocity.y = -1.0f;
-	}
-
-	std::cout << "X Velocity: " << mVelocity.x << "\tY Velocity: " << mVelocity.y << std::endl;
 }
 
 void SpaceShip::KeyUp(unsigned char key, int x, int y)
