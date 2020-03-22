@@ -70,6 +70,10 @@ struct Vector3 {
 		return Vector3(this->x / other, this->y / other, this->z / other);
 	}
 
+	Vector3 operator*(const float& scalar)  {
+		return Vector3(this->x * scalar, this->y * scalar, this->z * scalar);
+	}
+
 	void Normalise() {
 		float length = Length();
 	}

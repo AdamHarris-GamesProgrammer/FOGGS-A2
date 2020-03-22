@@ -37,8 +37,13 @@ void GameInstance::Update()
 {
 	glLoadIdentity();
 
+	float currentFrame = (float)glutGet(GLUT_ELAPSED_TIME) / 1000;
+	deltaTime = currentFrame - lastFrame;
+	lastFrame = currentFrame;
+	std::cout << deltaTime << std::endl;
 
-	gluLookAt(mCamera->eye.x, mCamera->eye.y, mCamera->eye.z, mCamera->center.x, mCamera->center.y, mCamera->center.z, mCamera->up.x, mCamera->up.y, mCamera->up.z);
+
+	gluLookAt(mCamera->eye.x, mCamera->eye.y, mCamera->eye.z, mCamera->direction.x, mCamera->direction.y, mCamera->direction.z, mCamera->up.x, mCamera->up.y, mCamera->up.z);
 
 	glLightfv(GL_LIGHT0, GL_AMBIENT, &(mLight->ambient.x));
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, &(mLight->diffuse.x));
@@ -57,6 +62,20 @@ void GameInstance::Update()
 void GameInstance::Keyboard(unsigned char key, int x, int y)
 {
 	mSpaceShip->PollInput(key, x, y);
+
+	float cameraSpeed = 2.5f * deltaTime;
+	if (key == 'w') {
+		mCamera->position = mCamera->position + (mCamera->eye * cameraSpeed);
+	}
+	if (key == 'a') {
+		mCamera->position = mCamera->position - (Math::Normalise(Math::CrossProduct(mCamera->eye, mCamera->up)) * cameraSpeed);
+	}
+	if (key == 's') {
+		mCamera->position = mCamera->position - (mCamera->eye * cameraSpeed);
+	}
+	if (key == 'd') {
+		mCamera->position = mCamera->position + (Math::Normalise(Math::CrossProduct(mCamera->eye, mCamera->up)) * cameraSpeed);
+	}
 
 
 }
@@ -96,12 +115,8 @@ void GameInstance::ActiveMotion(int x, int y)
 	direction.z = sin(Math::DegreeToRadians(yaw)) * cos(Math::DegreeToRadians(pitch));
 
 
-	mCamera->center = Math::Normalise(direction);
-	//std::cout << Math::Normalise(direction).x << std::endl;
-	//std::cout << Math::Normalise(direction).y << std::endl;
-	//std::cout << Math::Normalise(direction).z << std::endl;
+	mCamera->direction = Math::Normalise(direction);
 
-	//mCamera->up = Math::Normalise(Math::CrossProduct(mCamera->eye, mCamera->up));
 }
 
 void GameInstance::InitOpenGL(int argc, char* argv[])
@@ -115,7 +130,7 @@ void GameInstance::InitOpenGL(int argc, char* argv[])
 
 	glutKeyboardFunc(GLUTCallback::Keyboard);
 	glutKeyboardUpFunc(GLUTCallback::KeyboardUp);
-	glutPassiveMotionFunc(GLUTCallback::ActiveMouseMotion);
+	glutMotionFunc(GLUTCallback::ActiveMouseMotion);
 	glutTimerFunc(REFRESH_RATE, GLUTCallback::Timer, REFRESH_RATE);
 	glutDisplayFunc(GLUTCallback::Display);
 

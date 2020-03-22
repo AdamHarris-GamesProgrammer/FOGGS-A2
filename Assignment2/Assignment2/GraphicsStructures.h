@@ -56,7 +56,7 @@ struct Mesh {
 
 struct Camera {
 	Vector3 eye;
-	Vector3 center;
+	Vector3 direction;
 	Vector3 up;
 
 	Vector3 position;

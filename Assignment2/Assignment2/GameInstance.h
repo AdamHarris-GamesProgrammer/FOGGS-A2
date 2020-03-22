@@ -25,6 +25,10 @@ public:
 	float yaw = -90.0f, pitch;
 
 private:
+	float deltaTime = 0.0f;
+	float lastFrame = 0.0f;
+
+
 	SpaceShip* mSpaceShip;
 
 	Camera* mCamera;
