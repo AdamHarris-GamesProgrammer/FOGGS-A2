@@ -5,6 +5,7 @@
 #include "OBJLoader.h"
 #include "GameObject.h"
 #include "SpaceShip.h"
+#include "Camera.h"
 
 class GameInstance
 {

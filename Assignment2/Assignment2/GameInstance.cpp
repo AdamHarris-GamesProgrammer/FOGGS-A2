@@ -43,7 +43,7 @@ void GameInstance::Update()
 	std::cout << deltaTime << std::endl;
 
 
-	gluLookAt(mCamera->eye.x, mCamera->eye.y, mCamera->eye.z, mCamera->direction.x, mCamera->direction.y, mCamera->direction.z, mCamera->up.x, mCamera->up.y, mCamera->up.z);
+	gluLookAt(mCamera->mRight.x, mCamera->mRight.y, mCamera->mRight.z, mCamera->mFront.x, mCamera->mFront.y, mCamera->mFront.z, mCamera->mUp.x, mCamera->mUp.y, mCamera->mUp.z);
 
 	glLightfv(GL_LIGHT0, GL_AMBIENT, &(mLight->ambient.x));
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, &(mLight->diffuse.x));
@@ -54,7 +54,7 @@ void GameInstance::Update()
 
 
 
-	glTranslatef(mCamera->position.x, mCamera->position.y, mCamera->position.z); 
+	glTranslatef(mCamera->mPosition.x, mCamera->mPosition.y, mCamera->mPosition.z); 
 
 	glutPostRedisplay();
 }
@@ -65,16 +65,16 @@ void GameInstance::Keyboard(unsigned char key, int x, int y)
 
 	float cameraSpeed = 2.5f * deltaTime;
 	if (key == 'w') {
-		mCamera->position = mCamera->position + (mCamera->eye * cameraSpeed);
-	}
-	if (key == 'a') {
-		mCamera->position = mCamera->position - (Math::Normalise(Math::CrossProduct(mCamera->eye, mCamera->up)) * cameraSpeed);
+		mCamera->ProcessKeyboard(FORWARD, deltaTime);
 	}
 	if (key == 's') {
-		mCamera->position = mCamera->position - (mCamera->eye * cameraSpeed);
+		mCamera->ProcessKeyboard(BACKWARD, deltaTime);
+	}
+	if (key == 'a') {
+		mCamera->ProcessKeyboard(LEFT, deltaTime);
 	}
 	if (key == 'd') {
-		mCamera->position = mCamera->position + (Math::Normalise(Math::CrossProduct(mCamera->eye, mCamera->up)) * cameraSpeed);
+		mCamera->ProcessKeyboard(RIGHT, deltaTime);
 	}
 
 
@@ -97,26 +97,8 @@ void GameInstance::ActiveMotion(int x, int y)
 	float yOffset = lastY - y; //Opposite as coordinate system is from top left
 	lastX = x;
 	lastY = y;
-
-
-	const float sensitivity = 0.5f;
-	yOffset *= sensitivity;
-	xOffset *= sensitivity;
-
-	yaw += xOffset;
-	pitch += yOffset;
-
-	if (pitch > 89.0f) pitch = 89.0f;
-	if (pitch < -89.0f) pitch = -89.0f;
-
-	Vector3 direction;
-	direction.x = cos(Math::DegreeToRadians(yaw)) * cos(Math::DegreeToRadians(pitch));
-	direction.y = sin(Math::DegreeToRadians(pitch));
-	direction.z = sin(Math::DegreeToRadians(yaw)) * cos(Math::DegreeToRadians(pitch));
-
-
-	mCamera->direction = Math::Normalise(direction);
-
+	
+	mCamera->ProcessInput(xOffset, yOffset);
 }
 
 void GameInstance::InitOpenGL(int argc, char* argv[])
@@ -130,7 +112,7 @@ void GameInstance::InitOpenGL(int argc, char* argv[])
 
 	glutKeyboardFunc(GLUTCallback::Keyboard);
 	glutKeyboardUpFunc(GLUTCallback::KeyboardUp);
-	glutMotionFunc(GLUTCallback::ActiveMouseMotion);
+	glutPassiveMotionFunc(GLUTCallback::ActiveMouseMotion);
 	glutTimerFunc(REFRESH_RATE, GLUTCallback::Timer, REFRESH_RATE);
 	glutDisplayFunc(GLUTCallback::Display);
 
@@ -154,10 +136,8 @@ void GameInstance::InitOpenGL(int argc, char* argv[])
 
 void GameInstance::InitObjects()
 {
-	mCamera = new Camera();
-	mCamera->eye.z = 1.0f;
-	mCamera->up.y = 1.0f;
-	mCamera->position = Vector3(0.0f, 0.0f, -35.0f);
+	mCamera = new Camera(Vector3(0.0f,0.0f,-35.0f));
+
 
 	mLight = new Light();
 

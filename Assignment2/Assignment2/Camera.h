@@ -23,19 +23,19 @@ class Camera {
 public:
 	Vector3 mPosition;
 	Vector3 mFront;
-	Vector3 mUp;
 	Vector3 mRight;
 	Vector3 mWorldUp;
+	Vector3 mUp;
 
 	float mYaw;
 	float mPitch;
 
 	float mMovementSpeed;
 	float mMouseSensitivity;
-	
+
 	//Camera Constructor using Vectors
 	Camera(Vector3 position = Vector3(0.0f, 0.0f, 0.0f), Vector3 up = Vector3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH) :
-		mFront(Vector3(0.0f, 0.0f, -1.0f)), mMovementSpeed(SPEED), mMouseSensitivity(SENSITIVITY) 
+		mFront(Vector3(0.0f, 0.0f, -1.0f)), mMovementSpeed(SPEED), mMouseSensitivity(SENSITIVITY)
 	{
 		mPosition = position;
 		mWorldUp = up;
@@ -74,6 +74,17 @@ public:
 		UpdateCameraVectors();
 	}
 
+	void ProcessKeyboard(Camera_Movement direction, float deltaTime) {
+		float velocity = mMovementSpeed * deltaTime;
+		if (direction == FORWARD)
+			mPosition = mPosition + (mFront * velocity);
+		if (direction == BACKWARD)
+			mPosition = mPosition - (mFront * velocity);
+		if (direction == LEFT)
+			mPosition = mPosition - (mRight * velocity);
+		if (direction == RIGHT)
+			mPosition = mPosition + (mRight * velocity);
+	}
 
 private:
 	void UpdateCameraVectors() {
