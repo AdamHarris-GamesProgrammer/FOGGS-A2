@@ -43,9 +43,7 @@ void GameInstance::Update()
 	std::cout << deltaTime << std::endl;
 
 
-	gluLookAt(mCamera->mRight.x, mCamera->mRight.y, mCamera->mRight.z,
-		mCamera->mPosition.x + mCamera->mFront.x, mCamera->mPosition.y + mCamera->mFront.y, mCamera->mPosition.z + mCamera->mFront.z, 
-		mCamera->mUp.x, mCamera->mUp.y, mCamera->mUp.z);
+	gluLookAt(mCamera->eye.x, mCamera->eye.y, mCamera->eye.z, mCamera->center.x, mCamera->center.y, mCamera->center.z, mCamera->up.x, mCamera->up.y, mCamera->up.z);
 
 	glLightfv(GL_LIGHT0, GL_AMBIENT, &(mLight->ambient.x));
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, &(mLight->diffuse.x));
@@ -56,7 +54,7 @@ void GameInstance::Update()
 
 
 
-	glTranslatef(mCamera->mPosition.x, mCamera->mPosition.y, mCamera->mPosition.z); 
+	glTranslatef(mCamera->position.x, mCamera->position.y, mCamera->position.z);
 
 	glutPostRedisplay();
 }
@@ -65,18 +63,7 @@ void GameInstance::Keyboard(unsigned char key, int x, int y)
 {
 	mSpaceShip->PollInput(key, x, y);
 
-	if (key == 'w') {
-		mCamera->ProcessKeyboard(FORWARD, deltaTime);
-	}
-	if (key == 's') {
-		mCamera->ProcessKeyboard(BACKWARD, deltaTime);
-	}
-	if (key == 'a') {
-		mCamera->ProcessKeyboard(LEFT, deltaTime);
-	}
-	if (key == 'd') {
-		mCamera->ProcessKeyboard(RIGHT, deltaTime);
-	}
+
 }
 
 void GameInstance::KeyboardUp(unsigned char key, int x, int y)
@@ -96,8 +83,25 @@ void GameInstance::ActiveMotion(int x, int y)
 	float yOffset = lastY - y; //Opposite as coordinate system is from top left
 	lastX = x;
 	lastY = y;
-	
-	mCamera->ProcessInput(xOffset, yOffset);
+
+
+	const float sensitivity = 0.5f;
+	yOffset *= sensitivity;
+	xOffset *= sensitivity;
+
+	yaw += xOffset;
+	pitch += yOffset;
+
+	if (pitch > 89.0f) pitch = 89.0f;
+	if (pitch < -89.0f) pitch = -89.0f;
+
+	Vector3 direction;
+	direction.x = cos(Math::DegreeToRadians(yaw)) * cos(Math::DegreeToRadians(pitch));
+	direction.y = sin(Math::DegreeToRadians(pitch));
+	direction.z = sin(Math::DegreeToRadians(yaw)) * cos(Math::DegreeToRadians(pitch));
+
+
+	mCamera->center = Math::Normalise(direction);
 }
 
 void GameInstance::InitOpenGL(int argc, char* argv[])
@@ -135,7 +139,10 @@ void GameInstance::InitOpenGL(int argc, char* argv[])
 
 void GameInstance::InitObjects()
 {
-	mCamera = new Camera(Vector3(0.0f,0.0f,-35.0f));
+	mCamera = new Camera();
+	mCamera->eye.z = 1.0f;
+	mCamera->up.y = 1.0f;
+	mCamera->position = Vector3(0.0f, 0.0f, -35.0f);
 
 
 	mLight = new Light();

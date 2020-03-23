@@ -54,6 +54,14 @@ struct Mesh {
 	Material meshMaterial;
 };
 
+struct Camera {
+	Vector3 eye;
+	Vector3 center;
+	Vector3 up;
+
+	Vector3 position;
+};
+
 struct Light {
 	Vector3 ambient;
 	Vector3 diffuse;
