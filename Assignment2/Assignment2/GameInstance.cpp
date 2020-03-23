@@ -43,7 +43,9 @@ void GameInstance::Update()
 	std::cout << deltaTime << std::endl;
 
 
-	gluLookAt(mCamera->mRight.x, mCamera->mRight.y, mCamera->mRight.z, mCamera->mFront.x, mCamera->mFront.y, mCamera->mFront.z, mCamera->mUp.x, mCamera->mUp.y, mCamera->mUp.z);
+	gluLookAt(mCamera->mRight.x, mCamera->mRight.y, mCamera->mRight.z,
+		mCamera->mPosition.x + mCamera->mFront.x, mCamera->mPosition.y + mCamera->mFront.y, mCamera->mPosition.z + mCamera->mFront.z, 
+		mCamera->mUp.x, mCamera->mUp.y, mCamera->mUp.z);
 
 	glLightfv(GL_LIGHT0, GL_AMBIENT, &(mLight->ambient.x));
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, &(mLight->diffuse.x));
@@ -63,7 +65,6 @@ void GameInstance::Keyboard(unsigned char key, int x, int y)
 {
 	mSpaceShip->PollInput(key, x, y);
 
-	float cameraSpeed = 2.5f * deltaTime;
 	if (key == 'w') {
 		mCamera->ProcessKeyboard(FORWARD, deltaTime);
 	}
@@ -76,8 +77,6 @@ void GameInstance::Keyboard(unsigned char key, int x, int y)
 	if (key == 'd') {
 		mCamera->ProcessKeyboard(RIGHT, deltaTime);
 	}
-
-
 }
 
 void GameInstance::KeyboardUp(unsigned char key, int x, int y)

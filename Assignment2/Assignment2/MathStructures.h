@@ -118,7 +118,7 @@ namespace Math {
 	}
 
 	float DegreeToRadians(float degrees) {
-		return degrees * (3.1452 / 180);
+		return ((degrees) * 3.1452 / 180.0f);
 	}
 
 	static Vector3 Normalise(const Vector3& vec) {

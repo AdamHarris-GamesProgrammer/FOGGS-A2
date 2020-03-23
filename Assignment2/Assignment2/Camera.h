@@ -81,9 +81,9 @@ public:
 		if (direction == BACKWARD)
 			mPosition = mPosition - (mFront * velocity);
 		if (direction == LEFT)
-			mPosition = mPosition - (mRight * velocity);
+			mPosition = mPosition - (Math::Normalise(Math::CrossProduct(mFront, mWorldUp)) * velocity);
 		if (direction == RIGHT)
-			mPosition = mPosition + (mRight * velocity);
+			mPosition = mPosition + (Math::Normalise(Math::CrossProduct(mFront, mWorldUp)) * velocity);
 	}
 
 private:
@@ -96,5 +96,7 @@ private:
 
 		mRight = Math::Normalise(Math::CrossProduct(mFront, mWorldUp));
 		mUp = Math::Normalise(Math::CrossProduct(mRight, mFront));
+
+		std::cout << Math::DegreeToRadians(65.0f) << std::endl;
 	}
 };
