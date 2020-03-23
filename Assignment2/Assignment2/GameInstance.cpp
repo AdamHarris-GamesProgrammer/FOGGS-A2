@@ -29,6 +29,10 @@ void GameInstance::Render()
 
 	mSpaceShip->Render();
 
+	for (int i = 0; i < 500; i++) {
+		cubeField[i]->Draw();
+	}
+
 	glFlush();
 	glutSwapBuffers();
 }
@@ -51,7 +55,9 @@ void GameInstance::Update()
 
 	mSpaceShip->Update();
 
-
+	for (int i = 0; i < 500; i++) {
+		cubeField[i]->Update();
+	}
 
 
 	glTranslatef(mCamera->position.x, mCamera->position.y, mCamera->position.z);
@@ -149,5 +155,11 @@ void GameInstance::InitObjects()
 
 	mSpaceShip = new SpaceShip(std::string("Assets/test3.obj"));
 
+	TextMesh* cubeMesh = TextMeshLoader::Load("Assets/cube.txt");
+	Texture2D* cubeTexture = new Texture2D();
+	cubeTexture->Load((char*)"Assets/Stars.raw", 512, 512);
 
+	for (int i = 0; i < 500; i++) {
+		cubeField[i] = new Cube(cubeMesh, cubeTexture, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -((rand() % 100) / 1.0f) - 10.0f);
+	}
 }

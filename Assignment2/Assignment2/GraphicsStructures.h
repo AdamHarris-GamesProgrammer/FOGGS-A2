@@ -5,6 +5,8 @@
 #include <iostream>
 #include <vector>
 
+#include "GLIncludes.h"
+
 struct Vertex {
 	Vector3 position;
 	Vector3 normal;
@@ -53,6 +55,18 @@ struct Mesh {
 
 	Material meshMaterial;
 };
+
+struct TextMesh {
+	Vector3* Vertices;
+	Vector3* Normals;
+
+	GLushort* Indices;
+
+	Vector2* TexCoords;
+
+	int VertexCount, NormalCount, IndexCount, TexCoordCount;
+};
+
 
 struct Camera {
 	Vector3 eye;

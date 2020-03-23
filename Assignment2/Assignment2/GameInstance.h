@@ -5,6 +5,8 @@
 #include "OBJLoader.h"
 #include "GameObject.h"
 #include "SpaceShip.h"
+#include "TextMeshLoader.h"
+#include "Cube.h"
 
 class GameInstance
 {
@@ -33,6 +35,8 @@ private:
 
 	Camera* mCamera;
 	Light* mLight;
+
+	Cube* cubeField[500];
 
 	bool firstMouse = true;
 };
