@@ -110,7 +110,7 @@ void GameInstance::InitOpenGL(int argc, char* argv[])
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-	glutInitWindowSize(800, 800);
+	glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	glutCreateWindow("FOGGS Assignment 2 - Adam Harris");
 
 	glutKeyboardFunc(GLUTCallback::Keyboard);
@@ -121,8 +121,8 @@ void GameInstance::InitOpenGL(int argc, char* argv[])
 
 	glMatrixMode(GL_PROJECTION);
 
-	glViewport(0, 0, 800, 800);
-	gluPerspective(45, 1, 1, 1000);
+	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	gluPerspective(45, 1, 1, 200);
 
 
 	glMatrixMode(GL_MODELVIEW);
