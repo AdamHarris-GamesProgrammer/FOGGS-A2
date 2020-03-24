@@ -11,6 +11,10 @@ SpaceShip::SpaceShip(std::string meshFilePath) : GameObject(meshFilePath)
 void SpaceShip::Update()
 {
 	GameObject::UpdatePosition();
+
+	mRotation.x += 0.1f;
+	mRotation.y += 0.2f;
+	mRotation.z += 0.3f;
 }
 
 void SpaceShip::PollInput(unsigned char key, int x, int y)

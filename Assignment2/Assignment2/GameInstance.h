@@ -39,5 +39,7 @@ private:
 	Cube* cubeField[500];
 
 	bool firstMouse = true;
+
+	void DrawString(const char* text, Vector3* position, Color* color);
 };
 

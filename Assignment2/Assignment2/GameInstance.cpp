@@ -27,11 +27,37 @@ void GameInstance::Render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
+
+	// render a full-screen quad without writing to the depth buffer
+
+	glDisable(GL_DEPTH_TEST);
+	glBegin(GL_QUADS);
+	glColor3f(0.0f,0.0f,0.0f);
+	glVertex2i(-1, -1);
+	glVertex2i(1, -1);
+	glVertex2i(1, 1);
+	glVertex2i(-1, 1);
+	glEnd();
+	glEnable(GL_DEPTH_TEST);
+
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
+	glPopMatrix();
+
+
+
 	mSpaceShip->Render();
 
-	for (int i = 0; i < 500; i++) {
-		cubeField[i]->Draw();
-	}
+	//for (int i = 0; i < 500; i++) {
+	//	cubeField[i]->Draw();
+	//}
 
 	glFlush();
 	glutSwapBuffers();
@@ -162,4 +188,18 @@ void GameInstance::InitObjects()
 	for (int i = 0; i < 500; i++) {
 		cubeField[i] = new Cube(cubeMesh, cubeTexture, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -((rand() % 100) / 1.0f) - 10.0f);
 	}
+}
+
+void GameInstance::DrawString(const char* text, Vector3* position, Color* color)
+{
+	glDisable(GL_LIGHTING);
+	glPushMatrix();
+
+	glTranslatef(position->x, position->y, position->z);
+	glRasterPos2f(0.0f, 0.0f);
+	glColor3f(color->r, color->g, color->b);
+	glutBitmapWidth(GLUT_BITMAP_TIMES_ROMAN_24, 48);
+	glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*)text);
+	glPopMatrix();
+	glEnable(GL_LIGHTING);
 }

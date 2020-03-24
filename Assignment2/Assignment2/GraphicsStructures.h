@@ -43,10 +43,21 @@ struct Material
 	std::string map_bump; //Bump map
 };
 
+struct Color
+{
+	float r, g, b;
+
+	Color(float red = 0.0f, float green = 0.0f, float blue = 0.0f) {
+		r = red;
+		g = green;
+		b = blue;
+	}
+};
+
 struct Mesh {
 	Mesh() {}
 
-	Mesh(std::vector<Vertex>& inVerticies, std::vector<unsigned int>& inIndices) : verticies(inVerticies), indices(inIndices){}
+	Mesh(std::vector<Vertex>& inVerticies, std::vector<unsigned int>& inIndices) : verticies(inVerticies), indices(inIndices) {}
 
 	std::string meshName;
 
@@ -82,7 +93,7 @@ struct Light {
 	Vector3 specular;
 
 	Light() {
-		ambient = Vector3(0.8f,0.8f,0.8f);
+		ambient = Vector3(0.8f, 0.8f, 0.8f);
 		diffuse = Vector3(0.8f, 0.8f, 0.8f);
 		specular = Vector3(0.8f, 0.8f, 0.8f);
 	}
