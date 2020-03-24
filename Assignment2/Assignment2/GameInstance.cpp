@@ -27,48 +27,13 @@ void GameInstance::Render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glLoadIdentity();
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glLoadIdentity();
+	DisableProjection();
 
-	// render a full-screen quad without writing to the depth buffer
+	DrawBackground();
 
-	glDisable(GL_LIGHTING);
-	glDisable(GL_DEPTH_TEST);
+	DrawString("Score: 0", &Vector3(0.0f, 0.5f, 0.0f), &Color(1.0f, 0.0f, 0.0f));
 
-	glBindTexture(GL_TEXTURE_2D, mBgTexture->GetID());
-
-
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glEnable(GL_TEXTURE_COORD_ARRAY);
-
-	glBegin(GL_QUADS);
-	glColor3f(1.0f,1.0f,1.0f);
-	glTexCoord2i(0, 0);
-	glVertex2i(-1, -1);
-	glTexCoord2i(1, 0);
-	glVertex2i(1, -1);
-	glTexCoord2i(1, 1);
-	glVertex2i(1, 1);
-	glTexCoord2i(0, 1);
-	glVertex2i(-1, 1);
-	glEnd();
-	glDisable(GL_TEXTURE_COORD_ARRAY);
-
-	//DrawString("Score: 0", &Vector3(0.5f, 1.0f, 0.0f), &Color(1.0f, 0.0f, 0.0f));
-
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_LIGHTING);
-
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
-	glMatrixMode(GL_MODELVIEW);
-	glPopMatrix();
-
+	EnableProjection();
 
 
 	mSpaceShip->Render();
@@ -191,19 +156,62 @@ void GameInstance::InitObjects()
 	mSpaceShip = new SpaceShip(std::string("Assets/test3.obj"));
 
 	mBgTexture = new Texture2D();
-	mBgTexture->Load((char*)"Assets/Stars.raw", 512, 512);
+	mBgTexture->LoadBMP((char*)"Assets/BgTexture.bmp");
 }
 
 void GameInstance::DrawString(const char* text, Vector3* position, Color* color)
 {
-	//glDisable(GL_LIGHTING);
+	glEnable(GL_LIGHTING);
 	glPushMatrix();
-
-	//glTranslatef(position->x, position->y, position->z);
 	glRasterPos2f(position->x, position->y);
-	glColor3f(color->r, color->g, color->b);
-	//glutBitmapWidth(GLUT_BITMAP_TIMES_ROMAN_24, 48);
+	//glColor3f(color->r, color->g, color->b);
 	glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*)text);
 	glPopMatrix();
-	//glEnable(GL_LIGHTING);
+	glDisable(GL_LIGHTING);
+}
+
+void GameInstance::DrawBackground()
+{
+	glBindTexture(GL_TEXTURE_2D, mBgTexture->GetID());
+
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glEnable(GL_TEXTURE_COORD_ARRAY);
+
+	glBegin(GL_QUADS);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glTexCoord2i(0, 0);
+	glVertex2i(-1, -1);
+	glTexCoord2i(1, 0);
+	glVertex2i(1, -1);
+	glTexCoord2i(1, 1);
+	glVertex2i(1, 1);
+	glTexCoord2i(0, 1);
+	glVertex2i(-1, 1);
+	glEnd();
+	glDisable(GL_TEXTURE_COORD_ARRAY);
+}
+
+void GameInstance::DisableProjection()
+{
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
+
+	glDisable(GL_LIGHTING);
+	glDisable(GL_DEPTH_TEST);
+}
+
+void GameInstance::EnableProjection()
+{
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_LIGHTING);
+
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
+	glPopMatrix();
 }

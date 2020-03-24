@@ -41,5 +41,10 @@ private:
 	bool firstMouse = true;
 
 	void DrawString(const char* text, Vector3* position, Color* color);
+
+	void DrawBackground();
+	void DisableProjection();
+	void EnableProjection();
+
 };
 
