@@ -31,7 +31,7 @@ void GameInstance::Render()
 
 	DrawBackground();
 
-	DrawString("Score: 0", &Vector3(0.0f, 0.5f, 0.0f), &Color(1.0f, 0.0f, 0.0f));
+	DrawString("Score: 0", &Vector3(0.0f, 0.9f, 0.0f), &Color(1.0f, 0.0f, 0.0f));
 
 	EnableProjection();
 
@@ -49,7 +49,6 @@ void GameInstance::Update()
 	float currentFrame = (float)glutGet(GLUT_ELAPSED_TIME) / 1000;
 	deltaTime = currentFrame - lastFrame;
 	lastFrame = currentFrame;
-	std::cout << deltaTime << std::endl;
 
 
 	gluLookAt(mCamera->eye.x, mCamera->eye.y, mCamera->eye.z, mCamera->center.x, mCamera->center.y, mCamera->center.z, mCamera->up.x, mCamera->up.y, mCamera->up.z);
@@ -162,11 +161,13 @@ void GameInstance::InitObjects()
 void GameInstance::DrawString(const char* text, Vector3* position, Color* color)
 {
 	glEnable(GL_LIGHTING);
+	glPushAttrib(GL_CURRENT_BIT);
 	glPushMatrix();
 	glRasterPos2f(position->x, position->y);
-	//glColor3f(color->r, color->g, color->b);
+	glColor3f(color->r, color->g, color->b);
 	glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*)text);
 	glPopMatrix();
+	glPopAttrib();
 	glDisable(GL_LIGHTING);
 }
 
@@ -190,6 +191,8 @@ void GameInstance::DrawBackground()
 	glVertex2i(-1, 1);
 	glEnd();
 	glDisable(GL_TEXTURE_COORD_ARRAY);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void GameInstance::DisableProjection()
