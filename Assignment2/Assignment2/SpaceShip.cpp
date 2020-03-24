@@ -1,7 +1,7 @@
 #include "SpaceShip.h"
 #include <algorithm>
 
-SpaceShip::SpaceShip(std::string meshFilePath) : GameObject(meshFilePath)
+SpaceShip::SpaceShip(std::string meshFilePath) : OBJGameObject(meshFilePath)
 {
 	LoadDiffuseTexture(std::string("Assets/") + mObjectMesh[1].meshMaterial.map_Kd);
 

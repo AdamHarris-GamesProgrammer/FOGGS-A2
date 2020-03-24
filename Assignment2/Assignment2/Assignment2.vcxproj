@@ -127,28 +127,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Cube.cpp" />
     <ClCompile Include="GameInstance.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GlutCallbacks.cpp" />
+    <ClCompile Include="OBJGameObject.cpp" />
     <ClCompile Include="OBJLoader.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="SpaceShip.cpp" />
+    <ClCompile Include="TextGameObject.cpp" />
     <ClCompile Include="TextMeshLoader.cpp" />
     <ClCompile Include="Texture2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BMP.h" />
     <ClInclude Include="Constants.h" />
-    <ClInclude Include="Cube.h" />
     <ClInclude Include="GameInstance.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GLIncludes.h" />
     <ClInclude Include="GlutCallbacks.h" />
     <ClInclude Include="GraphicsStructures.h" />
     <ClInclude Include="MathStructures.h" />
+    <ClInclude Include="OBJGameObject.h" />
     <ClInclude Include="OBJLoader.h" />
     <ClInclude Include="SpaceShip.h" />
+    <ClInclude Include="TextGameObject.h" />
     <ClInclude Include="TextMeshLoader.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="Timer.h" />

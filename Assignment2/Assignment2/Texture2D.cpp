@@ -13,7 +13,7 @@ Texture2D::~Texture2D()
 	glDeleteTextures(1, &mID);
 }
 
-bool Texture2D::Load(char* path, int width, int height)
+bool Texture2D::Load(const char* path, int width, int height)
 {
 	char* tempTexturedData;
 	int fileSize;

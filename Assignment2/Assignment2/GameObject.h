@@ -11,13 +11,14 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include "TextMeshLoader.h"
 
 class GameObject
 {
 public:
 	~GameObject();
 
-	GameObject(std::string meshFilePath);
+	GameObject();
 
 
 	virtual void Render();
@@ -49,11 +50,7 @@ protected:
 	Vector3 mRotation;
 	Vector3 mScale;
 
-	std::vector<Mesh> mObjectMesh;
-
 	Texture2D* mTexture;
-
-	OBJLoader* mMeshLoader;
 
 	float mFriction = 0.0f;
 };

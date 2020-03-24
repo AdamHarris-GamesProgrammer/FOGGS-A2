@@ -9,7 +9,7 @@ public:
 	Texture2D();
 	~Texture2D();
 
-	bool Load(char* path, int width, int height);
+	bool Load(const char* path, int width, int height);
 	bool LoadBMP(const char* path);
 
 	GLuint GetID() const { return mID; }

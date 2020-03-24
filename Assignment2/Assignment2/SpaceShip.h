@@ -1,6 +1,6 @@
 #pragma once
-#include "GameObject.h"
-class SpaceShip : public GameObject
+#include "OBJGameObject.h"
+class SpaceShip : public OBJGameObject
 {
 public:
 	SpaceShip(std::string meshFilePath);

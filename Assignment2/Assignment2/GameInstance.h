@@ -6,7 +6,8 @@
 #include "GameObject.h"
 #include "SpaceShip.h"
 #include "TextMeshLoader.h"
-#include "Cube.h"
+#include "TextGameObject.h"
+#include "OBJGameObject.h"
 
 class GameInstance
 {
@@ -32,6 +33,8 @@ private:
 
 
 	SpaceShip* mSpaceShip;
+
+	TextGameObject* mMeteorTest;
 
 	Camera* mCamera;
 	Light* mLight;

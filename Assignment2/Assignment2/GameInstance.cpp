@@ -28,16 +28,18 @@ void GameInstance::Render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	DisableProjection();
-
 	DrawBackground();
 
-	DrawString("Score: 0", &Vector3(0.0f, 0.9f, 0.0f), &Color(1.0f, 0.0f, 0.0f));
-
-	EnableProjection();
-
+	mMeteorTest->Render();
 
 	mSpaceShip->Render();
+
+	DisableProjection();
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	DrawString("Score: 0", &Vector3(-0.1f, 0.9f, 0.0f), &Color(1.0f, 0.0f, 0.0f));
+
+	EnableProjection();
 
 	glFlush();
 	glutSwapBuffers();
@@ -171,6 +173,9 @@ void GameInstance::InitObjects()
 
 	mSpaceShip = new SpaceShip(std::string("Assets/test3.obj"));
 
+	mMeteorTest = new TextGameObject(std::string("Assets/cube.txt"));
+	mMeteorTest->LoadDiffuseTexture("Assets/stars.raw");
+
 	mBgTexture = new Texture2D();
 	mBgTexture->LoadBMP((char*)"Assets/BgTexture.bmp");
 }
@@ -190,6 +195,7 @@ void GameInstance::DrawString(const char* text, Vector3* position, Color* color)
 
 void GameInstance::DrawBackground()
 {
+	DisableProjection();
 	glBindTexture(GL_TEXTURE_2D, mBgTexture->GetID());
 
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -208,8 +214,7 @@ void GameInstance::DrawBackground()
 	glVertex2i(-1, 1);
 	glEnd();
 	glDisable(GL_TEXTURE_COORD_ARRAY);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
+	EnableProjection();
 }
 
 void GameInstance::DisableProjection()
