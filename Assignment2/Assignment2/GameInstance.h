@@ -36,7 +36,7 @@ private:
 	Camera* mCamera;
 	Light* mLight;
 
-	Cube* cubeField[500];
+	Texture2D* mBgTexture;
 
 	bool firstMouse = true;
 

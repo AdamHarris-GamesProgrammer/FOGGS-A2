@@ -36,15 +36,33 @@ void GameInstance::Render()
 
 	// render a full-screen quad without writing to the depth buffer
 
+	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
+
+	glBindTexture(GL_TEXTURE_2D, mBgTexture->GetID());
+
+
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glEnable(GL_TEXTURE_COORD_ARRAY);
+
 	glBegin(GL_QUADS);
-	glColor3f(0.0f,0.0f,0.0f);
+	glColor3f(1.0f,1.0f,1.0f);
+	glTexCoord2i(0, 0);
 	glVertex2i(-1, -1);
+	glTexCoord2i(1, 0);
 	glVertex2i(1, -1);
+	glTexCoord2i(1, 1);
 	glVertex2i(1, 1);
+	glTexCoord2i(0, 1);
 	glVertex2i(-1, 1);
 	glEnd();
+	glDisable(GL_TEXTURE_COORD_ARRAY);
+
+	//DrawString("Score: 0", &Vector3(0.5f, 1.0f, 0.0f), &Color(1.0f, 0.0f, 0.0f));
+
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_LIGHTING);
 
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
@@ -54,10 +72,6 @@ void GameInstance::Render()
 
 
 	mSpaceShip->Render();
-
-	//for (int i = 0; i < 500; i++) {
-	//	cubeField[i]->Draw();
-	//}
 
 	glFlush();
 	glutSwapBuffers();
@@ -80,11 +94,6 @@ void GameInstance::Update()
 	glLightfv(GL_LIGHT0, GL_SPECULAR, &(mLight->specular.x));
 
 	mSpaceShip->Update();
-
-	for (int i = 0; i < 500; i++) {
-		cubeField[i]->Update();
-	}
-
 
 	glTranslatef(mCamera->position.x, mCamera->position.y, mCamera->position.z);
 
@@ -181,25 +190,20 @@ void GameInstance::InitObjects()
 
 	mSpaceShip = new SpaceShip(std::string("Assets/test3.obj"));
 
-	TextMesh* cubeMesh = TextMeshLoader::Load("Assets/cube.txt");
-	Texture2D* cubeTexture = new Texture2D();
-	cubeTexture->Load((char*)"Assets/Stars.raw", 512, 512);
-
-	for (int i = 0; i < 500; i++) {
-		cubeField[i] = new Cube(cubeMesh, cubeTexture, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -((rand() % 100) / 1.0f) - 10.0f);
-	}
+	mBgTexture = new Texture2D();
+	mBgTexture->Load((char*)"Assets/Stars.raw", 512, 512);
 }
 
 void GameInstance::DrawString(const char* text, Vector3* position, Color* color)
 {
-	glDisable(GL_LIGHTING);
+	//glDisable(GL_LIGHTING);
 	glPushMatrix();
 
-	glTranslatef(position->x, position->y, position->z);
-	glRasterPos2f(0.0f, 0.0f);
+	//glTranslatef(position->x, position->y, position->z);
+	glRasterPos2f(position->x, position->y);
 	glColor3f(color->r, color->g, color->b);
-	glutBitmapWidth(GLUT_BITMAP_TIMES_ROMAN_24, 48);
+	//glutBitmapWidth(GLUT_BITMAP_TIMES_ROMAN_24, 48);
 	glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*)text);
 	glPopMatrix();
-	glEnable(GL_LIGHTING);
+	//glEnable(GL_LIGHTING);
 }
