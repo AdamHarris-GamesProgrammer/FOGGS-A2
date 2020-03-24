@@ -32,11 +32,13 @@ public:
 	Vector3 GetPosition() const { return mPosition; }
 	Vector3 GetVelocity() const { return mVelocity; }
 	Vector3 GetRotation() const { return mRotation; }
+	Vector3 GetScale() const { return mScale; }
 	float GetFriction() const { return mFriction; }
 
 	void SetPosition(Vector3 newPosition) { mPosition = newPosition; }
 	void SetVelocity(Vector3 newVelocity) { mVelocity = newVelocity; }
 	void SetRotation(Vector3 newRotation) { mRotation = newRotation; }
+	void SetScale(Vector3 newScale) { mScale = newScale; }
 	void SetFriction(float newFriction) { mFriction = newFriction; }
 
 private:
@@ -45,6 +47,7 @@ protected:
 	Vector3 mPosition;
 	Vector3 mVelocity;
 	Vector3 mRotation;
+	Vector3 mScale;
 
 	std::vector<Mesh> mObjectMesh;
 

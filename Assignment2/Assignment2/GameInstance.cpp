@@ -4,6 +4,7 @@
 
 
 #include <iostream>
+#include <algorithm>
 #include "GraphicsStructures.h"
 #include "BMP.h"
 #include "Timer.h"
@@ -78,6 +79,12 @@ void GameInstance::Keyboard(unsigned char key, int x, int y)
 		followMouse = !followMouse; 
 	}
 
+	//Resets camera values
+	if (key == 'r') {
+		ResetCamera();
+		followMouse = false;
+	}
+
 }
 
 void GameInstance::KeyboardUp(unsigned char key, int x, int y)
@@ -87,19 +94,18 @@ void GameInstance::KeyboardUp(unsigned char key, int x, int y)
 
 void GameInstance::ActiveMotion(int x, int y)
 {
-	if (followMouse) {
-		if (firstMouse) {
-			lastX = x;
-			lastY = y;
-			firstMouse = false;
-		}
-
-		float xOffset = x - lastX;
-		float yOffset = lastY - y; //Opposite as coordinate system is from top left
+	if (firstMouse) {
 		lastX = x;
 		lastY = y;
+		firstMouse = false;
+	}
 
+	float xOffset = x - lastX;
+	float yOffset = lastY - y; //Opposite as coordinate system is from top left
+	lastX = x;
+	lastY = y;
 
+	if (followMouse) {
 		const float sensitivity = 0.5f;
 		yOffset *= sensitivity;
 		xOffset *= sensitivity;
@@ -107,8 +113,7 @@ void GameInstance::ActiveMotion(int x, int y)
 		yaw += xOffset;
 		pitch += yOffset;
 
-		if (pitch > 89.0f) pitch = 89.0f;
-		if (pitch < -89.0f) pitch = -89.0f;
+		pitch = std::clamp(pitch, -89.0f, 89.0f);
 
 		Vector3 direction;
 		direction.x = cos(Math::DegreeToRadians(yaw)) * cos(Math::DegreeToRadians(pitch));
@@ -229,4 +234,12 @@ void GameInstance::EnableProjection()
 	glPopMatrix();
 	glMatrixMode(GL_MODELVIEW);
 	glPopMatrix();
+}
+
+void GameInstance::ResetCamera()
+{
+	mCamera = new Camera();
+	mCamera->eye.z = 1.0f;
+	mCamera->up.y = 1.0f;
+	mCamera->position = Vector3(0.0f, 0.0f, -35.0f);
 }

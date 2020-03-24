@@ -25,6 +25,8 @@ void GameObject::Render()
 
 			glTranslatef(mPosition.x, mPosition.y, mPosition.z);
 
+			glScalef(mScale.x, mScale.y, mScale.z);
+
 			glRotatef(mRotation.x, 1.0f, 0.0f, 0.0f);
 			glRotatef(mRotation.y, 0.0f, 1.0f, 0.0f);
 			glRotatef(mRotation.z, 0.0f, 0.0f, 1.0f);
