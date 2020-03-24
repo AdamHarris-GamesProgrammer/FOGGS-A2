@@ -1,4 +1,7 @@
 #include "SpaceShip.h"
+#include <algorithm>
+#include <iostream>
+#include <cmath>
 
 SpaceShip::SpaceShip(std::string meshFilePath) : GameObject(meshFilePath)
 {
@@ -10,11 +13,17 @@ SpaceShip::SpaceShip(std::string meshFilePath) : GameObject(meshFilePath)
 
 void SpaceShip::Update()
 {
+
 	GameObject::UpdatePosition();
+
+	mPosition.x = std::clamp(mPosition.x, -16.0f, 16.0f);
+	mPosition.y = std::clamp(mPosition.y, -16.0f, 16.0f);
 
 	mRotation.x += 0.1f;
 	mRotation.y += 0.2f;
 	mRotation.z += 0.3f;
+
+	printf("X: %f Y: %f Z: %f\n", mPosition.x, mPosition.y, mPosition.z);
 }
 
 void SpaceShip::Render()

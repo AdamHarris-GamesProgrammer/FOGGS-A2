@@ -68,6 +68,15 @@ void GameInstance::Keyboard(unsigned char key, int x, int y)
 {
 	mSpaceShip->PollInput(key, x, y);
 
+	//Key 27 is Esc, allows player to quit
+	if (key == 27) {
+		exit(0);
+	}
+
+	//F toggles camera movement 
+	if (key == 'f') {
+		followMouse = !followMouse; 
+	}
 
 }
 
@@ -78,35 +87,38 @@ void GameInstance::KeyboardUp(unsigned char key, int x, int y)
 
 void GameInstance::ActiveMotion(int x, int y)
 {
-	if (firstMouse) {
+	if (followMouse) {
+		if (firstMouse) {
+			lastX = x;
+			lastY = y;
+			firstMouse = false;
+		}
+
+		float xOffset = x - lastX;
+		float yOffset = lastY - y; //Opposite as coordinate system is from top left
 		lastX = x;
 		lastY = y;
-		firstMouse = false;
+
+
+		const float sensitivity = 0.5f;
+		yOffset *= sensitivity;
+		xOffset *= sensitivity;
+
+		yaw += xOffset;
+		pitch += yOffset;
+
+		if (pitch > 89.0f) pitch = 89.0f;
+		if (pitch < -89.0f) pitch = -89.0f;
+
+		Vector3 direction;
+		direction.x = cos(Math::DegreeToRadians(yaw)) * cos(Math::DegreeToRadians(pitch));
+		direction.y = sin(Math::DegreeToRadians(pitch));
+		direction.z = sin(Math::DegreeToRadians(yaw)) * cos(Math::DegreeToRadians(pitch));
+
+
+		mCamera->center = Math::Normalise(direction);
 	}
 
-	float xOffset = x - lastX;
-	float yOffset = lastY - y; //Opposite as coordinate system is from top left
-	lastX = x;
-	lastY = y;
-
-
-	const float sensitivity = 0.5f;
-	yOffset *= sensitivity;
-	xOffset *= sensitivity;
-
-	yaw += xOffset;
-	pitch += yOffset;
-
-	if (pitch > 89.0f) pitch = 89.0f;
-	if (pitch < -89.0f) pitch = -89.0f;
-
-	Vector3 direction;
-	direction.x = cos(Math::DegreeToRadians(yaw)) * cos(Math::DegreeToRadians(pitch));
-	direction.y = sin(Math::DegreeToRadians(pitch));
-	direction.z = sin(Math::DegreeToRadians(yaw)) * cos(Math::DegreeToRadians(pitch));
-
-
-	mCamera->center = Math::Normalise(direction);
 }
 
 void GameInstance::InitOpenGL(int argc, char* argv[])

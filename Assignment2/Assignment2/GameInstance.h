@@ -39,6 +39,7 @@ private:
 	Texture2D* mBgTexture;
 
 	bool firstMouse = true;
+	bool followMouse = false;
 
 	void DrawString(const char* text, Vector3* position, Color* color);
 
