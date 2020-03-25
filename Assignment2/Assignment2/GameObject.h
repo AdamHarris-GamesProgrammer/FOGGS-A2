@@ -29,6 +29,7 @@ public:
 	virtual void PollInput(unsigned char key, int x, int y);
 
 	void LoadDiffuseTexture(std::string filePath);
+	void LoadNormalTexture(std::string filePath);
 	
 	Vector3 GetPosition() const { return mPosition; }
 	Vector3 GetVelocity() const { return mVelocity; }

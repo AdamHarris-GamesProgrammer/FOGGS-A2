@@ -47,3 +47,17 @@ void GameObject::LoadDiffuseTexture(std::string filePath)
 	}
 }
 
+void GameObject::LoadNormalTexture(std::string filePath)
+{
+	mTexture = new Texture2D();
+
+	std::string fileType = filePath.substr(filePath.size() - 4, filePath.size());
+
+	if (fileType == ".bmp") {
+		mTexture->LoadBMP(filePath.c_str());
+	}
+	else if (fileType == ".raw") {
+		mTexture->Load(filePath.c_str(), 512, 512);
+	}
+}
+

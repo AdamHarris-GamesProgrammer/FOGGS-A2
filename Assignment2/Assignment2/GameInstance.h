@@ -8,6 +8,7 @@
 #include "TextMeshLoader.h"
 #include "TextGameObject.h"
 #include "OBJGameObject.h"
+#include "Coin.h"
 
 class GameInstance
 {
@@ -34,7 +35,7 @@ private:
 
 	SpaceShip* mSpaceShip;
 
-	TextGameObject* mMeteorTest;
+	Coin* mCoin;
 
 	Camera* mCamera;
 	Light* mLight;
@@ -51,6 +52,11 @@ private:
 	void EnableProjection();
 
 	void ResetCamera();
+
+	bool CollisionCheck(Sphere s1, Sphere s2);
+	bool CollisionCheck(AABB a, AABB b);
+
+	int mScore = 0;
 
 };
 

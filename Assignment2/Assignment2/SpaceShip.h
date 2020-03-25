@@ -9,5 +9,13 @@ public:
 
 	void PollInput(unsigned char key, int x, int y) override;
 	void KeyUp(unsigned char key, int x, int y);
+
+	Sphere GetSphere() const { return mCollisionSphere; }
+
+	AABB GetBox() const { return mCollisionBox; }
+
+private:
+	Sphere mCollisionSphere;
+	AABB mCollisionBox;
 };
 

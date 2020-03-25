@@ -11,6 +11,7 @@ public:
 
 	bool Load(const char* path, int width, int height);
 	bool LoadBMP(const char* path);
+	bool LoadBMP(const char* path, GLenum type);
 
 	GLuint GetID() const { return mID; }
 

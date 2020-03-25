@@ -98,3 +98,14 @@ struct Light {
 		specular = Vector3(0.8f, 0.8f, 0.8f);
 	}
 };
+
+struct Sphere {
+	float radius;
+	Vector3 position;
+};
+
+//AABB: Axis Aligned Bounding Box
+struct AABB {
+	float x, y, z;
+	float w, h, d;
+};
