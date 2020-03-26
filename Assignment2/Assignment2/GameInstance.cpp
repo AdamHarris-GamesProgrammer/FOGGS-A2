@@ -30,12 +30,14 @@ void GameInstance::Render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	//Background
 	DrawBackground();
 
+	//Mid ground Objects
 	mCoin->Render();
-
 	mSpaceShip->Render();
 
+	//Foreground
 	DrawUI();
 
 	glFlush();
@@ -196,7 +198,7 @@ void GameInstance::InitObjects()
 	gameTimer = gameDuration;
 
 	auto ptrFunc = std::bind(&GameInstance::PauseMenu, std::placeholders::_1);
-	menu = glutCreateMenu(ptrFunc);
+	menu = glutCreateMenu(PauseMenu);
 
 	glutAddMenuEntry("Pause", 1);
 
@@ -287,4 +289,7 @@ void GameInstance::PauseMenu(int option)
 		paused = !paused;
 	}
 }
+
+bool GameInstance::paused = false;
+
 

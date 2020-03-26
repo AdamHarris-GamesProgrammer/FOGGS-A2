@@ -54,7 +54,7 @@ private:
 	bool firstMouse = true;
 	bool followMouse = false;
 	
-	bool paused = false;
+	static bool paused;
 	bool  gameOver = false;
 	float gameTimer;
 	const float gameDuration = 30.0f;
@@ -65,7 +65,7 @@ private:
 	void DisableProjection();
 	void EnableProjection();
 
-	void PauseMenu(int option);
+	static void PauseMenu(int option);
 
 	std::stringstream timeText;
 
