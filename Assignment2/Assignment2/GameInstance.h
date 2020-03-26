@@ -10,6 +10,7 @@
 #include "OBJGameObject.h"
 #include "Coin.h"
 #include "Camera.h"
+#include "Collisions.h"
 
 #include <sstream> //Used for time text stringstream
 #include <iomanip> //Used for std::setprecision
@@ -46,6 +47,8 @@ private:
 
 	Texture2D* mBgTexture;
 
+	Collisions* mCollisionsInstance;
+
 	bool firstMouse = true;
 	bool followMouse = false;
 	
@@ -58,10 +61,6 @@ private:
 	void DrawBackground();
 	void DisableProjection();
 	void EnableProjection();
-
-	bool CollisionCheck(Sphere s1, Sphere s2);
-	bool CollisionCheck(AABB a, AABB b);
-
 
 	std::stringstream timeText;
 
