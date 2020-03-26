@@ -30,24 +30,11 @@ void GameInstance::Render()
 
 	DrawBackground();
 
-	glPushMatrix();
-	if (CollisionCheck(mSpaceShip->GetBox(), mCoin->GetBox())) {
-		mCoin->GeneratePosition();
-		mScore++;
-	}
-	glPopMatrix();
-
 	mCoin->Render();
 
 	mSpaceShip->Render();
 
-	DisableProjection();
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-	std::string scoreText = "Score: " + std::to_string(mScore);
-	DrawString(scoreText.c_str(), &Vector3(-0.1f, 0.9f, 0.0f), &Color(1.0f, 0.0f, 0.0f));
-
-	EnableProjection();
+	DrawUI();
 
 	glFlush();
 	glutSwapBuffers();
@@ -55,24 +42,37 @@ void GameInstance::Render()
 
 void GameInstance::Update()
 {
-	glLoadIdentity();
-
+	//Calculating Delta Time
 	float currentFrame = (float)glutGet(GLUT_ELAPSED_TIME) / 1000;
 	deltaTime = currentFrame - lastFrame;
 	lastFrame = currentFrame;
 
+	if (!gameOver) {
+		gameTimer -= deltaTime;
+		if (gameTimer <= 0.0f) {
+			gameTimer = 0.0f;
+			gameOver = true;
+		}
+	}
+
+	if (!gameOver) {
+		mSpaceShip->Update();
+		mCoin->Update();
+
+		if (CollisionCheck(mSpaceShip->GetBox(), mCoin->GetBox())) {
+			mCoin->GeneratePosition();
+			mScore++;
+		}
+	}
+
+	glLoadIdentity();
 
 	gluLookAt(mCamera->eye.x, mCamera->eye.y, mCamera->eye.z, mCamera->center.x, mCamera->center.y, mCamera->center.z, mCamera->up.x, mCamera->up.y, mCamera->up.z);
 
 	glLightfv(GL_LIGHT0, GL_AMBIENT, &(mLight->ambient.x));
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, &(mLight->diffuse.x));
 	glLightfv(GL_LIGHT0, GL_SPECULAR, &(mLight->specular.x));
-
-	mSpaceShip->Update();
-	mCoin->Update();
-
-
-
+	
 	glTranslatef(mCamera->position.x, mCamera->position.y, mCamera->position.z);
 
 	glutPostRedisplay();
@@ -80,7 +80,21 @@ void GameInstance::Update()
 
 void GameInstance::Keyboard(unsigned char key, int x, int y)
 {
-	mSpaceShip->PollInput(key, x, y);
+	if (!gameOver) {
+		mSpaceShip->PollInput(key, x, y);
+	}
+	else
+	{
+		//Q resets the game
+		if (key == 'q') {
+			gameTimer = gameDuration;
+			mScore = 0;
+			gameOver = false;
+
+			mCoin->GeneratePosition();
+			mSpaceShip->SetPosition(Vector3());
+		}
+	}
 
 	//Key 27 is Esc, allows player to quit
 	if (key == 27) {
@@ -188,19 +202,38 @@ void GameInstance::InitObjects()
 
 	mBgTexture = new Texture2D();
 	mBgTexture->LoadBMP((char*)"Assets/BgTexture.bmp");
+
+	gameTimer = gameDuration;
 }
 
-void GameInstance::DrawString(const char* text, Vector3* position, Color* color)
+void GameInstance::DrawString(const char* text, Vector2* position, Color* color)
 {
-	glEnable(GL_LIGHTING);
-	glPushAttrib(GL_CURRENT_BIT);
 	glPushMatrix();
 	glRasterPos2f(position->x, position->y);
 	glColor3f(color->r, color->g, color->b);
 	glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*)text);
 	glPopMatrix();
-	glPopAttrib();
-	glDisable(GL_LIGHTING);
+}
+
+void GameInstance::DrawUI()
+{
+	DisableProjection();
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	std::string scoreText = "Score: " + std::to_string(mScore);
+	DrawString(scoreText.c_str(), &Vector2(-0.95f, 0.9f), &Color(1.0f, 1.0f, 1.0f));
+
+	timeText.str(std::string());
+	timeText << "Time Left: " << std::setprecision(4) << gameTimer;
+	std::string timeLeftText = "Time Left: " + std::to_string(gameTimer);
+	DrawString(timeText.str().c_str(), &Vector2(-0.95f, 0.80f), &Color(1.0f, 1.0f, 1.0f));
+
+
+	if (gameOver) {
+		DrawString("Press Q to Restart", &Vector2(-0.2f, 0.0f), &Color(1.0f, 1.0f, 1.0f));
+	}
+
+	EnableProjection();
 }
 
 void GameInstance::DrawBackground()

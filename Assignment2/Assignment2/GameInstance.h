@@ -10,6 +10,9 @@
 #include "OBJGameObject.h"
 #include "Coin.h"
 
+#include <sstream> //Used for time text stringstream
+#include <iomanip> //Used for std::setprecision
+
 class GameInstance
 {
 public:
@@ -44,9 +47,13 @@ private:
 
 	bool firstMouse = true;
 	bool followMouse = false;
+	
+	bool  gameOver = true;
+	float gameTimer;
+	const float gameDuration = 30.0f;
 
-	void DrawString(const char* text, Vector3* position, Color* color);
-
+	void DrawString(const char* text, Vector2* position, Color* color);
+	void DrawUI();
 	void DrawBackground();
 	void DisableProjection();
 	void EnableProjection();
@@ -55,6 +62,9 @@ private:
 
 	bool CollisionCheck(Sphere s1, Sphere s2);
 	bool CollisionCheck(AABB a, AABB b);
+
+
+	std::stringstream timeText;
 
 	int mScore = 0;
 

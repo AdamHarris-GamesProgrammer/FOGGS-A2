@@ -4,7 +4,6 @@
 SpaceShip::SpaceShip(std::string meshFilePath) : OBJGameObject(meshFilePath)
 {
 	LoadDiffuseTexture(std::string("Assets/") + mObjectMesh[1].meshMaterial.map_Kd);
-	LoadNormalTexture(std::string("Assets/") + mObjectMesh[1].meshMaterial.map_bump);
 
 	SetFriction(0.95f);
 	SetRotation(Vector3(0.0f, 180.0f, 0.0f));
