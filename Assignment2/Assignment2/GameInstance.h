@@ -9,6 +9,7 @@
 #include "TextGameObject.h"
 #include "OBJGameObject.h"
 #include "Coin.h"
+#include "Camera.h"
 
 #include <sstream> //Used for time text stringstream
 #include <iomanip> //Used for std::setprecision
@@ -48,7 +49,7 @@ private:
 	bool firstMouse = true;
 	bool followMouse = false;
 	
-	bool  gameOver = true;
+	bool  gameOver = false;
 	float gameTimer;
 	const float gameDuration = 30.0f;
 
@@ -57,8 +58,6 @@ private:
 	void DrawBackground();
 	void DisableProjection();
 	void EnableProjection();
-
-	void ResetCamera();
 
 	bool CollisionCheck(Sphere s1, Sphere s2);
 	bool CollisionCheck(AABB a, AABB b);

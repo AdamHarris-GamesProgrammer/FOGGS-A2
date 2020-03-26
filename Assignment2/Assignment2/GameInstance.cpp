@@ -67,13 +67,12 @@ void GameInstance::Update()
 
 	glLoadIdentity();
 
-	gluLookAt(mCamera->eye.x, mCamera->eye.y, mCamera->eye.z, mCamera->center.x, mCamera->center.y, mCamera->center.z, mCamera->up.x, mCamera->up.y, mCamera->up.z);
+	mCamera->Update();
 
 	glLightfv(GL_LIGHT0, GL_AMBIENT, &(mLight->ambient.x));
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, &(mLight->diffuse.x));
 	glLightfv(GL_LIGHT0, GL_SPECULAR, &(mLight->specular.x));
 	
-	glTranslatef(mCamera->position.x, mCamera->position.y, mCamera->position.z);
 
 	glutPostRedisplay();
 }
@@ -108,7 +107,7 @@ void GameInstance::Keyboard(unsigned char key, int x, int y)
 
 	//Resets camera values
 	if (key == 'r') {
-		ResetCamera();
+		mCamera->ResetCamera();
 		followMouse = false;
 	}
 
@@ -133,22 +132,7 @@ void GameInstance::ActiveMotion(int x, int y)
 	lastY = y;
 
 	if (followMouse) {
-		const float sensitivity = 0.5f;
-		yOffset *= sensitivity;
-		xOffset *= sensitivity;
-
-		yaw += xOffset;
-		pitch += yOffset;
-
-		pitch = std::clamp(pitch, -89.0f, 89.0f);
-
-		Vector3 direction;
-		direction.x = cos(Math::DegreeToRadians(yaw)) * cos(Math::DegreeToRadians(pitch));
-		direction.y = sin(Math::DegreeToRadians(pitch));
-		direction.z = sin(Math::DegreeToRadians(yaw)) * cos(Math::DegreeToRadians(pitch));
-
-
-		mCamera->center = Math::Normalise(direction);
+		mCamera->ProcessInput(xOffset, yOffset);
 	}
 
 }
@@ -188,10 +172,7 @@ void GameInstance::InitOpenGL(int argc, char* argv[])
 
 void GameInstance::InitObjects()
 {
-	mCamera = new Camera();
-	mCamera->eye.z = 1.0f;
-	mCamera->up.y = 1.0f;
-	mCamera->position = Vector3(0.0f, 0.0f, -35.0f);
+	mCamera = new Camera(Vector3(0.0f, 0.0f, -35.0f), Vector3(0.0f,0.0f,1.0f), Vector3(), Vector3(0.0f,1.0f,0.0f));
 
 
 	mLight = new Light();
@@ -284,13 +265,6 @@ void GameInstance::EnableProjection()
 	glPopMatrix();
 }
 
-void GameInstance::ResetCamera()
-{
-	mCamera = new Camera();
-	mCamera->eye.z = 1.0f;
-	mCamera->up.y = 1.0f;
-	mCamera->position = Vector3(0.0f, 0.0f, -35.0f);
-}
 
 bool GameInstance::CollisionCheck(Sphere s1, Sphere s2)
 {
