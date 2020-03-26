@@ -14,6 +14,7 @@
 
 #include <sstream> //Used for time text stringstream
 #include <iomanip> //Used for std::setprecision
+#include <functional>
 
 class GameInstance
 {
@@ -37,6 +38,7 @@ private:
 	float deltaTime = 0.0f;
 	float lastFrame = 0.0f;
 
+	int menu;
 
 	SpaceShip* mSpaceShip;
 
@@ -52,6 +54,7 @@ private:
 	bool firstMouse = true;
 	bool followMouse = false;
 	
+	bool paused = false;
 	bool  gameOver = false;
 	float gameTimer;
 	const float gameDuration = 30.0f;
@@ -62,9 +65,12 @@ private:
 	void DisableProjection();
 	void EnableProjection();
 
+	void PauseMenu(int option);
+
 	std::stringstream timeText;
 
 	int mScore = 0;
 
+	GameInstance* instance = nullptr;
 };
 

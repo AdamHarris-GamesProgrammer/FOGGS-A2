@@ -13,6 +13,8 @@
 
 GameInstance::GameInstance(int argc, char* argv[])
 {
+	instance = this;
+
 	InitOpenGL(argc, argv);
 	InitObjects();
 
@@ -47,23 +49,26 @@ void GameInstance::Update()
 	deltaTime = currentFrame - lastFrame;
 	lastFrame = currentFrame;
 
-	if (!gameOver) {
-		gameTimer -= deltaTime;
-		if (gameTimer <= 0.0f) {
-			gameTimer = 0.0f;
-			gameOver = true;
+	if (!paused) {
+		if (!gameOver) {
+			gameTimer -= deltaTime;
+			if (gameTimer <= 0.0f) {
+				gameTimer = 0.0f;
+				gameOver = true;
+			}
+		}
+
+		if (!gameOver) {
+			mSpaceShip->Update();
+			mCoin->Update();
+
+			if (mCollisionsInstance->CollisionCheck(mSpaceShip->GetBox(), mCoin->GetBox())) {
+				mCoin->GeneratePosition();
+				mScore++;
+			}
 		}
 	}
 
-	if (!gameOver) {
-		mSpaceShip->Update();
-		mCoin->Update();
-
-		if (mCollisionsInstance->CollisionCheck(mSpaceShip->GetBox(), mCoin->GetBox())) {
-			mCoin->GeneratePosition();
-			mScore++;
-		}
-	}
 
 	glLoadIdentity();
 
@@ -109,6 +114,10 @@ void GameInstance::Keyboard(unsigned char key, int x, int y)
 	if (key == 'r') {
 		mCamera->ResetCamera();
 		followMouse = false;
+	}
+
+	if (key == 'p') {
+		paused = !paused;
 	}
 
 }
@@ -185,6 +194,13 @@ void GameInstance::InitObjects()
 	mBgTexture->LoadBMP((char*)"Assets/BgTexture.bmp");
 
 	gameTimer = gameDuration;
+
+	auto ptrFunc = std::bind(&GameInstance::PauseMenu, std::placeholders::_1);
+	menu = glutCreateMenu(ptrFunc);
+
+	glutAddMenuEntry("Pause", 1);
+
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
 void GameInstance::DrawString(const char* text, Vector2* position, Color* color)
@@ -263,5 +279,12 @@ void GameInstance::EnableProjection()
 	glPopMatrix();
 	glMatrixMode(GL_MODELVIEW);
 	glPopMatrix();
+}
+
+void GameInstance::PauseMenu(int option)
+{
+	if (option == 1) {
+		paused = !paused;
+	}
 }
 
