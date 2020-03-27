@@ -201,6 +201,7 @@ void GameInstance::InitObjects()
 	menu = glutCreateMenu(PauseMenu);
 
 	glutAddMenuEntry("Pause", 1);
+	glutAddMenuEntry("Game OVer", 2);
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
@@ -285,11 +286,21 @@ void GameInstance::EnableProjection()
 
 void GameInstance::PauseMenu(int option)
 {
-	if (option == 1) {
+	switch (option)
+	{
+	case 1:
 		paused = !paused;
+		break;
+	case 2:
+		gameOver = !gameOver;
+		break;
+
+	default:
+		break;
 	}
 }
 
 bool GameInstance::paused = false;
+bool GameInstance::gameOver = false;
 
 

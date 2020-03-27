@@ -55,7 +55,7 @@ private:
 	bool followMouse = false;
 	
 	static bool paused;
-	bool  gameOver = false;
+	static bool  gameOver;
 	float gameTimer;
 	const float gameDuration = 30.0f;
 
