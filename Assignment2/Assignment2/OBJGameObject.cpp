@@ -15,6 +15,11 @@ OBJGameObject::OBJGameObject(std::string meshFilePath)
 	}
 }
 
+OBJGameObject::~OBJGameObject()
+{
+	delete mMeshLoader;
+}
+
 void OBJGameObject::Render()
 {
 	for (auto& mesh : mObjectMesh) {

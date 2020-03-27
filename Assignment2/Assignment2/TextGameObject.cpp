@@ -11,6 +11,12 @@ TextGameObject::TextGameObject(std::string meshFilePath)
 	mMaterial->illum = 100.0f;
 }
 
+TextGameObject::~TextGameObject()
+{
+	delete mMesh;
+	delete mMaterial;
+}
+
 void TextGameObject::Render()
 {
 	if (mMesh->Vertices != nullptr && mMesh->Normals != nullptr && mMesh->Indices != nullptr)

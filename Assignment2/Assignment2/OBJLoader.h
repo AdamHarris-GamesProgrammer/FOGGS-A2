@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Algorithm.h"
 #include "MathStructures.h"
 #include "GraphicsStructures.h"
 
@@ -28,6 +29,7 @@ private:
 
 	bool LoadMaterials(std::string path);
 
+	std::string LoadObjectName(std::string& currentLine);
 	void LoadVertices(std::vector<Vector3>& inPositions, std::string& currentLine);
 	void LoadVertexTextures(std::vector<Vector2>& inTexCoords, std::string& currentLine);
 	void LoadVertexNormals(std::vector<Vector3>& inNormals, std::string& currentLine);

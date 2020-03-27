@@ -10,6 +10,7 @@ class OBJGameObject : public GameObject
 {
 public:
 	OBJGameObject(std::string meshFilePath);
+	~OBJGameObject();
 
 	void Render() override;
 private:

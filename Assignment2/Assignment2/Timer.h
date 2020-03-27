@@ -3,6 +3,7 @@
 #include <iostream>
 #include <chrono>
 
+//Class used for benchmarking aspects of the program
 class Timer
 {
 public:

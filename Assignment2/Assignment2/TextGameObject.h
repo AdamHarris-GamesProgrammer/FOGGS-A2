@@ -7,6 +7,7 @@ class TextGameObject : public GameObject
 {
 public:
 	TextGameObject(std::string meshFilePath);
+	~TextGameObject();
 
 	void Render() override;
 	

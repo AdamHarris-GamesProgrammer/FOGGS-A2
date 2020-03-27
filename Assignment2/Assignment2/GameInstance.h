@@ -14,7 +14,6 @@
 
 #include <sstream> //Used for time text stringstream
 #include <iomanip> //Used for std::setprecision
-#include <functional>
 
 class GameInstance
 {
@@ -70,7 +69,5 @@ private:
 	std::stringstream timeText;
 
 	int mScore = 0;
-
-	GameInstance* instance = nullptr;
 };
 

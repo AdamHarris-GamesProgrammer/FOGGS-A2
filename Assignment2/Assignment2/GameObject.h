@@ -43,6 +43,10 @@ public:
 	void SetScale(Vector3 newScale) { mScale = newScale; }
 	void SetFriction(float newFriction) { mFriction = newFriction; }
 
+	Sphere GetSphere() const { return mCollisionSphere; }
+
+	AABB GetBox() const { return mCollisionBox; }
+
 private:
 
 protected:
@@ -50,6 +54,9 @@ protected:
 	Vector3 mVelocity;
 	Vector3 mRotation;
 	Vector3 mScale;
+
+	Sphere mCollisionSphere;
+	AABB mCollisionBox;
 
 	Texture2D* mTexture;
 

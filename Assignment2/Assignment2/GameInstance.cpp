@@ -13,7 +13,7 @@
 
 GameInstance::GameInstance(int argc, char* argv[])
 {
-	instance = this;
+	srand(time(NULL));
 
 	InitOpenGL(argc, argv);
 	InitObjects();
@@ -23,7 +23,16 @@ GameInstance::GameInstance(int argc, char* argv[])
 
 GameInstance::~GameInstance()
 {
+	glutDestroyMenu(menu);
 
+	delete mSpaceShip;
+	delete mCoin;
+
+	delete mCamera;
+	delete mLight;
+
+	delete mBgTexture;
+	delete mCollisionsInstance;
 }
 
 void GameInstance::Render()
@@ -51,6 +60,7 @@ void GameInstance::Update()
 	deltaTime = currentFrame - lastFrame;
 	lastFrame = currentFrame;
 
+	//Game Logic
 	if (!paused) {
 		if (!gameOver) {
 			gameTimer -= deltaTime;
@@ -71,7 +81,7 @@ void GameInstance::Update()
 		}
 	}
 
-
+	//OpgnGL related update calls
 	glLoadIdentity();
 
 	mCamera->Update();
@@ -86,6 +96,7 @@ void GameInstance::Update()
 
 void GameInstance::Keyboard(unsigned char key, int x, int y)
 {
+	//if game is not over poll player input
 	if (!gameOver) {
 		mSpaceShip->PollInput(key, x, y);
 	}
@@ -118,6 +129,7 @@ void GameInstance::Keyboard(unsigned char key, int x, int y)
 		followMouse = false;
 	}
 
+	//Pauses game
 	if (key == 'p') {
 		paused = !paused;
 	}
@@ -131,17 +143,20 @@ void GameInstance::KeyboardUp(unsigned char key, int x, int y)
 
 void GameInstance::ActiveMotion(int x, int y)
 {
+	//Handles the first mouse position, this stops the camera from using the initial mouse position for calculations
 	if (firstMouse) {
 		lastX = x;
 		lastY = y;
 		firstMouse = false;
 	}
 
+	//Calculates the difference between last frames mouse position and this frames mouse position
 	float xOffset = x - lastX;
 	float yOffset = lastY - y; //Opposite as coordinate system is from top left
 	lastX = x;
 	lastY = y;
 
+	//if follow mouse is true then process the input based off the x and y offset variables
 	if (followMouse) {
 		mCamera->ProcessInput(xOffset, yOffset);
 	}
@@ -154,9 +169,10 @@ void GameInstance::InitOpenGL(int argc, char* argv[])
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-	glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+	glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT); //800x800
 	glutCreateWindow("FOGGS Assignment 2 - Adam Harris");
 
+	//Sets function callbacks
 	glutKeyboardFunc(GLUTCallback::Keyboard);
 	glutKeyboardUpFunc(GLUTCallback::KeyboardUp);
 	glutPassiveMotionFunc(GLUTCallback::ActiveMouseMotion);
@@ -188,43 +204,48 @@ void GameInstance::InitObjects()
 
 	mLight = new Light();
 
-	mSpaceShip = new SpaceShip(std::string("Assets/test3.obj"));
+	
+	mSpaceShip = new SpaceShip(std::string("Assets/spaceship.obj"));
 
+	//Coin game object is based off the cube.txt model file
 	mCoin = new Coin("Assets/cube.txt");
 
 	mBgTexture = new Texture2D();
 	mBgTexture->LoadBMP((char*)"Assets/BgTexture.bmp");
 
+	//sets the timer to the game length
 	gameTimer = gameDuration;
 
-	auto ptrFunc = std::bind(&GameInstance::PauseMenu, std::placeholders::_1);
-	menu = glutCreateMenu(PauseMenu);
+	//Sets up glut menu for the pause and game over
+	menu = glutCreateMenu(PauseMenu); //Pause menu needs to be static in order to pass the function in as a callback
 
+	//Adds "Pause" and "Game Over" to the menu as options with there id's as 1 and 2
 	glutAddMenuEntry("Pause", 1);
 	glutAddMenuEntry("Game OVer", 2);
 
+	//Attaches this menu to the right mouse button
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
 void GameInstance::DrawString(const char* text, Vector2* position, Color* color)
 {
 	glPushMatrix();
-	glRasterPos2f(position->x, position->y);
-	glColor3f(color->r, color->g, color->b);
-	glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*)text);
+	glRasterPos2f(position->x, position->y); //Sets the texts position in relation to NDC (Normalized Device Coordinates [-1 to 1])
+	glColor3f(color->r, color->g, color->b); //Sets the colour of the text
+	glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*)text); //Sets the font and the text
 	glPopMatrix();
 }
 
 void GameInstance::DrawUI()
 {
-	DisableProjection();
+	DisableProjection(); //Disables projection viewing allowing the UI to be drawn in relation to the screen not the camera
 
-	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(GL_TEXTURE_2D, 0); //binds a blank texture
 	std::string scoreText = "Score: " + std::to_string(mScore);
 	DrawString(scoreText.c_str(), &Vector2(-0.95f, 0.9f), &Color(1.0f, 1.0f, 1.0f));
 
 	timeText.str(std::string());
-	timeText << "Time Left: " << std::setprecision(4) << gameTimer;
+	timeText << "Time Left: " << std::setprecision(4) << gameTimer; //std::setprecision(4) means cap gameTimer to four significan figures
 	std::string timeLeftText = "Time Left: " + std::to_string(gameTimer);
 	DrawString(timeText.str().c_str(), &Vector2(-0.95f, 0.80f), &Color(1.0f, 1.0f, 1.0f));
 
@@ -233,11 +254,12 @@ void GameInstance::DrawUI()
 		DrawString("Press Q to Restart", &Vector2(-0.2f, 0.0f), &Color(1.0f, 1.0f, 1.0f));
 	}
 
-	EnableProjection();
+	EnableProjection(); //Re enables the projection for 3D viewing 
 }
 
 void GameInstance::DrawBackground()
 {
+	//This method disables 3d viewing draws a texture on a 2D quad going across the whole screen and then re enables 3d viewing
 	DisableProjection();
 	glBindTexture(GL_TEXTURE_2D, mBgTexture->GetID());
 
@@ -265,7 +287,7 @@ void GameInstance::DisableProjection()
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
 	glLoadIdentity();
-	glMatrixMode(GL_MODELVIEW);
+	glMatrixMode(GL_MODELVIEW); 
 	glPushMatrix();
 	glLoadIdentity();
 
@@ -286,6 +308,7 @@ void GameInstance::EnableProjection()
 
 void GameInstance::PauseMenu(int option)
 {
+	//This switch statement tests the option that the player clicks on in the menu
 	switch (option)
 	{
 	case 1:
@@ -300,6 +323,7 @@ void GameInstance::PauseMenu(int option)
 	}
 }
 
+//these variables have to be static to work in the pause menu function which needs to be static to be used as a callback in the create menu method
 bool GameInstance::paused = false;
 bool GameInstance::gameOver = false;
 

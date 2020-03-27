@@ -7,7 +7,7 @@ GameObject::GameObject()
 
 GameObject::~GameObject()
 {
-
+	delete mTexture;
 }
 
 void GameObject::Render()

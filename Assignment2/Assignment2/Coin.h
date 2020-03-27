@@ -13,7 +13,6 @@ public:
 	AABB GetBox() const { return mCollisionBox; }
 
 private:
-	Sphere mCollisionSphere;
-	AABB mCollisionBox;
+
 };
 

@@ -36,6 +36,7 @@ void Coin::Update()
 
 void Coin::GeneratePosition()
 {
+	//Generates position within screen bounds
 	mPosition.x = (rand() % 31) - 15.5f;
 	mPosition.y = (rand() % 31) - 15.5f;
 }
