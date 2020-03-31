@@ -117,9 +117,9 @@ bool OBJLoader::LoadFile(std::string path)
 	for (int i = 0; i < meshMaterialNames.size(); i++) {
 		std::string matname = meshMaterialNames[i];
 
-		for (int j = 0; j < mLoadedMaterial.size(); j++) {
-			if (mLoadedMaterial[j].name == matname) {
-				mLoadedMeshes[i].meshMaterial = mLoadedMaterial[j];
+		for (auto & j : mLoadedMaterial) {
+			if (j.name == matname) {
+				mLoadedMeshes[i].meshMaterial = j;
 				break;
 			}
 		}
@@ -179,11 +179,11 @@ void OBJLoader::LoadFaces(std::vector<Vertex>& inVertices, std::vector<unsigned 
 	GenerateVerticiesFromRawOBJ(vVerts, inPositions, inTexCoords, inNormals, inCurrentLine);
 
 	// Add Vertices
-	for (int i = 0; i < int(vVerts.size()); i++)
+	for (const auto & vVert : vVerts)
 	{
-		inVertices.push_back(vVerts[i]);
+		inVertices.push_back(vVert);
 
-		mLoadedVerticies.push_back(vVerts[i]);
+		mLoadedVerticies.push_back(vVert);
 	}
 
 	std::vector<unsigned int> iIndices;
@@ -191,12 +191,12 @@ void OBJLoader::LoadFaces(std::vector<Vertex>& inVertices, std::vector<unsigned 
 	VertexTriangulation(iIndices, vVerts);
 
 	// Add Indices
-	for (int i = 0; i < int(iIndices.size()); i++)
+	for (unsigned int iIndice : iIndices)
 	{
-		unsigned int indnum = (unsigned int)((inVertices.size()) - vVerts.size()) + iIndices[i];
+		unsigned int indnum = (unsigned int)((inVertices.size()) - vVerts.size()) + iIndice;
 		inIndices.push_back(indnum);
 
-		indnum = (unsigned int)((mLoadedVerticies.size()) - vVerts.size()) + iIndices[i];
+		indnum = (unsigned int)((mLoadedVerticies.size()) - vVerts.size()) + iIndice;
 		mLoadedIndices.push_back(indnum);
 
 	}
@@ -211,10 +211,10 @@ void OBJLoader::GenerateVerticiesFromRawOBJ(std::vector<Vertex>& outVerts, const
 	bool noNormal = false;
 
 	//for every vertex do this
-	for (int i = 0; i < int(sface.size()); i++) {
+	for (const auto & line : sface) {
 		int vType;
 
-		Algorithm::Split(sface[i], svert, "/");
+		Algorithm::Split(line, svert, "/");
 
 		//Checks for just position (v1)
 		if (svert.size() == 1) {
@@ -228,7 +228,7 @@ void OBJLoader::GenerateVerticiesFromRawOBJ(std::vector<Vertex>& outVerts, const
 
 		//Checks for position, texture and normal (v1,vt1,vn1) or if just position and normal
 		if (svert.size() == 3) {
-			if (svert[1] != "") {
+			if (!(svert[1]).empty()) {
 				//position texture and normal
 				vType = 4;
 			}
@@ -285,8 +285,8 @@ void OBJLoader::GenerateVerticiesFromRawOBJ(std::vector<Vertex>& outVerts, const
 
 			Vector3 normal = Math::CrossProduct(A, B);
 
-			for (int i = 0; i < int(outVerts.size()); i++) {
-				outVerts[i].normal = normal;
+			for (auto & outVert : outVerts) {
+				outVert.normal = normal;
 			}
 		}
 	}
@@ -375,13 +375,13 @@ void OBJLoader::VertexTriangulation(std::vector<unsigned int>& outIndices, const
 				}
 
 				Vector3 tempVec;
-				for (int j = 0; j < int(tVerts.size()); j++)
+				for (auto & tVert : tVerts)
 				{
-					if (tVerts[j].position != pCur.position
-						&& tVerts[j].position != pPrev.position
-						&& tVerts[j].position != pNext.position)
+					if (tVert.position != pCur.position
+						&& tVert.position != pPrev.position
+						&& tVert.position != pNext.position)
 					{
-						tempVec = tVerts[j].position;
+						tempVec = tVert.position;
 						break;
 					}
 				}
@@ -408,12 +408,12 @@ void OBJLoader::VertexTriangulation(std::vector<unsigned int>& outIndices, const
 
 			// If any vertices are within this triangle
 			bool inTri = false;
-			for (int j = 0; j < int(inVerts.size()); j++)
+			for (const auto & inVert : inVerts)
 			{
-				if (Algorithm::InTriangle(inVerts[j].position, pPrev.position, pCur.position, pNext.position)
-					&& inVerts[j].position != pPrev.position
-					&& inVerts[j].position != pCur.position
-					&& inVerts[j].position != pNext.position)
+				if (Algorithm::InTriangle(inVert.position, pPrev.position, pCur.position, pNext.position)
+					&& inVert.position != pPrev.position
+					&& inVert.position != pCur.position
+					&& inVert.position != pNext.position)
 				{
 					inTri = true;
 					break;

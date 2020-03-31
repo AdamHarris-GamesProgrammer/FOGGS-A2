@@ -1,18 +1,24 @@
 #include "OBJGameObject.h"
+#include "Timer.h"
 
 OBJGameObject::OBJGameObject(std::string meshFilePath)
 {
 	std::string fileType = meshFilePath.substr(meshFilePath.size() - 4, meshFilePath.size());
-	if (fileType == ".obj") {
-		mMeshLoader = new OBJLoader();
-		mMeshLoader->LoadFile(meshFilePath);
+	printf("Time to load model (%s): ", meshFilePath);
+	{
+		Timer time;
+		if (fileType == ".obj") {
+			mMeshLoader = new OBJLoader();
+			mMeshLoader->LoadFile(meshFilePath);
 
-		mObjectMesh.reserve(mMeshLoader->mLoadedMeshes.size());
+			mObjectMesh.reserve(mMeshLoader->mLoadedMeshes.size());
 
-		for (auto mesh : mMeshLoader->mLoadedMeshes) {
-			mObjectMesh.emplace_back(mesh);
+			for (auto mesh : mMeshLoader->mLoadedMeshes) {
+				mObjectMesh.emplace_back(mesh);
+			}
 		}
 	}
+	
 }
 
 OBJGameObject::~OBJGameObject()
