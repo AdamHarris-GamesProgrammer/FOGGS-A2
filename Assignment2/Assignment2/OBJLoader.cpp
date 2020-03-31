@@ -449,11 +449,11 @@ void OBJLoader::VertexTriangulation(std::vector<unsigned int>& outIndices, const
 		}
 
 		// if no triangles were created
-		if (outIndices.size() == 0)
+		if (outIndices.empty())
 			break;
 
 		// if no more vertices
-		if (tVerts.size() == 0)
+		if (tVerts.empty())
 			break;
 	}
 }
@@ -466,7 +466,7 @@ void OBJLoader::GetMaterialName(Mesh& inTempMesh, std::string& inMeshName, std::
 		inTempMesh = Mesh(inVertices, inIndices);
 		inTempMesh.meshName = inMeshName;
 		int i = 2;
-		while (1) {
+		while (true) {
 			inTempMesh.meshName = inMeshName + "_" + std::to_string(i);
 
 			for (auto& m : mLoadedMeshes) {
@@ -583,30 +583,30 @@ bool OBJLoader::LoadMaterials(std::string path)
 		}
 		//Ambient Map
 		else if (Algorithm::FirstToken(currentLine) == "map_Ka") {
-			tempMaterial.map_Ka = Algorithm::Tail(currentLine);
+			tempMaterial.mapKa = Algorithm::Tail(currentLine);
 		}
 		//Diffuse Map
 		else if (Algorithm::FirstToken(currentLine) == "map_Kd") {
-			tempMaterial.map_Kd = Algorithm::Tail(currentLine);
+			tempMaterial.mapKd = Algorithm::Tail(currentLine);
 		}
 		//Specular Map
 		else if (Algorithm::FirstToken(currentLine) == "map_Ks") {
-			tempMaterial.map_Ks = Algorithm::Tail(currentLine);
+			tempMaterial.mapKs = Algorithm::Tail(currentLine);
 		}
 
 		//Specular Exponent Map
 		else if (Algorithm::FirstToken(currentLine) == "map_Ns") {
-			tempMaterial.map_Ns = Algorithm::Tail(currentLine);
+			tempMaterial.mapNs = Algorithm::Tail(currentLine);
 		}
 
 		//Diffuse Map
 		else if (Algorithm::FirstToken(currentLine) == "map_D") {
-			tempMaterial.map_d = Algorithm::Tail(currentLine);
+			tempMaterial.mapD = Algorithm::Tail(currentLine);
 		}
 
 		//Bump Map
 		else if (Algorithm::FirstToken(currentLine) == "map_Bump" || Algorithm::FirstToken(currentLine) == "map_bump" || Algorithm::FirstToken(currentLine) == "bump") {
-			tempMaterial.map_bump = Algorithm::Tail(currentLine);
+			tempMaterial.mapBump = Algorithm::Tail(currentLine);
 		}
 	}
 

@@ -34,20 +34,20 @@ struct Material
 	float d; //dissolve
 	float illum; //illumination
 
-	std::string map_Ka; //Ambient texture map
-	std::string map_Kd; //Diffuse texture map
-	std::string map_Ks; //Specular texture map
-	std::string map_Ns; //Specular highlight map
-	std::string map_d; //Alpha texture map
+	std::string mapKa; //Ambient texture map
+	std::string mapKd; //Diffuse texture map
+	std::string mapKs; //Specular texture map
+	std::string mapNs; //Specular highlight map
+	std::string mapD; //Alpha texture map
 
-	std::string map_bump; //Bump map
+	std::string mapBump; //Bump map
 };
 
-struct Color
+struct Colour
 {
 	float r, g, b;
 
-	Color(float red = 0.0f, float green = 0.0f, float blue = 0.0f) {
+	Colour(float red = 0.0f, float green = 0.0f, float blue = 0.0f) {
 		r = red;
 		g = green;
 		b = blue;
@@ -68,14 +68,14 @@ struct Mesh {
 };
 
 struct TextMesh {
-	Vector3* Vertices;
-	Vector3* Normals;
+	Vector3* vertices;
+	Vector3* normals;
 
-	GLushort* Indices;
+	GLushort* indices;
 
-	Vector2* TexCoords;
+	Vector2* texCoords;
 
-	int VertexCount, NormalCount, IndexCount, TexCoordCount;
+	int vertexCount, normalCount, indexCount, texCoordCount;
 };
 
 struct Light {

@@ -39,6 +39,7 @@ void GameInstance::Render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	//Demonstration of the painters algorithm (Back to front drawing)
 	//Background
 	DrawBackground();
 
@@ -182,7 +183,7 @@ void GameInstance::InitOpenGL(int argc, char* argv[])
 	glMatrixMode(GL_PROJECTION);
 
 	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-	gluPerspective(45, 1, 1, 200);
+	gluPerspective(45, 1, 1, 40);
 
 
 	glMatrixMode(GL_MODELVIEW);
@@ -227,7 +228,7 @@ void GameInstance::InitObjects()
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
-void GameInstance::DrawString(const char* text, Vector2* position, Color* color)
+void GameInstance::DrawString(const char* text, Vector2* position, Colour* color)
 {
 	glPushMatrix();
 	glRasterPos2f(position->x, position->y); //Sets the texts position in relation to NDC (Normalized Device Coordinates [-1 to 1])
@@ -242,16 +243,16 @@ void GameInstance::DrawUI()
 
 	glBindTexture(GL_TEXTURE_2D, 0); //binds a blank texture
 	std::string scoreText = "Score: " + std::to_string(mScore);
-	DrawString(scoreText.c_str(), &Vector2(-0.95f, 0.9f), &Color(1.0f, 1.0f, 1.0f));
+	DrawString(scoreText.c_str(), &Vector2(-0.95f, 0.9f), &Colour(1.0f, 1.0f, 1.0f));
 
 	timeText.str(std::string());
 	timeText << "Time Left: " << std::setprecision(4) << gameTimer; //std::setprecision(4) means cap gameTimer to four significan figures
 	std::string timeLeftText = "Time Left: " + std::to_string(gameTimer);
-	DrawString(timeText.str().c_str(), &Vector2(-0.95f, 0.80f), &Color(1.0f, 1.0f, 1.0f));
+	DrawString(timeText.str().c_str(), &Vector2(-0.95f, 0.80f), &Colour(1.0f, 1.0f, 1.0f));
 
 
 	if (gameOver) {
-		DrawString("Press Q to Restart", &Vector2(-0.2f, 0.0f), &Color(1.0f, 1.0f, 1.0f));
+		DrawString("Press Q to Restart", &Vector2(-0.2f, 0.0f), &Colour(1.0f, 1.0f, 1.0f));
 	}
 
 	EnableProjection(); //Re enables the projection for 3D viewing 

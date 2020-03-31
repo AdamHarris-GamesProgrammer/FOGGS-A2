@@ -5,6 +5,5 @@
 
 //AABB: Axis Aligned Bounding Box
 struct AABB {
-	float x, y, z;
-	float w, h, d;
+	Vector3 position, dimensions;
 };

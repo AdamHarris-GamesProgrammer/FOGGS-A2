@@ -3,15 +3,15 @@
 
 SpaceShip::SpaceShip(std::string meshFilePath) : OBJGameObject(meshFilePath)
 {
-	LoadDiffuseTexture(std::string("Assets/") + mObjectMesh[1].meshMaterial.map_Kd);
+	LoadDiffuseTexture(std::string("Assets/") + mObjectMesh[1].meshMaterial.mapKd);
 
 	SetFriction(0.95f);
 	SetRotation(Vector3(0.0f, 180.0f, 0.0f));
 	SetScale(Vector3(0.5f, 0.5f, 0.5f));
 
-	mCollisionBox.w = 8.0f;
-	mCollisionBox.h = 2.0f;
-	mCollisionBox.d = 3.0f;
+	mCollisionBox.dimensions.x = 8.0f;
+	mCollisionBox.dimensions.y = 2.0f;
+	mCollisionBox.dimensions.z = 3.0f;
 }
 
 void SpaceShip::Update()
@@ -22,9 +22,9 @@ void SpaceShip::Update()
 	mPosition.x = std::clamp(mPosition.x, -14.5f, 14.5f);
 	mPosition.y = std::clamp(mPosition.y, -15.0f, 15.0f);
 
-	mCollisionBox.x = mPosition.x - (mCollisionBox.w / 2);
-	mCollisionBox.y = mPosition.y - (mCollisionBox.h / 2);
-	mCollisionBox.z = mPosition.z - (mCollisionBox.d / 2);
+	mCollisionBox.position.x = mPosition.x - (mCollisionBox.dimensions.x / 2);
+	mCollisionBox.position.y = mPosition.y - (mCollisionBox.dimensions.y / 2);
+	mCollisionBox.position.z = mPosition.z - (mCollisionBox.dimensions.z / 2);
 
 	//printf("Spaceship\nX: %f\tX+W: %f\nY: %f\tY+H: %f\nZ: %f\t Z+D: %f\n", 
 	//	mCollisionBox.x, mCollisionBox.x + mCollisionBox.w,

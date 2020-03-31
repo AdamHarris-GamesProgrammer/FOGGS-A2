@@ -12,46 +12,46 @@ namespace TextMeshLoader {
 
 	void LoadVertices(ifstream& inFile, TextMesh& mesh)
 	{
-		inFile >> mesh.VertexCount;
+		inFile >> mesh.vertexCount;
 
-		if (mesh.VertexCount > 0)
+		if (mesh.vertexCount > 0)
 		{
-			mesh.Vertices = new Vector3[mesh.VertexCount];
+			mesh.vertices = new Vector3[mesh.vertexCount];
 
-			for (int i = 0; i < mesh.VertexCount; i++)
+			for (int i = 0; i < mesh.vertexCount; i++)
 			{
-				inFile >> mesh.Vertices[i].x;
-				inFile >> mesh.Vertices[i].y;
-				inFile >> mesh.Vertices[i].z;
+				inFile >> mesh.vertices[i].x;
+				inFile >> mesh.vertices[i].y;
+				inFile >> mesh.vertices[i].z;
 			}
 		}
 	}
 
 	void LoadTextureCoords(ifstream& inFile, TextMesh& mesh) {
-		inFile >> mesh.TexCoordCount;
-		mesh.TexCoords = new Vector2[mesh.TexCoordCount];
-		for (int i = 0; i < mesh.TexCoordCount; i++) {
-			inFile >> mesh.TexCoords[i].x;
-			inFile >> mesh.TexCoords[i].y;
+		inFile >> mesh.texCoordCount;
+		mesh.texCoords = new Vector2[mesh.texCoordCount];
+		for (int i = 0; i < mesh.texCoordCount; i++) {
+			inFile >> mesh.texCoords[i].x;
+			inFile >> mesh.texCoords[i].y;
 		}
 	}
 
 	void LoadIndices(ifstream& inFile, TextMesh& mesh)
 	{
-		inFile >> mesh.IndexCount;
-		mesh.Indices = new GLushort[mesh.IndexCount];
-		for (int i = 0; i < mesh.IndexCount; i++) {
-			inFile >> mesh.Indices[i];
+		inFile >> mesh.indexCount;
+		mesh.indices = new GLushort[mesh.indexCount];
+		for (int i = 0; i < mesh.indexCount; i++) {
+			inFile >> mesh.indices[i];
 		}
 	}
 
 	void LoadNormals(ifstream& inFile, TextMesh& mesh) {
-		inFile >> mesh.NormalCount;
-		mesh.Normals = new Vector3[mesh.NormalCount];
-		for (int i = 0; i < mesh.NormalCount; i++) {
-			inFile >> mesh.Normals[i].x;
-			inFile >> mesh.Normals[i].y;
-			inFile >> mesh.Normals[i].z;
+		inFile >> mesh.normalCount;
+		mesh.normals = new Vector3[mesh.normalCount];
+		for (int i = 0; i < mesh.normalCount; i++) {
+			inFile >> mesh.normals[i].x;
+			inFile >> mesh.normals[i].y;
+			inFile >> mesh.normals[i].z;
 		}
 	}
 

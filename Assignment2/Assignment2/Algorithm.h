@@ -72,7 +72,7 @@ namespace Algorithm {
 				}
 				else
 				{
-					out.push_back("");
+					out.emplace_back("");
 				}
 			}
 			else if (i + token.size() >= in.size())

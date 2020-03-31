@@ -19,7 +19,7 @@ TextGameObject::~TextGameObject()
 
 void TextGameObject::Render()
 {
-	if (mMesh->Vertices != nullptr && mMesh->Normals != nullptr && mMesh->Indices != nullptr)
+	if (mMesh->vertices != nullptr && mMesh->normals != nullptr && mMesh->indices != nullptr)
 	{
 		if (mTexture != nullptr) {
 			glBindTexture(GL_TEXTURE_2D, mTexture->GetID());
@@ -38,16 +38,16 @@ void TextGameObject::Render()
 		glRotatef(mRotation.z, 0.0f, 0.0f, 1.0f);
 
 		glBegin(GL_TRIANGLES);
-		for (int i = 0; i < mMesh->IndexCount; i++)
+		for (int i = 0; i < mMesh->indexCount; i++)
 		{
 			glMaterialfv(GL_FRONT, GL_AMBIENT, &(mMaterial->Ka.x));
 			glMaterialfv(GL_FRONT, GL_DIFFUSE, &(mMaterial->Kd.x));
 			glMaterialfv(GL_FRONT, GL_SPECULAR, &(mMaterial->Ks.x));
 			glMaterialf(GL_FRONT, GL_SHININESS, mMaterial->illum);
 
-			glTexCoord2fv(&mMesh->TexCoords[mMesh->Indices[i]].x);
-			glNormal3fv(&mMesh->Normals[mMesh->Indices[i]].x);
-			glVertex3fv(&mMesh->Vertices[mMesh->Indices[i]].x);
+			glTexCoord2fv(&mMesh->texCoords[mMesh->indices[i]].x);
+			glNormal3fv(&mMesh->normals[mMesh->indices[i]].x);
+			glVertex3fv(&mMesh->vertices[mMesh->indices[i]].x);
 		}
 		glEnd();
 

@@ -57,7 +57,7 @@ private:
 	float gameTimer;
 	const float gameDuration = 30.0f;
 
-	void DrawString(const char* text, Vector2* position, Color* color);
+	void DrawString(const char* text, Vector2* position, Colour* color);
 	void DrawUI();
 	void DrawBackground();
 	void DisableProjection();

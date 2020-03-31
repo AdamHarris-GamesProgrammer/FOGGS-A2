@@ -36,8 +36,8 @@ struct BMPColourHeader {
 
 struct BMP {
 	BMPFileHeader fileHeader;
-	BMPInfoHeader bmpInfoHeader;
-	BMPColourHeader bmpColourHeader;
+	BMPInfoHeader infoHeader;
+	BMPColourHeader colourHeader;
 	std::vector<uint8_t> data;
 	std::vector<uint8_t> rgbData;
 
@@ -49,10 +49,10 @@ struct BMP {
 
 	void ConvertToRGB() {
 		rgbData.reserve(requiredSize);
-		uint32_t channels = bmpInfoHeader.bitCount / 8;
-		for (uint32_t y = 0; y < bmpInfoHeader.height; ++y) {
-			for (uint32_t x = 0; x < bmpInfoHeader.width; ++x) {
-				int index = channels * (y * bmpInfoHeader.width + x);
+		uint32_t channels = infoHeader.bitCount / 8;
+		for (uint32_t y = 0; y < infoHeader.height; ++y) {
+			for (uint32_t x = 0; x < infoHeader.width; ++x) {
+				int index = channels * (y * infoHeader.width + x);
 				rgbData.emplace_back(data[index + 2]); //R
 				rgbData.emplace_back(data[index + 1]); //G
 				rgbData.emplace_back(data[index + 0]); //B
@@ -70,15 +70,15 @@ private:
 			if (fileHeader.fileType != 0x4D42) {
 				throw std::runtime_error("Error! Unrecognized file format.");
 			}
-			inp.read((char*)&bmpInfoHeader, sizeof(bmpInfoHeader));
+			inp.read((char*)&infoHeader, sizeof(infoHeader));
 
 			//The BMPColorHeader is used only for transparent images
-			if (bmpInfoHeader.bitCount == 32) {
-				if (bmpInfoHeader.size >= (sizeof(BMPInfoHeader) + sizeof(BMPColourHeader))) {
-					inp.read((char*)&bmpColourHeader, sizeof(bmpColourHeader));
+			if (infoHeader.bitCount == 32) {
+				if (infoHeader.size >= (sizeof(BMPInfoHeader) + sizeof(BMPColourHeader))) {
+					inp.read((char*)&colourHeader, sizeof(colourHeader));
 
-					//Check if the pixel data is stored as RGBA 
-					CheckColorHeader(bmpColourHeader);
+					//Check if the pixel data is stored in the sRGB colour space 
+					CheckColorHeader(colourHeader);
 				}
 				else
 				{
@@ -91,41 +91,41 @@ private:
 			inp.seekg(fileHeader.offsetData, inp.beg);
 
 			//Adjusts the header files for output as some programs add additional information that is not needed
-			if (bmpInfoHeader.bitCount == 32) {
-				bmpInfoHeader.size = sizeof(BMPInfoHeader) + sizeof(BMPColourHeader);
+			if (infoHeader.bitCount == 32) {
+				infoHeader.size = sizeof(BMPInfoHeader) + sizeof(BMPColourHeader);
 				fileHeader.offsetData = sizeof(BMPFileHeader) + sizeof(BMPInfoHeader) + sizeof(BMPColourHeader);
 			}
 			else
 			{
-				bmpInfoHeader.size = sizeof(BMPInfoHeader);
+				infoHeader.size = sizeof(BMPInfoHeader);
 				fileHeader.offsetData = sizeof(BMPFileHeader) + sizeof(BMPInfoHeader);
 			}
 			fileHeader.fileSize = fileHeader.offsetData;
 
-			if (bmpInfoHeader.height < 0) {
+			if (infoHeader.height < 0) {
 				throw std::runtime_error("The program can only use BMP images with the origin in the bottom left corner!");
 			}
 
-			requiredSize = bmpInfoHeader.width * bmpInfoHeader.height * bmpInfoHeader.bitCount / 8;
+			requiredSize = infoHeader.width * infoHeader.height * infoHeader.bitCount / 8;
 
 			data.reserve(requiredSize); //(8 converts from bits to bytes)
 			data.resize(requiredSize); //Initializes all values
 
-			if (bmpInfoHeader.width % 4 == 0) {
+			if (infoHeader.width % 4 == 0) {
 				inp.read((char*)data.data(), data.size());
 				fileHeader.fileSize += data.size();
 			}
 			else
 			{
-				rowStride = bmpInfoHeader.width * bmpInfoHeader.bitCount / 8;
+				rowStride = infoHeader.width * infoHeader.bitCount / 8;
 				uint32_t newStride = MakeStrideAligned(4);
-				std::vector<uint8_t> padding_row(newStride - rowStride);
+				std::vector<uint8_t> paddingRow(newStride - rowStride);
 
-				for (int y = 0; y < bmpInfoHeader.height; ++y) {
+				for (int y = 0; y < infoHeader.height; ++y) {
 					inp.read((char*)(data.data() + rowStride * y), rowStride);
-					inp.read((char*)padding_row.data(), padding_row.size());
+					inp.read((char*)paddingRow.data(), paddingRow.size());
 				}
-				fileHeader.fileSize += data.size() + bmpInfoHeader.height * padding_row.size();
+				fileHeader.fileSize += data.size() + infoHeader.height * paddingRow.size();
 			}
 		}
 		else
@@ -144,16 +144,16 @@ private:
 	}
 
 	//Check if the pixel data is stored in RGBA and if the color space type is sRGB
-	void CheckColorHeader(BMPColourHeader& bmp_color_header) {
+	void CheckColorHeader(BMPColourHeader& bmpColourHeader) {
 
-		if (   bmp_color_header.redMask		!= 0x00ff0000 //Red
-			|| bmp_color_header.greenMask	!= 0x0000ff00 //Green
-			|| bmp_color_header.blueMask	!= 0x000000ff //Blue
-			|| bmp_color_header.alphaMask	!= 0xff000000 //Alpha
+		if (   bmpColourHeader.redMask		!= 0x00ff0000 //Red
+			|| bmpColourHeader.greenMask	!= 0x0000ff00 //Green
+			|| bmpColourHeader.blueMask	!= 0x000000ff //Blue
+			|| bmpColourHeader.alphaMask	!= 0xff000000 //Alpha
 			) {
 			throw std::runtime_error("Unexpected color mask format! The program expects the pixel data to be in the BGRA format");
 		}
-		if (   bmp_color_header.colourSpaceType != 0x73524742) { //0x73524742 = default sRGB
+		if (   bmpColourHeader.colourSpaceType != 0x73524742) { //0x73524742 = default sRGB
 			throw std::runtime_error("Unexpected color space type! The program expects sRGB values");
 		}
 	}
