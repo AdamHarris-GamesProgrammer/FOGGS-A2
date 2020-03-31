@@ -26,7 +26,7 @@ private:
 	Vector3 mOriginalCenter;
 	Vector3 mOriginalUp;
 
-	float yaw;
+	float yaw = -90.0f;
 	float pitch;
 };
 

@@ -4,9 +4,6 @@ Coin::Coin(std::string meshFilePath) : TextGameObject(meshFilePath)
 {
 	LoadDiffuseTexture("Assets/stars.raw");
 
-	mCollisionSphere.position = mPosition;
-	mCollisionSphere.radius = 1.0f;
-
 	mCollisionBox.w = 2.0f;
 	mCollisionBox.h = 2.0f;
 	mCollisionBox.d = 2.0f;
@@ -17,8 +14,6 @@ Coin::Coin(std::string meshFilePath) : TextGameObject(meshFilePath)
 void Coin::Update()
 {
 	GameObject::Update();
-	mCollisionSphere.position = mPosition;
-
 	mCollisionBox.x = mPosition.x - (mCollisionBox.w / 2);
 	mCollisionBox.y = mPosition.y - (mCollisionBox.h / 2);
 	mCollisionBox.z = mPosition.z - (mCollisionBox.d / 2);

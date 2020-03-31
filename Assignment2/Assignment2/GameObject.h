@@ -4,6 +4,7 @@
 
 #include "MathStructures.h"
 #include "GraphicsStructures.h"
+#include "GameStructures.h"
 
 #include "OBJLoader.h"
 #include "Texture2D.h"
@@ -43,7 +44,6 @@ public:
 	void SetScale(Vector3 newScale) { mScale = newScale; }
 	void SetFriction(float newFriction) { mFriction = newFriction; }
 
-	Sphere GetSphere() const { return mCollisionSphere; }
 
 	AABB GetBox() const { return mCollisionBox; }
 
@@ -55,7 +55,6 @@ protected:
 	Vector3 mRotation;
 	Vector3 mScale;
 
-	Sphere mCollisionSphere;
 	AABB mCollisionBox;
 
 	Texture2D* mTexture;

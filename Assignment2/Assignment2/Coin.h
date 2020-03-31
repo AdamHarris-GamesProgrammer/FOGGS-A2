@@ -9,8 +9,6 @@ public:
 
 	void GeneratePosition();
 
-	Sphere GetSphere() const { return mCollisionSphere; }
-	AABB GetBox() const { return mCollisionBox; }
 
 private:
 

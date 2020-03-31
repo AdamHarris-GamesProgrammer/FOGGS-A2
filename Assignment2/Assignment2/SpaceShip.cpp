@@ -9,8 +9,6 @@ SpaceShip::SpaceShip(std::string meshFilePath) : OBJGameObject(meshFilePath)
 	SetRotation(Vector3(0.0f, 180.0f, 0.0f));
 	SetScale(Vector3(0.5f, 0.5f, 0.5f));
 
-	mCollisionSphere.radius = 4.0f;
-
 	mCollisionBox.w = 8.0f;
 	mCollisionBox.h = 2.0f;
 	mCollisionBox.d = 3.0f;
@@ -23,8 +21,6 @@ void SpaceShip::Update()
 
 	mPosition.x = std::clamp(mPosition.x, -14.5f, 14.5f);
 	mPosition.y = std::clamp(mPosition.y, -15.0f, 15.0f);
-
-	mCollisionSphere.position = mPosition;
 
 	mCollisionBox.x = mPosition.x - (mCollisionBox.w / 2);
 	mCollisionBox.y = mPosition.y - (mCollisionBox.h / 2);

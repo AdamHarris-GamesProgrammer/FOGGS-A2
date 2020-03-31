@@ -150,6 +150,7 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="GameInstance.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameStructures.h" />
     <ClInclude Include="GLIncludes.h" />
     <ClInclude Include="GlutCallbacks.h" />
     <ClInclude Include="GraphicsStructures.h" />

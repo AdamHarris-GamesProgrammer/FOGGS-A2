@@ -50,8 +50,8 @@ bool Texture2D::LoadBMP(const char* path, GLenum type)
 {
 	BMP tempTexturedData(path);
 
-	mWidth = tempTexturedData.bmp_info_header.width;
-	mHeight = tempTexturedData.bmp_info_header.height;
+	mWidth = tempTexturedData.bmpInfoHeader.width;
+	mHeight = tempTexturedData.bmpInfoHeader.height;
 
 	tempTexturedData.ConvertToRGB();
 	std::cout << path << " is loaded\n";
@@ -67,8 +67,8 @@ bool Texture2D::LoadBMP(const char* path)
 {
 	BMP tempTexturedData(path);
 
-	mWidth = tempTexturedData.bmp_info_header.width;
-	mHeight = tempTexturedData.bmp_info_header.height;
+	mWidth = tempTexturedData.bmpInfoHeader.width;
+	mHeight = tempTexturedData.bmpInfoHeader.height;
 
 	tempTexturedData.ConvertToRGB();
 	std::cout << path << " is loaded\n";

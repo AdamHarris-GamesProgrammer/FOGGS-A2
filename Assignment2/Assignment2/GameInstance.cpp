@@ -170,7 +170,7 @@ void GameInstance::InitOpenGL(int argc, char* argv[])
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT); //800x800
-	glutCreateWindow("FOGGS Assignment 2 - Adam Harris");
+	glutCreateWindow("FOGGS Assignment 2 - Adam Harris | Star Hopper");
 
 	//Sets function callbacks
 	glutKeyboardFunc(GLUTCallback::Keyboard);

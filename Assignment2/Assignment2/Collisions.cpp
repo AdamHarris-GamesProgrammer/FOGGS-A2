@@ -1,24 +1,5 @@
 #include "Collisions.h"
 
-bool Collisions::CollisionCheck(Sphere s1, Sphere s2)
-{
-	float distance = ((s1.position.x - s2.position.x) * (s1.position.x - s2.position.x)) +
-		((s1.position.y - s2.position.y) * (s1.position.y - s2.position.y)) +
-		((s1.position.z - s2.position.z) * (s1.position.z - s2.position.z));
-
-	float radiusDistance;
-
-	radiusDistance = pow(s1.radius + s2.radius, 2);
-
-	if (distance <= radiusDistance) {
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
 bool Collisions::CollisionCheck(AABB a, AABB b)
 {
 	float minAX = a.x;
